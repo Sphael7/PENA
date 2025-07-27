@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pena - Pengaturan</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;700&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script defer src="common.js"></script>
+</head>
+<body id="settings-page">
+    <div id="page-transition-overlay" class="page-transition-overlay"></div>
+
+    <header class="app-header">
+        <div class="header-left">
+            <button class="icon-button" id="toggle-sidebar-btn" aria-label="Buka Sidebar Navigasi"><i class="fas fa-bars"></i></button>
+            <a href="index.html" class="logo">
+                <img src="logo-pena.png" alt="Logo Pena" height="140">
+            </a>
+        </div>
+        <div class="header-center">
+            <h1>Pengaturan</h1>
+        </div>
+        <div class="header-right">
+            <a href="settings.html" class="icon-button" aria-label="Pengaturan Aplikasi"><i class="fas fa-cog"></i></a>
+        </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="icon-button" id="close-sidebar-btn" aria-label="Tutup Sidebar Navigasi"><i class="fas fa-times"></i></button>
+        </div>
+        <nav class="sidebar-menu">
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="write.html"><i class="fas fa-pen-nib"></i> Tulis</a></li>
+                <li><a href="thesaurus.html"><i class="fas fa-book"></i> Tesaurus</a></li>
+                <li><a href="pembelajaran.html"><i class="fas fa-book-open"></i> Pembelajaran</a></li>
+                <li><a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main class="settings-content">
+        <div class="settings-container">
+            <div class="settings-left-panel">
+                <div class="settings-option">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Profil</span>
+                </div>
+                <div class="settings-option" id="font-selector-trigger">
+                    <i class="fas fa-font"></i>
+                    <span>Font</span>
+                </div>
+            </div>
+
+            <div class="settings-right-panel">
+                <div class="settings-section">
+                    <h3>Tentang Kami</h3>
+                    <p>Aplikasi ini dikembangkan oleh Christopher Alberto Hamonangan dan Leviana Dearma Belinda Pasaribu sebagai bagian dari proyek penelitian dalam program Olimpiade Penelitian Siswa Indonesia (OPSI). Aplikasi ini dirancang sebagai alat bantu pembuat puisi dengan tujuan utama meningkatkan literasi serta minat siswa terhadap sastra, khususnya dalam bidang Bahasa Indonesia. Melalui pendekatan teknologi yang interaktif dan kreatif, kami berharap aplikasi ini dapat menjadi jembatan yang menyenangkan antara generasi muda dan dunia puisi, sekaligus mendorong apresiasi yang lebih luas terhadap karya sastra dalam bahasa ibu.</p>
+                    </div>
+                <div class="settings-section">
+                    <h3>Lisensi</h3>
+                    <p>Hak cipta © 2025 oleh Christopher Alberto Hamonangan dan Leviana Dearma Belinda Pasaribu.</p>
+                    <p>Aplikasi ini dikembangkan sebagai bagian dari proyek penelitian dalam rangka Olimpiade Penelitian Siswa Indonesia (OPSI).</p>
+                    <p>Aplikasi ini disediakan untuk tujuan pendidikan dan non-komersial. Pengguna diperbolehkan untuk menggunakan, mendistribusikan, dan memodifikasi aplikasi ini dengan tetap mencantumkan nama pengembang asli serta tidak menggunakannya untuk tujuan komersial tanpa izin tertulis.</p>
+                    <p>Segala bentuk penggunaan di luar ketentuan ini harus mendapatkan persetujuan resmi dari pengembang.</p>
+                </div>
+                <div class="copyright">
+                    © 2025 Pena
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="font-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-font-modal-btn">&times;</span>
+            <h2>Pilih Font Puisi</h2>
+            <div class="font-options-grid" id="font-options-grid">
+                </div>
+        </div>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+</html>
