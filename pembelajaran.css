@@ -1,0 +1,296 @@
+/* pembelajaran.css - Gaya Khusus Halaman Pembelajaran */
+
+.learning-content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 5%;
+    max-width: 1200px; 
+    margin: 20px auto;
+    background-color: var(--learning-bg-soft); 
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-medium);
+}
+
+.learning-menu {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 10px;
+    margin-bottom: 30px;
+    justify-content: center; 
+}
+
+.learning-menu-item {
+    background-color: var(--learning-card-bg);
+    border: 1px solid var(--learning-border-light);
+    border-radius: 25px; 
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-color);
+    font-weight: 500;
+}
+.learning-menu-item:hover {
+    background-color: rgba(var(--primary-color-rgb-values), 0.1); /* Hover dengan nuansa primary */
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+.learning-menu-item.active {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: var(--box-shadow-light);
+}
+.learning-menu-item.active i {
+    color: white; 
+}
+.learning-menu-item i {
+    color: var(--primary-color);
+    font-size: 1.1em;
+    transition: color 0.2s ease;
+}
+
+.learning-display {
+    background-color: var(--learning-card-bg);
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-medium); 
+    padding: 30px;
+    flex-grow: 1; 
+}
+
+.learning-display h2 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.5em; 
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.learning-display .learning-subtitle {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.1em;
+    color: var(--soft-text);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.learning-display .topic-content-body {
+    font-family: 'Lora', serif; 
+    line-height: 1.8;
+    font-size: 1.1em;
+    color: var(--learning-text-main);
+}
+
+.learning-card {
+    background-color: #fefefe;
+    border: 1px solid var(--learning-border-light);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--box-shadow-light);
+}
+.learning-card h3 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.5em;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.learning-card p {
+    margin-bottom: 1em;
+}
+.learning-card ul {
+    list-style: none;
+    padding-left: 20px;
+    margin-bottom: 1em;
+}
+.learning-card ul li:before {
+    content: '\2022'; 
+    color: var(--secondary-color);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+.highlight-box {
+    background-color: var(--learning-highlight-box-bg);
+    border-left: 5px solid var(--learning-highlight-box-border);
+    border-radius: 5px;
+    padding: 15px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.highlight-box i {
+    font-size: 1.8em;
+    color: var(--learning-highlight-box-border);
+    flex-shrink: 0;
+}
+.highlight-box p {
+    margin: 0;
+}
+
+.poem-example-box {
+    background-color: #fdfdfd;
+    border: 1px dashed var(--soft-text);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 300px;
+    text-align: center;
+}
+.poem-example-box h4 {
+    font-family: 'Quicksand', sans-serif;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+.poem-example-box .poem-text {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    white-space: pre-wrap; 
+    line-height: 1.5;
+    color: var(--text-color);
+}
+
+.poem-structure-example {
+    background-color: #fdfdfd;
+    border: 1px solid var(--learning-border-light);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px auto;
+    text-align: left;
+    max-width: 350px;
+}
+.poem-structure-example .poem-line {
+    font-family: 'Playfair Display', serif; 
+    font-size: 1.2em;
+    line-height: 1.4;
+    padding: 2px 0;
+    margin: 0;
+}
+.poem-structure-example .line-1 { color: #8a2be2; } /* Ungu */
+.poem-structure-example .line-2 { color: #FF4500; } /* Merah Oranye */
+    .poem-structure-example .line-3 { color: #008000; } /* Hijau */
+.poem-structure-example .line-4 { color: #FF4500; } /* Merah Oranye */
+
+.explanation {
+    font-size: 0.9em;
+    color: var(--soft-text);
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Quiz Mini */
+.mini-quiz {
+    background-color: #fefefe;
+    border: 1px solid var(--learning-border-light);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: var(--box-shadow-light);
+    text-align: center;
+}
+.mini-quiz .question {
+    font-family: 'Lora', serif;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+.mini-quiz .options button {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9em;
+}
+.mini-quiz .options button:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+.mini-quiz .options button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+.mini-quiz .feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+
+/* Footer Navigasi Pembelajaran */
+.learning-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding: 20px 5%;
+    background-color: var(--learning-card-bg);
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+    border-top: 1px solid #eee;
+}
+.learning-nav-btn, .learning-editor-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none; 
+}
+.learning-nav-btn:hover:not(:disabled), .learning-editor-btn:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+.learning-nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Responsive Adjustments untuk Halaman Pembelajaran */
+@media (max-width: 768px) {
+    .learning-content {
+        padding: 20px 3%;
+    }
+    .learning-menu {
+        flex-direction: column; /* Menu vertikal di mobile */
+        align-items: center;
+    }
+    .learning-menu-item {
+        width: 100%; /* Penuh lebar di mobile */
+        justify-content: center;
+    }
+    .learning-display h2 {
+        font-size: 2em;
+    }
+    .learning-display .learning-subtitle {
+        font-size: 0.9em;
+    }
+    .learning-display .topic-content-body {
+        font-size: 1em;
+    }
+    .learning-footer-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .learning-nav-btn, .learning-editor-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

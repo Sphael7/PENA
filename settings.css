@@ -1,0 +1,89 @@
+/* settings.css - Gaya Khusus Halaman Pengaturan */
+
+.settings-content {
+    padding: 40px 5%;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 1.1em;
+    line-height: 1.8;
+}
+.settings-container {
+    display: flex;
+    width: 100%;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
+    align-items: flex-start; /* Memastikan panel sejajar dari atas */
+}
+.settings-left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 30px;
+    border-right: 1px solid #eee;
+    align-self: flex-start; /* Memastikan panel kiri sejajar dari atas */
+}
+.settings-left-panel .settings-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.settings-left-panel .settings-option:hover {
+    background-color: #f0f0f0;
+}
+.settings-left-panel .settings-option i {
+    color: var(--primary-color);
+    font-size: 1.5em;
+}
+.settings-right-panel {
+    flex: 2;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-self: flex-start; /* Memastikan panel kanan sejajar dari atas */
+}
+.settings-right-panel h3 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.5em;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+.settings-right-panel p {
+    line-height: 1.6;
+}
+.settings-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+}
+.copyright {
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--soft-text);
+}
+
+/* Responsive Adjustments untuk Halaman Pengaturan */
+@media (max-width: 768px) {
+    .settings-container {
+        flex-direction: column;
+        align-items: center; /* Center items when stacked vertically */
+    }
+    .settings-left-panel {
+        border-right: none;
+        border-bottom: 1px solid #eee;
+        width: 100%; /* Ensure it takes full width when stacked */
+        align-self: auto; /* Allow it to center if parent is centered */
+    }
+    .settings-right-panel {
+        align-self: auto; /* Allow it to center if parent is centered */
+    }
+}

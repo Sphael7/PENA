@@ -1,9 +1,15 @@
-/* style.css - KODE LENGKAP */
+/* style.css - KODE GLOBAL */
+
+/* Global Box-Sizing untuk konsistensi model kotak */
+* {
+    box-sizing: border-box;
+}
 
 /* Reset dan Pengaturan Dasar */
 :root {
     /* Warna yang lebih kalem/pastel */
     --primary-color: rgb(45, 75, 106); /* Biru gelap */
+    --primary-color-rgb-values: 45, 75, 106; /* Nilai RGB terpisah untuk penggunaan rgba() */
     --secondary-color: rgb(131, 163, 143); /* Hijau abu-abu / Mint */
     --accent-color: rgb(217, 152, 134); /* Merah muda / Peach */
     --text-color: #333; /* Warna teks lebih gelap agar jelas */
@@ -14,7 +20,7 @@
     --highlight-color: rgba(255, 255, 0, 0.3); /* Warna highlight */
     --thesaurus-active-bg: rgba(45, 75, 106, 0.05); /* Latar belakang lembut untuk item aktif Thesaurus */
 
-    /* Warna spesifik untuk Pembelajaran (jika berbeda dari global) */
+    /* Variabel warna spesifik yang mungkin digunakan di halaman lain */
     --learning-bg-soft: #f8f8f8;
     --learning-card-bg: #ffffff;
     --learning-border-light: #eee;
@@ -363,14 +369,14 @@ body {
     justify-content: center;
     align-items: center;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    transform: translate(5%, 10%); /* Sesuaikan posisi ikon kuas */
 }
 .create-btn:hover {
     background-color: var(--primary-color); 
-    transform: translateY(-2px) translate(5%, 10%); /* Pertahankan perpindahan relatif */
+    transform: translateY(-2px);
 }
 .create-btn i {
     color: #fff;
+    transform: translate(5%, 10%); /* Sesuaikan posisi ikon kuas */
 }
 /* SIDEBAR */
 .sidebar {
@@ -698,7 +704,7 @@ body {
 }
 
 
-/* --- Modal Styles --- */
+/* --- Modal Styles (General) --- */
 .modal {
     display: none; 
     position: fixed; 
@@ -788,7 +794,7 @@ body {
     background-color: var(--primary-color); 
 }
 
-/* --- Font Selector Modal Styles --- */
+/* --- Font Selector Modal Styles (General, as it's a reusable modal) --- */
 .font-options-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
@@ -831,278 +837,438 @@ body {
     font-size: 0.9em;
 }
 
-/* Kelas-kelas font untuk diterapkan ke body */
+/* Kelas-kelas font untuk diterapkan ke body (Global) */
 body.font-quicksand { font-family: "Quicksand", sans-serif; }
 body.font-lora { font-family: "Lora", serif; }
 body.font-merriweather { font-family: "Merriweather", serif; }
 body.font-playfair { font-family: "Playfair Display", serif; }
 
 
-/* --- Learning Page Specific Styles --- */
-.learning-content {
-    display: flex;
-    flex-direction: column;
-    padding: 20px 5%;
-    max-width: 1200px; 
-    margin: 20px auto;
-    background-color: var(--learning-bg-soft); 
-    border-radius: 15px;
-    box-shadow: var(--box-shadow-medium);
+/* --- Thesaurus Page Specific Styles --- */
+.thesaurus-content {
+    padding: 40px 5%;
+    max-width: 900px;
+    margin: 0 auto;
 }
-
-.learning-menu {
-    display: flex;
-    flex-wrap: wrap; 
-    gap: 10px;
-    margin-bottom: 30px;
-    justify-content: center; 
-}
-
-.learning-menu-item {
-    background-color: var(--learning-card-bg);
-    border: 1px solid var(--learning-border-light);
-    border-radius: 25px; 
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-color);
-    font-weight: 500;
-}
-.learning-menu-item:hover {
-    background-color: rgba(var(--primary-color-rgb), 0.1); /* Hover dengan nuansa primary */
-    color: var(--primary-color);
-    transform: translateY(-2px);
-}
-.learning-menu-item.active {
-    background-color: var(--primary-color);
-    color: white;
-    box-shadow: var(--box-shadow-light);
-}
-.learning-menu-item.active i {
-    color: white; 
-}
-.learning-menu-item i {
-    color: var(--primary-color);
-    font-size: 1.1em;
-    transition: color 0.2s ease;
-}
-
-.learning-display {
-    background-color: var(--learning-card-bg);
-    border-radius: 15px;
-    box-shadow: var(--box-shadow-medium); 
-    padding: 30px;
-    flex-grow: 1; 
-}
-
-.learning-display h2 {
-    font-family: 'Pacifico', cursive;
-    font-size: 2.5em; 
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
-.learning-display .learning-subtitle {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 1.1em;
-    color: var(--soft-text);
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.learning-display .topic-content-body {
-    font-family: 'Lora', serif; 
-    line-height: 1.8;
-    font-size: 1.1em;
-    color: var(--learning-text-main);
-}
-
-.learning-card {
-    background-color: #fefefe;
-    border: 1px solid var(--learning-border-light);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: var(--box-shadow-light);
-}
-.learning-card h3 {
-    font-family: 'Quicksand', sans-serif;
-    font-size: 1.5em;
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-.learning-card p {
-    margin-bottom: 1em;
-}
-.learning-card ul {
-    list-style: none;
-    padding-left: 20px;
-    margin-bottom: 1em;
-}
-.learning-card ul li:before {
-    content: '\2022'; 
-    color: var(--secondary-color);
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
-}
-
-.highlight-box {
-    background-color: var(--learning-highlight-box-bg);
-    border-left: 5px solid var(--learning-highlight-box-border);
-    border-radius: 5px;
-    padding: 15px;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-.highlight-box i {
-    font-size: 1.8em;
-    color: var(--learning-highlight-box-border);
-    flex-shrink: 0;
-}
-.highlight-box p {
-    margin: 0;
-}
-
-.poem-example-box {
-    background-color: #fdfdfd;
-    border: 1px dashed var(--soft-text);
-    border-radius: 8px;
-    padding: 15px;
-    margin: 20px auto;
-    max-width: 300px;
-    text-align: center;
-}
-.poem-example-box h4 {
-    font-family: 'Quicksand', sans-serif;
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1.1em;
-}
-.poem-example-box .poem-text {
-    font-family: 'Lora', serif;
-    font-style: italic;
-    white-space: pre-wrap; 
-    line-height: 1.5;
-    color: var(--text-color);
-}
-
-.poem-structure-example {
-    background-color: #fdfdfd;
-    border: 1px solid var(--learning-border-light);
-    border-radius: 8px;
-    padding: 15px;
-    margin: 20px auto;
-    text-align: left;
-    max-width: 350px;
-}
-.poem-structure-example .poem-line {
-    font-family: 'Playfair Display', serif; 
-    font-size: 1.2em;
-    line-height: 1.4;
-    padding: 2px 0;
-    margin: 0;
-}
-.poem-structure-example .line-1 { color: #8a2be2; } /* Ungu */
-.poem-structure-example .line-2 { color: #FF4500; } /* Merah Oranye */
-.poem-structure-example .line-3 { color: #008000; } /* Hijau */
-.poem-structure-example .line-4 { color: #FF4500; } /* Merah Oranye */
-
-.explanation {
-    font-size: 0.9em;
-    color: var(--soft-text);
-    margin-top: 10px;
-    text-align: center;
-}
-
-/* Quiz Mini */
-.mini-quiz {
-    background-color: #fefefe;
-    border: 1px solid var(--learning-border-light);
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 20px;
-    box-shadow: var(--box-shadow-light);
-    text-align: center;
-}
-.mini-quiz .question {
-    font-family: 'Lora', serif;
-    font-size: 1.1em;
-    margin-bottom: 20px;
-    color: var(--text-color);
-    line-height: 1.6;
-}
-.mini-quiz .options button {
-    background-color: var(--secondary-color);
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 15px;
-    margin: 5px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 0.9em;
-}
-.mini-quiz .options button:hover:not(:disabled) {
-    background-color: var(--primary-color);
-    transform: translateY(-2px);
-}
-.mini-quiz .options button:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-.mini-quiz .feedback {
-    margin-top: 15px;
-    font-weight: bold;
-    font-size: 1em;
-}
-
-
-/* Footer Navigasi Pembelajaran */
-.learning-footer-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 30px;
-    padding: 20px 5%;
-    background-color: var(--learning-card-bg);
-    box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
-    border-top: 1px solid #eee;
-}
-.learning-nav-btn, .learning-editor-btn {
-    background-color: var(--secondary-color);
+/* Add New Word Button */
+.add-new-word-button {
+    display: block;
+    width: fit-content;
+    margin: 20px auto 30px auto; 
+    padding: 12px 25px;
+    background-color: var(--primary-color); 
     color: white;
     border: none;
     border-radius: 25px;
-    padding: 10px 20px;
-    font-size: 1em;
+    font-size: 1.1em;
     cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: var(--box-shadow-medium); 
     align-items: center;
-    gap: 8px;
-    text-decoration: none; 
-}
-.learning-nav-btn:hover:not(:disabled), .learning-editor-btn:hover {
-    background-color: var(--primary-color);
-    transform: translateY(-2px);
-}
-.learning-nav-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    display: flex; 
+    gap: 8px; 
 }
 
-/* Responsive Adjustments */
+.add-new-word-button:hover {
+    background-color: var(--secondary-color); 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+.add-new-word-button i {
+    font-size: 1.2em;
+}
+
+
+.thesaurus-list {
+    margin-top: 30px; 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 15px; 
+}
+
+.thesaurus-item {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-light);
+    padding: 25px; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; 
+    width: calc(50% - 7.5px); 
+    box-sizing: border-box; 
+    flex-grow: 1; 
+    flex-shrink: 1; 
+    min-width: 280px; 
+}
+.thesaurus-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-medium);
+}
+/* Style for custom (user-added) entries */
+.thesaurus-item.custom-entry {
+    background-color: rgba(131, 163, 143, 0.1); /* Latar belakang hijau kustom dari warna buttons */
+    border-color: rgba(131, 163, 143, 0.5); /* Border kustom dari warna buttons */
+    box-shadow: 0 2px 8px rgba(131, 163, 143, 0.3);
+}
+
+.main-word-row {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 10px;
+    position: relative; 
+}
+.main-word-row:hover .main-word {
+    color: var(--primary-color); 
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2); 
+}
+
+
+.word-number {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.main-word {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.2em;
+    /* Gradasi warna utama baru */
+    background: linear-gradient(45deg, rgb(217, 152, 134), rgb(45, 75, 106), rgb(203, 200, 170)); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    word-break: break-word;
+    transition: color 0.3s ease, text-shadow 0.3s ease; 
+}
+
+/* Custom Actions (Edit/Delete buttons for custom entries) */
+.custom-actions {
+    display: flex;
+    gap: 5px;
+    margin-left: auto; 
+    flex-shrink: 0;
+    position: absolute; 
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.thesaurus-item:hover .custom-actions {
+    opacity: 1; 
+}
+
+
+.custom-actions button {
+    background: none;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    color: var(--soft-text);
+    padding: 5px;
+    border-radius: 5px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    min-width: 30px; 
+    min-height: 30px; 
+}
+
+.custom-actions button:hover {
+    background-color: #eee;
+}
+
+.custom-actions .fa-edit:hover {
+    color: #2196F3; /* Blue for edit */
+}
+
+.custom-actions .fa-trash-alt:hover {
+    color: #F44336; /* Red for delete */
+}
+
+
+.word-details {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.detail-group {
+    margin-bottom: 10px;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: var(--secondary-color); /* Menggunakan secondary-color baru */
+    margin-bottom: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0; 
+    border-bottom: 1px solid #eee;
+    transition: color 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease; 
+    min-height: 44px; 
+}
+.detail-label:hover {
+    color: var(--primary-color);
+    background-color: rgba(0,0,0,0.03); 
+    border-radius: 5px;
+}
+.detail-label.active {
+    background-color: rgba(0,0,0,0.05);
+    color: var(--primary-color);
+    border-radius: 5px 5px 0 0; 
+}
+
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+}
+.dropdown-arrow.active {
+    transform: rotate(180deg);
+}
+
+.detail-content {
+    background-color: #f8f8f8; 
+    border-radius: 0 0 8px 8px; 
+    padding: 0 15px; 
+    margin-top: -10px; 
+    overflow: hidden;
+    max-height: 0; 
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease-out, padding 0.5s ease-out, margin-top 0.5s ease-out;
+    position: relative; 
+}
+
+.detail-content.expanded {
+    max-height: 200px; 
+    opacity: 1;
+    padding: 15px; 
+    margin-top: 0; 
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; 
+    padding-bottom: 5px; 
+    line-height: 1.5; 
+}
+.word-tag {
+    background-color: var(--secondary-color); /* Menggunakan secondary-color baru (warna buttons) */
+    color: white; 
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.9em;
+    white-space: nowrap; 
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    position: relative; /* Untuk ikon edit/delete tag */
+}
+.word-tag:hover {
+    background-color: var(--primary-color); /* Warna hover dari primary baru */
+    transform: translateY(-1px);
+}
+/* Penanda visual untuk tag kustom */
+.word-tag.custom-tag {
+    background-color: rgb(131, 163, 143); /* Menggunakan warna buttons baru */
+}
+.word-tag.custom-tag:hover {
+    background-color: rgb(45, 75, 106); /* Menggunakan primary color baru */
+}
+
+/* Aksi Edit/Hapus pada tag individual (hanya muncul di tag kustom) */
+.word-tag .tag-actions {
+    position: absolute;
+    top: -8px; 
+    right: -8px; 
+    display: flex;
+    gap: 2px;
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+.word-tag:hover .tag-actions {
+    opacity: 1;
+}
+.word-tag .tag-actions i {
+    font-size: 0.8em;
+    color: #555;
+    padding: 3px;
+    cursor: pointer;
+    transition: color 0.1s ease;
+}
+.word-tag .tag-actions .fa-edit:hover { color: #2196F3; }
+.word-tag .tag-actions .fa-trash-alt:hover { color: #F44336; }
+
+
+/* --- Inline Add/Edit Input --- */
+.inline-add-container,
+.inline-edit-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: nowrap; 
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.inline-add-input,
+.inline-edit-input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.inline-add-input:focus,
+.inline-edit-input:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 3px rgba(138, 136, 194, 0.4);
+}
+.inline-add-container button,
+.inline-edit-container button {
+    background-color: var(--secondary-color); /* Menggunakan secondary-color baru */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.85em;
+    flex-shrink: 0;
+}
+.inline-add-container button:hover,
+.inline-edit-container button:hover {
+    background-color: var(--primary-color); /* Warna hover dari primary baru */
+}
+.inline-add-container .fa-times,
+.inline-edit-container .fa-times {
+    color: #F44336;
+    background: none;
+    padding: 0;
+}
+.inline-add-container .fa-times:hover,
+.inline-edit-container .fa-times:hover {
+    background: none;
+    color: #D32F2F;
+}
+
+.add-inline-term-btn {
+    background-color: var(--accent-color); /* Menggunakan accent-color baru */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+}
+.add-inline-term-btn:hover {
+    background-color: var(--primary-color); /* Warna hover dari primary baru */
+}
+.add-inline-term-btn i {
+    font-size: 1em;
+}
+
+
+.highlight {
+    background-color: var(--highlight-color);
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.copy-button {
+    background: none;
+    border: none;
+    color: var(--soft-text);
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 5px;
+    margin-left: 10px;
+    opacity: 0; 
+    transition: opacity 0.2s ease, color 0.2s ease;
+    position: absolute; 
+    top: 50%; 
+    right: 5px;
+    transform: translateY(-50%); 
+    z-index: 5; 
+    min-width: 30px; 
+    min-height: 30px;
+}
+.detail-content:hover .copy-button {
+    opacity: 1; 
+}
+.copy-button:hover {
+    color: var(--primary-color);
+}
+.copy-button i {
+    font-size: 1.1em;
+}
+
+.contextual-copy-feedback {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transform: translate(-50%, 10px); 
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    left: 50%; 
+}
+.contextual-copy-feedback.show {
+    opacity: 1;
+    transform: translate(-50%, 0); 
+}
+
+.empty-state {
+    text-align: center;
+    margin-top: 50px;
+    padding: 40px;
+    border-radius: 20px;
+    border: 2px dashed #ddd;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.empty-state p {
+    font-size: 1.5em;
+    color: var(--soft-text);
+    margin-bottom: 20px;
+}
+.empty-state-btn {
+    position: static;
+    transform: none;
+    margin-top: 20px;
+}
+.favorite-icon {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 1.5em;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.favorite-icon.active {
+    color: #ff5252;
+}
+
+
+/* Responsive Adjustments (Global) */
 @media (max-width: 768px) {
     .app-header {
         flex-direction: column;
@@ -1149,13 +1315,6 @@ body.font-playfair { font-family: "Playfair Display", serif; }
     }
     .form-left, .form-right {
         gap: 15px;
-    }
-    .settings-container {
-        flex-direction: column;
-    }
-    .settings-left-panel {
-        border-right: none;
-        border-bottom: 1px solid #eee;
     }
     .poem-content p {
         font-size: 1em;
@@ -1208,35 +1367,5 @@ body.font-playfair { font-family: "Playfair Display", serif; }
     .modal-content {
         margin: 10% auto;
         padding: 20px;
-    }
-
-    /* Learning page responsive adjustments */
-    .learning-content {
-        padding: 20px 3%;
-    }
-    .learning-menu {
-        flex-direction: column; /* Menu vertikal di mobile */
-        align-items: center;
-    }
-    .learning-menu-item {
-        width: 100%; /* Penuh lebar di mobile */
-        justify-content: center;
-    }
-    .learning-display h2 {
-        font-size: 2em;
-    }
-    .learning-display .learning-subtitle {
-        font-size: 0.9em;
-    }
-    .learning-display .topic-content-body {
-        font-size: 1em;
-    }
-    .learning-footer-nav {
-        flex-direction: column;
-        gap: 15px;
-    }
-    .learning-nav-btn, .learning-editor-btn {
-        width: 100%;
-        justify-content: center;
     }
 }
