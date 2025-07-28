@@ -1,0 +1,325 @@
+/* my-poem.css - Gaya khusus untuk halaman "Puisi Saya" */
+
+/* Kontainer Utama Halaman */
+.my-poem-content {
+    padding: 40px 5%;
+    max-width: 1200px; /* Batasi lebar untuk tampilan yang lebih baik */
+    margin: 20px auto;
+    background-color: var(--background-color); /* Warna latar dari root */
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-medium); /* Shadow lembut */
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Jarak antar section */
+}
+
+/* Bagian Analitik Statistik Puisi */
+.analytics-section {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: var(--box-shadow-light);
+    text-align: center;
+}
+
+.analytics-section h2 {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.2em;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.analytics-display {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.analytics-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--background-color);
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 15px 20px;
+    flex: 1 1 calc(33% - 40px); /* 3 item per baris di desktop */
+    min-width: 150px; /* Minimum lebar item */
+    max-width: 250px; /* Maximum lebar item */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease;
+}
+
+.analytics-item:hover {
+    transform: translateY(-3px);
+}
+
+.analytics-item i {
+    font-size: 2em;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.analytics-item span {
+    font-size: 0.95em;
+    color: var(--text-color);
+    text-align: center;
+    line-height: 1.4;
+}
+
+.analytics-item strong {
+    display: block;
+    font-size: 1.3em;
+    color: var(--primary-color);
+    margin-top: 5px;
+}
+
+
+/* Bagian Filter dan Sortir */
+.filter-sort-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 20px 25px;
+    box-shadow: var(--box-shadow-light);
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Agar tombol wrap jika ruang tidak cukup */
+}
+
+.filter-btn {
+    background-color: #f0f0f0;
+    color: var(--text-color);
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 8px 18px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover:not(.active) {
+    background-color: #e0e0e0;
+    color: var(--primary-color);
+}
+
+.filter-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 5px rgba(var(--primary-color-rgb-values), 0.3);
+}
+
+.sort-by {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95em;
+    color: var(--soft-text);
+}
+
+.sort-by-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.9em;
+    color: var(--text-color);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.sort-by-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 5px rgba(var(--secondary-color-rgb-values), 0.3);
+}
+
+/* Daftar Puisi */
+.my-poem-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsif grid */
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.my-poem-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-light);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #eee;
+    position: relative; /* Untuk posisi tombol favorit */
+}
+
+.my-poem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-medium);
+}
+
+.my-poem-card h3 {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.8em;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.my-poem-card .poem-author {
+    font-size: 0.95em;
+    font-style: italic;
+    color: var(--soft-text);
+    margin-bottom: 15px;
+}
+
+.my-poem-card .poem-preview {
+    font-family: 'Lora', serif;
+    font-size: 1em;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1; /* Pastikan preview mengisi ruang */
+    min-height: 3.2em; /* Cukup untuk 2 baris * line-height */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.my-poem-card .poem-meta {
+    font-size: 0.85em;
+    color: var(--soft-text);
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.my-poem-card .poem-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.my-poem-card .action-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 0.85em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.my-poem-card .action-btn:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.my-poem-card .action-btn i {
+    font-size: 1em;
+}
+
+.my-poem-card .favorite-toggle-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 1.4em;
+    padding: 5px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+}
+
+.my-poem-card .favorite-toggle-btn:hover {
+    color: #ff8c00; /* Orange pada hover */
+    transform: scale(1.1);
+}
+
+.my-poem-card .favorite-toggle-btn.active {
+    color: #ff5252; /* Merah cerah saat aktif */
+}
+
+/* Empty State Styling (sudah ada di style.css tapi ini untuk penyesuaian spesifik) */
+#no-poems-message {
+    margin-top: 50px;
+    /* Pastikan flexbox untuk posisi tengah */
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px; /* Beri tinggi agar terlihat */
+}
+
+/* Responsive Adjustments untuk halaman My Poem */
+@media (max-width: 768px) {
+    .my-poem-content {
+        padding: 20px 3%;
+        gap: 20px;
+    }
+
+    .analytics-display {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .analytics-item {
+        flex: 1 1 100%; /* Satu item per baris di mobile */
+        max-width: none;
+    }
+
+    .filter-sort-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .filters {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .sort-by {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .my-poem-list {
+        grid-template-columns: 1fr; /* Satu kolom di mobile */
+        gap: 20px;
+    }
+
+    .my-poem-card {
+        padding: 20px;
+    }
+
+    .my-poem-card .poem-actions {
+        flex-direction: column; /* Tombol aksi vertikal */
+        gap: 8px;
+    }
+
+    .my-poem-card .action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

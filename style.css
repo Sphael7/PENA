@@ -376,7 +376,8 @@ body {
 }
 .create-btn i {
     color: #fff;
-    transform: translate(5%, 10%); /* Sesuaikan posisi ikon kuas */
+    /* Penyesuaian posisi ikon pena: naik ke kiri sedikit */
+    transform: translate(-10%, -10%); 
 }
 /* SIDEBAR */
 .sidebar {
@@ -438,6 +439,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    overflow: auto; 
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 0;
     visibility: hidden;

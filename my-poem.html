@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pena - Kumpulan Puisi</title>
+    <title>Pena - Puisi Saya</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="my-poem.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;700&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="common.js"></script>
 </head>
-<body id="home-page">
+<body id="my-poem-page">
     <div id="page-transition-overlay" class="page-transition-overlay"></div>
 
     <header class="app-header">
@@ -21,22 +22,11 @@
             </a>
         </div>
         <div class="header-center">
-            <h1 id="main-header-title">PENA</h1>
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="search-input" class="search-input" placeholder="Cari puisi...">
-                <div class="custom-select">
-                    <div id="filter-selected" class="select-selected">Judul <i class="fas fa-chevron-down select-arrow"></i></div>
-                    <div id="filter-items" class="select-items">
-                        <div data-value="title">Judul</div>
-                        <div data-value="author">Penulis</div>
-                    </div>
-                </div>
-            </div>
+            <h1>Puisi Saya</h1>
+            <p class="subtitle">Kumpulan karya-karyamu</p>
         </div>
         <div class="header-right">
             <a href="ide-generator.html" class="icon-button" aria-label="Generator Ide"><i class="fas fa-lightbulb"></i></a>
-            <a href="my-poem.html" class="icon-button" aria-label="Puisi Saya"><i class="fas fa-file-alt"></i></a>
             <a href="settings.html" class="icon-button" aria-label="Pengaturan Aplikasi"><i class="fas fa-cog"></i></a>
         </div>
     </header>
@@ -60,23 +50,44 @@
 
     <div class="overlay" id="overlay"></div>
 
-    <main class="content">
-        <div id="poem-grid" class="poem-grid">
+    <main class="my-poem-content">
+        <div class="analytics-section">
+            <h2>Statistik Puisi</h2>
+            <div id="analytics-display" class="analytics-display">
+                <!-- Analytics will be loaded here by JavaScript -->
             </div>
-        <div id="empty-state" class="empty-state" style="display: none;">
-            <p>Wah, belum ada puisi di sini. Yuk, mulai tulis yang pertama!</p>
+        </div>
+
+        <div class="filter-sort-section">
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="favorites">Favorit</button>
+                <!-- Tambahkan filter lain berdasarkan tag, tema, dll. di sini -->
+            </div>
+            <div class="sort-by">
+                <label for="sort-by-select">Urutkan berdasarkan:</label>
+                <select id="sort-by-select">
+                    <option value="date-desc">Tanggal Terbaru</option>
+                    <option value="date-asc">Tanggal Terlama</option>
+                    <option value="title-asc">Judul (A-Z)</option>
+                    <option value="title-desc">Judul (Z-A)</option>
+                    <!-- Tambahkan opsi sortir lain di sini -->
+                </select>
+            </div>
+        </div>
+
+        <div id="my-poem-list" class="my-poem-list">
+            <!-- Daftar puisi pengguna akan dimuat di sini oleh JavaScript -->
+        </div>
+
+        <div id="no-poems-message" class="empty-state" style="display: none;">
+            <p>Anda belum menulis puisi apa pun. Mari mulai berkreasi!</p>
             <a href="write.html" class="create-btn empty-state-btn">
                 <i class="fas fa-pen-nib"></i>
             </a>
         </div>
     </main>
-    
-    <div class="footer-action">
-        <a href="write.html" class="create-btn" id="create-btn">
-            <i class="fas fa-pen-nib"></i>
-        </a>
-    </div>
 
-    <script src="script.js"></script> 
+    <script src="my-poem.js"></script>
 </body>
 </html>

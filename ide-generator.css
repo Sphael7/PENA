@@ -1,0 +1,456 @@
+/* ide-generator.css - Gaya Khusus Halaman Generator Ide (Dual UI) */
+
+.idea-generator-content {
+    padding: 40px 5%;
+    max-width: 1200px; /* Lebar maksimum untuk konten utama */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Konten dimulai dari atas */
+    min-height: calc(100vh - 180px); /* Sesuaikan tinggi agar ada ruang footer/header */
+}
+
+/* Tab Navigation */
+.tab-navigation {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-light);
+    padding: 10px;
+}
+
+.tab-button {
+    background-color: transparent;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--soft-text);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tab-button:hover:not(.active) {
+    background-color: var(--background-color);
+    color: var(--primary-color);
+}
+
+.tab-button.active {
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: var(--box-shadow-medium);
+}
+
+/* Inspiration Zones */
+.inspiration-zone {
+    width: 100%;
+    display: none; /* Default hidden */
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #fefefe;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-medium);
+}
+
+.inspiration-zone.active {
+    display: flex; /* Show active zone */
+}
+
+/* Regenerate Zone Button (Applies to both classic and slot zones) */
+.regenerate-zone-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 30px; /* Jarak dari konten ide */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--box-shadow-medium);
+}
+
+.regenerate-zone-btn:hover:not(:disabled) {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.regenerate-zone-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+/* --- ZONA 1: Kartu Inspirasi Klasik (Classic Inspiration Zone) --- */
+.classic-idea-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    width: 100%;
+    margin-top: 0; /* Margin sudah ada di regenerate-zone-btn */
+}
+
+.idea-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-light);
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #eee;
+    opacity: 0; /* Start hidden for fade-in effect */
+    animation: fadeInSlideUp 0.6s ease-out forwards; /* Animasi muncul */
+}
+
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.idea-card .card-type-classic {
+    font-size: 0.9em;
+    color: var(--soft-text);
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.idea-card .card-content-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.idea-card .idea-text-classic {
+    font-family: 'Lora', serif;
+    font-size: 1.5em;
+    color: var(--primary-color);
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 700;
+}
+
+.idea-card .idea-quote-classic {
+    font-family: 'Merriweather', serif;
+    font-size: 1.2em;
+    font-style: italic;
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+}
+.idea-card .quote-source {
+    font-size: 0.9em;
+    color: var(--soft-text);
+    margin-top: 5px;
+    display: block;
+}
+
+.idea-card .idea-image-wrapper-classic {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 0; /* Adjust margin as it's inside content area */
+    position: relative;
+}
+
+.idea-card .idea-image-classic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.idea-card:hover .idea-image-classic {
+    transform: scale(1.1);
+}
+
+.idea-card .image-quote-overlay-classic {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px;
+    font-size: 0.9em;
+    text-align: center;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.idea-card:hover .image-quote-overlay-classic {
+    transform: translateY(0);
+}
+
+.classic-card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto; /* Push actions to the bottom */
+    width: 100%;
+    justify-content: center;
+}
+
+.classic-action-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.classic-action-btn:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.favorite-btn-classic.active {
+    background-color: #ff5252;
+}
+.favorite-btn-classic.active:hover {
+    background-color: #e04b4b;
+}
+
+
+/* --- ZONA 2: Slot Kata Dinamis (Slot Machine Zone) --- */
+.slot-machine-zone {
+    /* Sudah punya active/inactive dari .inspiration-zone */
+    background-color: #fefefe;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 30px;
+    width: 100%;
+    max-width: 600px; /* Maksimum lebar mesin slot */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    position: relative;
+    overflow: hidden; /* Penting untuk animasi */
+}
+
+.slot-machine-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.slot-column {
+    flex: 1;
+    background-color: #e8e8e8;
+    border-radius: 10px;
+    height: 120px; /* Tinggi kolom */
+    overflow: hidden;
+    position: relative;
+    border: 2px solid var(--secondary-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Pusatkan item di tengah */
+    align-items: center;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--primary-color);
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+}
+
+.slot-item {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.1s linear; /* Untuk animasi spinning */
+    text-align: center;
+    padding: 5px;
+}
+
+.slot-item.final-result {
+    font-size: 1.8em; /* Ukuran lebih besar untuk hasil akhir */
+    color: var(--accent-color);
+    animation: fadeInScale 0.5s ease-out forwards;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+.slot-column.spinning .slot-item {
+    animation: slotSpin 0.2s linear infinite;
+    will-change: transform; /* Optimalisasi performa */
+}
+
+@keyframes slotSpin {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-100%); } /* Gulir ke atas */
+}
+
+/* Tombol untuk Slot Kata */
+.slot-actions {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.idea-action-btn.favorite-btn { /* Re-used from previous, applies to slot save button */
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.idea-action-btn.favorite-btn:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.idea-action-btn.favorite-btn.active {
+    background-color: #ff5252; /* Warna merah untuk favorit aktif */
+}
+.idea-action-btn.favorite-btn.active:hover:not(:disabled) {
+    background-color: #e04b4b; /* Warna merah sedikit lebih gelap saat hover */
+}
+.idea-action-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.use-for-challenge-btn-slot {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.use-for-challenge-btn-slot:hover:not(:disabled) {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+.use-for-challenge-btn-slot:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .idea-generator-content {
+        padding: 20px 3%;
+        min-height: calc(100vh - 150px);
+    }
+    .tab-navigation {
+        flex-direction: column;
+        padding: 5px;
+    }
+    .tab-button {
+        padding: 10px 15px;
+        font-size: 1em;
+    }
+    .inspiration-zone {
+        padding: 15px;
+    }
+    .regenerate-zone-btn {
+        padding: 10px 20px;
+        font-size: 1em;
+        margin-bottom: 20px;
+    }
+    /* Classic Cards */
+    .classic-idea-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .idea-card {
+        min-height: 200px;
+        padding: 20px;
+    }
+    .idea-card .idea-text-classic {
+        font-size: 1.3em;
+    }
+    .idea-card .idea-quote-classic {
+        font-size: 1em;
+    }
+    .idea-card .idea-image-wrapper-classic {
+        height: 150px;
+    }
+
+    /* Slot Machine */
+    .slot-machine-container {
+        gap: 10px;
+    }
+    .slot-column {
+        font-size: 1.2em;
+        height: 100px;
+    }
+    .slot-item.final-result {
+        font-size: 1.5em;
+    }
+    .idea-action-btn.favorite-btn, .use-for-challenge-btn-slot {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+    .slot-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .slot-actions button {
+        width: 100%;
+    }
+}

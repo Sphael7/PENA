@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pena - Kumpulan Puisi</title>
+    <title>Pena - Generator Ide</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="ide-generator.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;700&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="common.js"></script>
 </head>
-<body id="home-page">
+<body id="ide-generator-page">
     <div id="page-transition-overlay" class="page-transition-overlay"></div>
 
     <header class="app-header">
@@ -21,21 +22,10 @@
             </a>
         </div>
         <div class="header-center">
-            <h1 id="main-header-title">PENA</h1>
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="search-input" class="search-input" placeholder="Cari puisi...">
-                <div class="custom-select">
-                    <div id="filter-selected" class="select-selected">Judul <i class="fas fa-chevron-down select-arrow"></i></div>
-                    <div id="filter-items" class="select-items">
-                        <div data-value="title">Judul</div>
-                        <div data-value="author">Penulis</div>
-                    </div>
-                </div>
-            </div>
+            <h1>Penghasil Ide</h1>
+            <p class="subtitle">Temukan ide puisi di sini!</p>
         </div>
         <div class="header-right">
-            <a href="ide-generator.html" class="icon-button" aria-label="Generator Ide"><i class="fas fa-lightbulb"></i></a>
             <a href="my-poem.html" class="icon-button" aria-label="Puisi Saya"><i class="fas fa-file-alt"></i></a>
             <a href="settings.html" class="icon-button" aria-label="Pengaturan Aplikasi"><i class="fas fa-cog"></i></a>
         </div>
@@ -60,23 +50,29 @@
 
     <div class="overlay" id="overlay"></div>
 
-    <main class="content">
-        <div id="poem-grid" class="poem-grid">
+    <main class="idea-generator-content">
+        <div class="tab-navigation">
+            <button class="tab-button active" id="tab-classic">💭 Kartu Inspirasi</button>
+            <button class="tab-button" id="tab-slot">🎰 Slot Kata</button>
+        </div>
+
+        <div id="classic-inspiration-zone" class="inspiration-zone active">
+            <button id="regenerate-classic-btn" class="regenerate-zone-btn">
+                <i class="fas fa-sync-alt"></i> Tampilkan Inspirasi Baru
+            </button>
+            <div id="classic-idea-grid" class="classic-idea-grid">
+                <!-- Kartu-kartu ide klasik akan dimuat di sini oleh JavaScript -->
             </div>
-        <div id="empty-state" class="empty-state" style="display: none;">
-            <p>Wah, belum ada puisi di sini. Yuk, mulai tulis yang pertama!</p>
-            <a href="write.html" class="create-btn empty-state-btn">
-                <i class="fas fa-pen-nib"></i>
-            </a>
+        </div>
+
+        <div id="slot-machine-zone" class="inspiration-zone">
+            <button id="regenerate-slot-btn" class="regenerate-zone-btn">
+                <i class="fas fa-sync-alt"></i> Putar Inspirasi
+            </button>
+            <!-- UI Slot Kata akan dimuat di sini oleh JavaScript -->
         </div>
     </main>
-    
-    <div class="footer-action">
-        <a href="write.html" class="create-btn" id="create-btn">
-            <i class="fas fa-pen-nib"></i>
-        </a>
-    </div>
 
-    <script src="script.js"></script> 
+    <script src="ide-generator.js"></script>
 </body>
 </html>

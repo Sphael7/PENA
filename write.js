@@ -12,6 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const draftMessage = document.getElementById('draft-message');
     const autosaveMessage = document.getElementById('autosave-message');
 
+    // Elements for idea suggestion
+    const ideaSuggestionContainer = document.getElementById('idea-suggestion-container');
+    const ideaSuggestionText = document.getElementById('idea-suggestion-text');
+    const clearSuggestionBtn = document.getElementById('clear-suggestion-btn');
+
+
     let selectedColor = 'white'; 
     let autosaveTimeout;
     let isFormDirty = false; 
@@ -125,6 +131,32 @@ document.addEventListener('DOMContentLoaded', () => {
         poemContentTextarea.classList.add(savedFontClass); 
     }
 
+    // New function to load idea suggestion from URL
+    function loadIdeaSuggestionFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const idea = urlParams.get('idea');
+
+        if (idea) {
+            ideaSuggestionText.textContent = idea;
+            ideaSuggestionContainer.style.display = 'block';
+            
+            // Optionally, you could pre-fill the textarea with the idea
+            // poemContentTextarea.value = idea; 
+            // updateWordCount();
+            // checkFormValidity();
+        }
+    }
+
+    // Event listener for clear suggestion button
+    if (clearSuggestionBtn) {
+        clearSuggestionBtn.addEventListener('click', () => {
+            ideaSuggestionContainer.style.display = 'none';
+            ideaSuggestionText.textContent = '';
+            // Also clear the URL parameter from the browser history
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
+    }
+
 
     poemTitleInput.addEventListener('input', markFormDirty);
     poemAuthorInput.addEventListener('input', markFormDirty);
@@ -194,6 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateWordCount();
     checkFormValidity();
     applySavedFontToTextarea(); 
+    loadIdeaSuggestionFromURL(); // Call the new function here
 
     setInterval(saveDraft, 3000);
 });
