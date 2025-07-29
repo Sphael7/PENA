@@ -7,31 +7,50 @@
 
 /* Reset dan Pengaturan Dasar */
 :root {
-    /* Warna yang lebih kalem/pastel */
-    --primary-color: rgb(45, 75, 106); /* Biru gelap */
-    --primary-color-rgb-values: 45, 75, 106; /* Nilai RGB terpisah untuk penggunaan rgba() */
-    --secondary-color: rgb(131, 163, 143); /* Hijau abu-abu / Mint */
-    --accent-color: rgb(217, 152, 134); /* Merah muda / Peach */
+    /* Warna Inti Aplikasi (gelap untuk teks/aksen, tidak berubah drastis) */
+    --primary-color: rgb(45, 75, 106); /* Biru gelap - tetap sebagai warna aksen utama */
+    --primary-color-rgb-values: 45, 75, 106; /* Nilai RGB terpisah */
+    
+    /* Warna untuk Tombol dan Aksen Sekunder (diperbarui) */
+    --button-color: rgb(224, 152, 104); /* Warna tombol baru (Orange Peach) */
+    --secondary-color: var(--button-color); /* Sekunder mengikuti warna tombol */
+    --accent-color: var(--button-color); /* Aksen mengikuti warna tombol */
+    --secondary-color-rgb-values: 224, 152, 104; /* Nilai RGB terpisah untuk penggunaan rgba() */
+
+    /* Warna Latar Belakang Utama (diperbarui) */
+    --background-light: rgb(249, 245, 234); /* Warna latar belakang utama baru */
+    --background-color: var(--background-light); /* Alias untuk penggunaan umum */
+
+    /* Warna Teks Umum */
     --text-color: #333; /* Warna teks lebih gelap agar jelas */
     --soft-text: #666; /* Warna teks lembut */
-    --background-color: #f7f7f7; /* Background dasar */
+    
+    /* Warna Shadow */
     --box-shadow-light: 0 4px 15px rgba(0, 0, 0, 0.05);
     --box-shadow-medium: 0 6px 20px rgba(0, 0, 0, 0.1);
-    --highlight-color: rgba(255, 255, 0, 0.3); /* Warna highlight */
-    --thesaurus-active-bg: rgba(45, 75, 106, 0.05); /* Latar belakang lembut untuk item aktif Thesaurus */
+    
+    /* Highlight dan Spesifik */
+    --highlight-color: rgba(255, 255, 0, 0.3); /* Warna highlight default */
+    --thesaurus-active-bg: rgba(var(--primary-color-rgb-values), 0.05); /* Latar belakang lembut untuk item aktif Thesaurus */
 
-    /* Variabel warna spesifik yang mungkin digunakan di halaman lain */
-    --learning-bg-soft: #f8f8f8;
+    /* Warna Tema Kartu Puisi Baru */
+    --theme-card-blue: rgb(212, 228, 242); /* Biru muda untuk tema biru */
+    --theme-card-orange: rgb(248, 221, 184); /* Oranye untuk tema kuning */
+    --theme-card-orange-rgb-values: 248, 221, 184; /* Nilai RGB terpisah */
+    --theme-card-pink: rgb(242, 209, 216); /* Pink untuk tema merah */
+
+    /* Variabel warna spesifik untuk Pembelajaran (disesuaikan dengan skema baru) */
+    --learning-bg-soft: var(--background-light); /* Sesuaikan dengan background utama */
     --learning-card-bg: #ffffff;
     --learning-border-light: #eee;
     --learning-text-main: #333;
-    --learning-highlight-box-bg: rgba(203, 200, 170, 0.2); /* Kuning pastel untuk highlight box */
-    --learning-highlight-box-border: rgb(203, 200, 170); /* Kuning pastel untuk border */
+    --learning-highlight-box-bg: rgba(var(--theme-card-orange-rgb-values), 0.2); /* Menggunakan orange baru untuk highlight */
+    --learning-highlight-box-border: var(--theme-card-orange); /* Menggunakan orange baru untuk border */
 }
 
 body {
     font-family: 'Quicksand', sans-serif;
-    background: linear-gradient(to bottom, #f8f8f8, #e8e8e8); 
+    background: linear-gradient(to bottom, var(--background-color), #e8e8e8); 
     color: var(--text-color);
     margin: 0;
     padding: 0;
@@ -108,27 +127,33 @@ body {
 .header-center #main-header-title {
     font-family: 'Pacifico', cursive; 
     font-size: 4em; 
-    background: linear-gradient(45deg, var(--accent-color), var(--primary-color), rgb(203, 200, 170)); 
-    -webkit-background-clip: text;
+    /* Menggunakan aksen baru untuk gradasi */
+    background: linear-gradient(45deg, var(--accent-color), var(--primary-color), var(--theme-card-orange)); 
+    -webkit-background-clip: text; /* Fixed: Add vendor prefix */
+    background-clip: text; /* Fixed: Standard property */
     -webkit-text-fill-color: transparent;
-    margin: 0 0 15px 0; 
+    margin: 0 0 15px 0; /* Fixed: Added semicolon */
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15); 
 }
 .header-center h1 { /* Judul Puisi di full-preview.html dan Judul umum di header */
     font-family: 'Pacifico', cursive;
     font-size: 3.5em;
-    background: linear-gradient(45deg, var(--accent-color), var(--primary-color), rgb(203, 200, 170)); 
-    -webkit-background-clip: text;
+    /* Menggunakan aksen baru untuk gradasi */
+    background: linear-gradient(45deg, var(--accent-color), var(--primary-color), var(--theme-card-orange)); 
+    -webkit-background-clip: text; /* Fixed: Add vendor prefix */
+    background-clip: text; /* Fixed: Standard property */
     -webkit-text-fill-color: transparent;
     margin: 0;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 .header-center #thesaurus-title,
-.header-center .learning-page-title { /* Target juga judul Pembelajaran */
+.header-center .learning-page-title,
+.header-center .ide-generator-title { /* Target juga judul Pembelajaran dan Penghasil Ide */
     font-family: 'Pacifico', cursive;
     font-size: 3.5em;
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); 
-    -webkit-background-clip: text;
+    -webkit-background-clip: text; /* Fixed: Add vendor prefix */
+    background-clip: text; /* Fixed: Standard property */
     -webkit-text-fill-color: transparent;
     margin: 0; 
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
@@ -328,9 +353,9 @@ body {
 }
 
 /* Styling tema untuk poem-card dengan gradasi yang lebih natural (warna baru) */
-.poem-card.yellow { background: linear-gradient(to bottom, rgb(203, 200, 170), #FFFFFF); } 
-.poem-card.blue { background: linear-gradient(to bottom, rgb(45, 75, 106), #FFFFFF); } 
-.poem-card.red { background: linear-gradient(to bottom, rgb(217, 152, 134), #FFFFFF); } 
+.poem-card.yellow { background: linear-gradient(to bottom, var(--theme-card-orange), #FFFFFF); } 
+.poem-card.blue { background: linear-gradient(to bottom, var(--theme-card-blue), #FFFFFF); } 
+.poem-card.red { background: linear-gradient(to bottom, var(--theme-card-pink), #FFFFFF); } 
 .poem-card.white { background: #f9f9f9; } 
 
 /* Warna teks untuk poem-card (semua tema pakai warna gelap agar terbaca jelas pada gradasi terang) */
@@ -376,8 +401,7 @@ body {
 }
 .create-btn i {
     color: #fff;
-    /* Penyesuaian posisi ikon pena: naik ke kiri sedikit */
-    transform: translate(-10%, -10%); 
+    transform: translate(-5px, -5px); 
 }
 /* SIDEBAR */
 .sidebar {
@@ -456,7 +480,7 @@ body {
     margin: 0 auto;
     font-size: 1.1em;
     line-height: 1.8;
-    background: linear-gradient(to bottom, #f8f8f8, #e8e8e8); 
+    background: linear-gradient(to bottom, var(--background-color), #e8e8e8); 
     transition: background 0.5s ease; 
     border-radius: 20px; 
     box-shadow: var(--box-shadow-light); 
@@ -488,9 +512,10 @@ body {
 .app-header h1#poem-title-full {
     font-family: 'Pacifico', cursive;
     font-size: 3.5em;
-    /* Gradasi warna dengan warna baru */
-    background: linear-gradient(45deg, rgb(217, 152, 134), rgb(45, 75, 106), rgb(203, 200, 170)); 
-    -webkit-background-clip: text;
+    /* Menggunakan aksen baru untuk gradasi */
+    background: linear-gradient(45deg, var(--accent-color), var(--primary-color), var(--theme-card-orange)); 
+    -webkit-background-clip: text; /* Fixed: Add vendor prefix */
+    background-clip: text; /* Fixed: Standard property */
     -webkit-text-fill-color: transparent;
     margin: 0;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
@@ -545,7 +570,7 @@ body {
 .form-group input:focus {
     outline: none;
     border-color: var(--secondary-color);
-    box-shadow: 0 0 5px rgba(138, 136, 194, 0.5);
+    box-shadow: 0 0 5px rgba(var(--secondary-color-rgb-values), 0.5); /* Menggunakan secondary color rgb */
 }
 .form-group textarea {
     height: 300px;
@@ -628,13 +653,13 @@ body {
 }
 /* Warna lingkaran tetap sama untuk representasi pilihan (warna baru) */
 .color-circle[data-color="yellow"] {
-    background-color: rgb(203, 200, 170); 
+    background-color: var(--theme-card-orange); 
 }
 .color-circle[data-color="blue"] {
-    background-color: rgb(45, 75, 106); 
+    background-color: var(--theme-card-blue); 
 }
 .color-circle[data-color="red"] {
-    background-color: rgb(217, 152, 134); 
+    background-color: var(--theme-card-pink); 
 }
 .color-circle[data-color="white"] { 
     background-color: #f0f0f0;
@@ -642,13 +667,13 @@ body {
 }
 /* Styling untuk textarea dengan tema (hanya untuk halaman write) dengan gradasi baru */
 #poem-content.yellow {
-    background: linear-gradient(to bottom, rgba(203, 200, 170, 0.3), #FFFFFF); 
+    background: linear-gradient(to bottom, rgba(var(--theme-card-orange-rgb-values), 0.3), #FFFFFF); /* Fixed: Use rgb variable */
 }
 #poem-content.blue {
-    background: linear-gradient(to bottom, rgba(45, 75, 106, 0.3), #FFFFFF); 
+    background: linear-gradient(to bottom, rgba(212, 228, 242, 0.3), #FFFFFF); 
 }
 #poem-content.red {
-    background: linear-gradient(to bottom, rgba(217, 152, 134, 0.3), #FFFFFF); 
+    background: linear-gradient(to bottom, rgba(242, 209, 216, 0.3), #FFFFFF); 
 }
 #poem-content.white {
     background-color: #ffffff; 
@@ -704,147 +729,89 @@ body {
     transform: none;
     margin-top: 20px;
 }
-
-
-/* --- Modal Styles (General) --- */
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 2000; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgba(0,0,0,0.4); 
-    padding-top: 60px;
-}
-
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto; 
-    padding: 30px;
-    border: 1px solid #888;
-    width: 90%; 
-    max-width: 500px;
-    border-radius: 10px;
-    position: relative;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+.favorite-icon {
     position: absolute;
-    top: 10px;
-    right: 15px;
+    bottom: 20px;
+    right: 20px;
+    font-size: 1.5em;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.3s ease;
 }
 
-.close-button:hover,
-.close-button:focus {
-    color: #333;
-    text-decoration: none;
+.favorite-icon.active {
+    color: #ff5252;
 }
-
-.modal-content h2 {
-    color: var(--primary-color);
-    margin-top: 0;
-    margin-bottom: 20px;
-    text-align: center;
+.settings-content {
+    padding: 40px 5%;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 1.1em;
+    line-height: 1.8;
 }
-
-.modal-content form label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-    color: var(--text-color);
-}
-
-.modal-content form input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1em;
-}
-
-.modal-content form input[type="text"]:focus {
-    border-color: var(--secondary-color);
-    outline: none;
-    box-shadow: 0 0 5px rgba(138, 136, 194, 0.5);
-}
-
-.modal-content form button[type="submit"] {
-    display: block;
+.settings-container {
+    display: flex;
     width: 100%;
-    padding: 12px 20px;
-    background-color: var(--secondary-color); 
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 20px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
+    align-items: flex-start; /* Memastikan panel sejajar di atas */
 }
-
-.modal-content form button[type="submit"]:hover {
-    background-color: var(--primary-color); 
+.settings-left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 30px;
+    border-right: 1px solid #eee;
+    align-self: flex-start; /* Memastikan panel sejajar di atas */
 }
-
-/* --- Font Selector Modal Styles (General, as it's a reusable modal) --- */
-.font-options-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
-    gap: 20px;
-    padding: 20px 0;
-}
-
-.font-card {
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.font-card:hover {
-    background-color: #e0e0e0;
-    transform: translateY(-2px);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-.font-card.active {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px var(--primary-color); 
-}
-
-.font-preview-text {
-    font-size: 1.1em;
-    margin-bottom: 10px;
-    color: var(--text-color);
-    line-height: 1.3;
-    min-height: 40px; 
+.settings-left-panel .settings-option {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 15px;
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
-.font-name {
-    font-weight: bold;
+.settings-left-panel .settings-option:hover {
+    background-color: #f0f0f0;
+}
+.settings-left-panel .settings-option i {
     color: var(--primary-color);
-    font-size: 0.9em;
+    font-size: 1.5em;
 }
-
-/* Kelas-kelas font untuk diterapkan ke body (Global) */
-body.font-quicksand { font-family: "Quicksand", sans-serif; }
-body.font-lora { font-family: "Lora", serif; }
-body.font-merriweather { font-family: "Merriweather", serif; }
-body.font-playfair { font-family: "Playfair Display", serif; }
-
+.settings-right-panel {
+    flex: 2;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-self: flex-start; /* Memastikan panel sejajar di atas */
+}
+.settings-right-panel h3 {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.5em;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+.settings-right-panel p {
+    line-height: 1.6;
+}
+.settings-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+}
+.copyright {
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--soft-text);
+}
 
 /* --- Thesaurus Page Specific Styles --- */
 .thesaurus-content {
@@ -906,9 +873,9 @@ body.font-playfair { font-family: "Playfair Display", serif; }
 }
 /* Style for custom (user-added) entries */
 .thesaurus-item.custom-entry {
-    background-color: rgba(131, 163, 143, 0.1); /* Latar belakang hijau kustom dari warna buttons */
-    border-color: rgba(131, 163, 143, 0.5); /* Border kustom dari warna buttons */
-    box-shadow: 0 2px 8px rgba(131, 163, 143, 0.3);
+    background-color: rgba(var(--secondary-color-rgb-values), 0.1); /* Latar belakang kustom dari warna buttons */
+    border-color: rgba(var(--secondary-color-rgb-values), 0.5); /* Border kustom dari warna buttons */
+    box-shadow: 0 2px 8px rgba(var(--secondary-color-rgb-values), 0.3);
 }
 
 .main-word-row {
@@ -935,8 +902,9 @@ body.font-playfair { font-family: "Playfair Display", serif; }
     font-family: 'Pacifico', cursive;
     font-size: 2.2em;
     /* Gradasi warna utama baru */
-    background: linear-gradient(45deg, rgb(217, 152, 134), rgb(45, 75, 106), rgb(203, 200, 170)); 
-    -webkit-background-clip: text;
+    background: linear-gradient(45deg, var(--accent-color), var(--primary-color), var(--theme-card-orange)); 
+    -webkit-background-clip: text; /* Fixed: Add vendor prefix */
+    background-clip: text; /* Fixed: Standard property */
     -webkit-text-fill-color: transparent;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     word-break: break-word;
@@ -1070,10 +1038,10 @@ body.font-playfair { font-family: "Playfair Display", serif; }
 }
 /* Penanda visual untuk tag kustom */
 .word-tag.custom-tag {
-    background-color: rgb(131, 163, 143); /* Menggunakan warna buttons baru */
+    background-color: var(--secondary-color); /* Menggunakan warna buttons baru */
 }
 .word-tag.custom-tag:hover {
-    background-color: rgb(45, 75, 106); /* Menggunakan primary color baru */
+    background-color: var(--primary-color); /* Menggunakan primary color baru */
 }
 
 /* Aksi Edit/Hapus pada tag individual (hanya muncul di tag kustom) */
@@ -1128,7 +1096,7 @@ body.font-playfair { font-family: "Playfair Display", serif; }
 .inline-add-input:focus,
 .inline-edit-input:focus {
     border-color: var(--secondary-color);
-    box-shadow: 0 0 3px rgba(138, 136, 194, 0.4);
+    box-shadow: 0 0 3px rgba(var(--secondary-color-rgb-values), 0.4);
 }
 .inline-add-container button,
 .inline-edit-container button {
@@ -1268,9 +1236,504 @@ body.font-playfair { font-family: "Playfair Display", serif; }
 .favorite-icon.active {
     color: #ff5252;
 }
+.settings-content {
+    padding: 40px 5%;
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 1.1em;
+    line-height: 1.8;
+}
+.settings-container {
+    display: flex;
+    width: 100%;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    min-height: 600px;
+    align-items: flex-start; /* Memastikan panel sejajar di atas */
+}
+.settings-left-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 30px;
+    border-right: 1px solid #eee;
+    align-self: flex-start; /* Memastikan panel sejajar di atas */
+}
+.settings-left-panel .settings-option {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.settings-left-panel .settings-option:hover {
+    background-color: #f0f0f0;
+}
+.settings-left-panel .settings-option i {
+    color: var(--primary-color);
+    font-size: 1.5em;
+}
+.settings-right-panel {
+    flex: 2;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-self: flex-start; /* Memastikan panel sejajar di atas */
+}
+.settings-right-panel h3 {
+    font-family: 'Quicksand', cursive; /* Fixed: Added font-family */
+    font-size: 1.5em;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+.settings-right-panel p {
+    line-height: 1.6;
+}
+.settings-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+}
+.copyright {
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.9em;
+    color: var(--soft-text);
+}
+
+/* --- Thesaurus Page Specific Styles --- */
+.thesaurus-content {
+    padding: 40px 5%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+/* Add New Word Button */
+.add-new-word-button {
+    display: block;
+    width: fit-content;
+    margin: 20px auto 30px auto; 
+    padding: 12px 25px;
+    background-color: var(--primary-color); 
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: var(--box-shadow-medium); 
+    align-items: center;
+    display: flex; 
+    gap: 8px; 
+}
+
+.add-new-word-button:hover {
+    background-color: var(--secondary-color); 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+.add-new-word-button i {
+    font-size: 1.2em;
+}
 
 
-/* Responsive Adjustments (Global) */
+.thesaurus-list {
+    margin-top: 30px; 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 15px; 
+}
+
+.thesaurus-item {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-light);
+    padding: 25px; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; 
+    width: calc(50% - 7.5px); 
+    box-sizing: border-box; 
+    flex-grow: 1; 
+    flex-shrink: 1; 
+    min-width: 280px; 
+}
+.thesaurus-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-medium);
+}
+/* Style for custom (user-added) entries */
+.thesaurus-item.custom-entry {
+    background-color: rgba(var(--secondary-color-rgb-values), 0.1); /* Latar belakang kustom dari warna buttons */
+    border-color: rgba(var(--secondary-color-rgb-values), 0.5); /* Border kustom dari warna buttons */
+    box-shadow: 0 2px 8px rgba(var(--secondary-color-rgb-values), 0.3);
+}
+
+.main-word-row {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 10px;
+    position: relative; 
+}
+.main-word-row:hover .main-word {
+    color: var(--primary-color); 
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2); 
+}
+
+
+.word-number {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.main-word {
+    font-family: 'Pacifico', cursive;
+    font-size: 2.2em;
+    /* Gradasi warna utama baru */
+    background: linear-gradient(45deg, var(--accent-color), var(--primary-color), var(--theme-card-orange)); 
+    -webkit-background-clip: text; /* Fixed: Add vendor prefix */
+    background-clip: text; /* Fixed: Standard property */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    word-break: break-word;
+    transition: color 0.3s ease, text-shadow 0.3s ease; 
+}
+
+/* Custom Actions (Edit/Delete buttons for custom entries) */
+.custom-actions {
+    display: flex;
+    gap: 5px;
+    margin-left: auto; 
+    flex-shrink: 0;
+    position: absolute; 
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.thesaurus-item:hover .custom-actions {
+    opacity: 1; 
+}
+
+
+.custom-actions button {
+    background: none;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    color: var(--soft-text);
+    padding: 5px;
+    border-radius: 5px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    min-width: 30px; 
+    min-height: 30px; 
+}
+
+.custom-actions button:hover {
+    background-color: #eee;
+}
+
+.custom-actions .fa-edit:hover {
+    color: #2196F3; /* Blue for edit */
+}
+
+.custom-actions .fa-trash-alt:hover {
+    color: #F44336; /* Red for delete */
+}
+
+
+.word-details {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.detail-group {
+    margin-bottom: 10px;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: var(--secondary-color); /* Menggunakan secondary-color baru */
+    margin-bottom: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0; 
+    border-bottom: 1px solid #eee;
+    transition: color 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease; 
+    min-height: 44px; 
+}
+.detail-label:hover {
+    color: var(--primary-color);
+    background-color: rgba(0,0,0,0.03); 
+    border-radius: 5px;
+}
+.detail-label.active {
+    background-color: rgba(0,0,0,0.05);
+    color: var(--primary-color);
+    border-radius: 5px 5px 0 0; 
+}
+
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+}
+.dropdown-arrow.active {
+    transform: rotate(180deg);
+}
+
+.detail-content {
+    background-color: #f8f8f8; 
+    border-radius: 0 0 8px 8px; 
+    padding: 0 15px; 
+    margin-top: -10px; 
+    overflow: hidden;
+    max-height: 0; 
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease-out, padding 0.5s ease-out, margin-top 0.5s ease-out;
+    position: relative; 
+}
+
+.detail-content.expanded {
+    max-height: 200px; 
+    opacity: 1;
+    padding: 15px; 
+    margin-top: 0; 
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; 
+    padding-bottom: 5px; 
+    line-height: 1.5; 
+}
+.word-tag {
+    background-color: var(--secondary-color); /* Menggunakan secondary-color baru (warna buttons) */
+    color: white; 
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.9em;
+    white-space: nowrap; 
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    position: relative; /* Untuk ikon edit/delete tag */
+}
+.word-tag:hover {
+    background-color: var(--primary-color); /* Warna hover dari primary baru */
+    transform: translateY(-1px);
+}
+/* Penanda visual untuk tag kustom */
+.word-tag.custom-tag {
+    background-color: var(--secondary-color); /* Menggunakan warna buttons baru */
+}
+.word-tag.custom-tag:hover {
+    background-color: var(--primary-color); /* Menggunakan primary color baru */
+}
+
+/* Aksi Edit/Hapus pada tag individual (hanya muncul di tag kustom) */
+.word-tag .tag-actions {
+    position: absolute;
+    top: -8px; 
+    right: -8px; 
+    display: flex;
+    gap: 2px;
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+.word-tag:hover .tag-actions {
+    opacity: 1;
+}
+.word-tag .tag-actions i {
+    font-size: 0.8em;
+    color: #555;
+    padding: 3px;
+    cursor: pointer;
+    transition: color 0.1s ease;
+}
+.word-tag .tag-actions .fa-edit:hover { color: #2196F3; }
+.word-tag .tag-actions .fa-trash-alt:hover { color: #F44336; }
+
+
+/* --- Inline Add/Edit Input --- */
+.inline-add-container,
+.inline-edit-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: nowrap; 
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.inline-add-input,
+.inline-edit-input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.inline-add-input:focus,
+.inline-edit-input:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 3px rgba(var(--secondary-color-rgb-values), 0.4);
+}
+.inline-add-container button,
+.inline-edit-container button {
+    background-color: var(--secondary-color); /* Menggunakan secondary-color baru */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.85em;
+    flex-shrink: 0;
+}
+.inline-add-container button:hover,
+.inline-edit-container button:hover {
+    background-color: var(--primary-color); /* Warna hover dari primary baru */
+}
+.inline-add-container .fa-times,
+.inline-edit-container .fa-times {
+    color: #F44336;
+    background: none;
+    padding: 0;
+}
+.inline-add-container .fa-times:hover,
+.inline-edit-container .fa-times:hover {
+    background: none;
+    color: #D32F2F;
+}
+
+.add-inline-term-btn {
+    background-color: var(--accent-color); /* Menggunakan accent-color baru */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+}
+.add-inline-term-btn:hover {
+    background-color: var(--primary-color); /* Warna hover dari primary baru */
+}
+.add-inline-term-btn i {
+    font-size: 1em;
+}
+
+
+.highlight {
+    background-color: var(--highlight-color);
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.copy-button {
+    background: none;
+    border: none;
+    color: var(--soft-text);
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 5px;
+    margin-left: 10px;
+    opacity: 0; 
+    transition: opacity 0.2s ease, color 0.2s ease;
+    position: absolute; 
+    top: 50%; 
+    right: 5px;
+    transform: translateY(-50%); 
+    z-index: 5; 
+    min-width: 30px; 
+    min-height: 30px;
+}
+.detail-content:hover .copy-button {
+    opacity: 1; 
+}
+.copy-button:hover {
+    color: var(--primary-color);
+}
+.copy-button i {
+    font-size: 1.1em;
+}
+
+.contextual-copy-feedback {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transform: translate(-50%, 10px); 
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    left: 50%; 
+}
+.contextual-copy-feedback.show {
+    opacity: 1;
+    transform: translate(-50%, 0); 
+}
+
+.empty-state {
+    text-align: center;
+    margin-top: 50px;
+    padding: 40px;
+    border-radius: 20px;
+    border: 2px dashed #ddd;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.empty-state p {
+    font-size: 1.5em;
+    color: var(--soft-text);
+    margin-bottom: 20px;
+}
+.empty-state-btn {
+    position: static;
+    transform: none;
+    margin-top: 20px;
+}
+.favorite-icon {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    font-size: 1.5em;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.favorite-icon.active {
+    color: #ff5252;
+}
+/* Bagian ini sebelumnya ada di style.css, sekarang dipindahkan ke my-poem.css */
+/* .my-poem-content { ... } */
+
+/* Responsive Adjustments */
 @media (max-width: 768px) {
     .app-header {
         flex-direction: column;
@@ -1291,7 +1754,8 @@ body.font-playfair { font-family: "Playfair Display", serif; }
         margin-bottom: 5px; 
     }
     .header-center #thesaurus-title,
-    .header-center h1.learning-page-title { 
+    .header-center .learning-page-title,
+    .header-center .ide-generator-title { 
         font-size: 2.2em; 
         margin-bottom: 5px;
     }
@@ -1317,6 +1781,13 @@ body.font-playfair { font-family: "Playfair Display", serif; }
     }
     .form-left, .form-right {
         gap: 15px;
+    }
+    .settings-container {
+        flex-direction: column;
+    }
+    .settings-left-panel {
+        border-right: none;
+        border-bottom: 1px solid #eee;
     }
     .poem-content p {
         font-size: 1em;
@@ -1369,5 +1840,61 @@ body.font-playfair { font-family: "Playfair Display", serif; }
     .modal-content {
         margin: 10% auto;
         padding: 20px;
+    }
+
+    /* Learning page responsive adjustments */
+    .learning-content {
+        padding: 20px 3%;
+    }
+    .learning-menu {
+        flex-direction: column; /* Menu vertikal di mobile */
+        align-items: center;
+    }
+    .learning-menu-item {
+        width: 100%; /* Penuh lebar di mobile */
+        justify-content: center;
+    }
+    .learning-display h2 {
+        font-size: 2em;
+    }
+    .learning-display .learning-subtitle {
+        font-size: 0.9em;
+    }
+    .learning-display .topic-content-body {
+        font-size: 1em;
+    }
+    .learning-footer-nav {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .learning-nav-btn, .learning-editor-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    /* Ide Generator responsive adjustments */
+    .ide-generator-content {
+        padding: 20px 3%;
+    }
+    .tab-navigation {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .tab-btn {
+        width: 100%;
+    }
+    .classic-inspiration-grid {
+        grid-template-columns: 1fr; /* Satu kolom di mobile */
+    }
+    .slot-machine-display {
+        flex-direction: column;
+        height: auto;
+    }
+    .slot-column {
+        height: 120px; /* Sesuaikan tinggi kolom slot untuk mobile */
+        width: 80%; /* Lebar penuh atau lebih kecil */
+        margin: 0 auto;
+    }
+    .slot-item {
+        font-size: 1.8em; /* Sesuaikan ukuran font slot */
     }
 }

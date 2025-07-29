@@ -39,8 +39,9 @@
                 <li><a href="write.html"><i class="fas fa-pen-nib"></i> Tulis</a></li>
                 <li><a href="thesaurus.html"><i class="fas fa-book"></i> Tesaurus</a></li>
                 <li><a href="pembelajaran.html"><i class="fas fa-book-open"></i> Pembelajaran</a></li>
-                <li><a href="ide-generator.html"><i class="fas fa-lightbulb"></i> Generator Ide</a></li>
+                <li><a href="ide-generator.html"><i class="fas fa-lightbulb"></i> Penghasil Ide</a></li>
                 <li><a href="my-poem.html"><i class="fas fa-file-alt"></i> Puisi Saya</a></li>
+                <li><a href="hall-of-fame.html"><i class="fas fa-trophy"></i> Hall of Fame</a></li>
                 <li><a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a></li>
             </ul>
         </nav>
@@ -71,18 +72,18 @@
                             <div class="color-circle" data-color="white"></div>
                         </div>
                     </div>
+                    <!-- Saran Ide dari Generator -->
+                    <div id="idea-suggestion-box" class="idea-suggestion-box" style="display: none;">
+                        <p>Saran Ide dari Penghasil Ide:</p>
+                        <span id="idea-suggestion-text" class="idea-suggestion-text"></span>
+                        <button id="clear-idea-suggestion" class="clear-idea-suggestion-btn"><i class="fas fa-times-circle"></i> Hapus Saran</button>
+                    </div>
                 </div>
                 <div class="form-right">
                     <div class="form-group">
                         <label for="poem-content">Isi Puisi</label>
                         <textarea id="poem-content" placeholder="Tuliskan puisimu di sini..."></textarea>
                         <p id="word-count" class="word-count-display">Jumlah kata: 0 / Jumlah karakter: 0</p>
-                    </div>
-                    <!-- New section for idea suggestion -->
-                    <div id="idea-suggestion-container" class="idea-suggestion-container" style="display: none;">
-                        <p class="suggestion-label">Ide Terpilih:</p>
-                        <p id="idea-suggestion-text" class="idea-suggestion-text"></p>
-                        <button id="clear-suggestion-btn" class="clear-suggestion-btn"><i class="fas fa-times"></i> Hapus Saran</button>
                     </div>
                 </div>
             </div>

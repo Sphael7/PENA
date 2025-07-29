@@ -1,0 +1,116 @@
+/* full-preview.css */
+
+.full-preview-content {
+    background: linear-gradient(to bottom, var(--background-color), #e8e8e8); 
+    border-radius: 20px; 
+    box-shadow: var(--box-shadow-light); 
+    padding: 40px 5%;
+    max-width: 900px;
+    margin: 20px auto; /* Tambahkan margin atas/bawah agar ada jarak dari header/footer */
+    font-size: 1.1em;
+    line-height: 1.8;
+    transition: background 0.5s ease; 
+}
+
+.poem-full-text {
+    font-family: inherit; /* Akan mewarisi font dari body (pengaturan font global) */
+    line-height: 1.8;
+    font-size: 1.3em; 
+    color: #4a4a4a;
+    text-align: center; /* Puisi rata tengah */
+}
+.poem-full-text p {
+    margin-bottom: 1em;
+    white-space: pre-wrap; /* Mempertahankan spasi dan baris baru */
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Animasi untuk konten puisi saat dimuat */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- Gaya untuk fitur "Click for Know" (Tooltip) --- */
+.word {
+    cursor: pointer; /* Kursor berubah menjadi pointer */
+    position: relative; /* Penting untuk pseudoelemen atau overlay */
+    transition: background-color 0.2s ease, border-radius 0.2s ease;
+    padding: 2px 0; /* Sedikit padding agar highlight tidak terlalu menempel */
+    display: inline-block; /* Penting agar hover dan posisi relatif bekerja baik di baris */
+}
+
+.word:hover {
+    background-color: rgba(96, 164, 216, 0.2); /* Latar belakang biru muda transparan */
+    border-radius: 5px; /* Sedikit lengkungan pada highlight */
+}
+
+.word-tooltip {
+    position: absolute;
+    background-color: rgba(119, 105, 152, 0.9); /* Warna background baru dengan transparansi */
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 10000; /* Pastikan di atas elemen lain */
+    display: none; /* Awalnya tersembunyi */
+    opacity: 0;
+    transform: translate(-50%, 10px); /* Awalnya sedikit ke bawah */
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out; /* Animasi pop-up */
+    pointer-events: none; /* Agar tidak memblokir klik pada kata di bawahnya saat tersembunyi */
+    min-width: 200px; /* Lebar minimum untuk readability */
+    text-align: center;
+    font-size: 0.95em;
+    line-height: 1.4;
+    word-wrap: break-word; /* Memastikan teks membungkus dalam kotak */
+    overflow-wrap: break-word; /* Alternatif untuk word-wrap */
+    white-space: normal; /* Pastikan teks membungkus, tidak hanya di satu baris */
+}
+
+.word-tooltip.show {
+    opacity: 1;
+    transform: translate(-50%, 0); /* Bergeser ke posisi akhir */
+    pointer-events: auto; /* Aktifkan pointer-events saat terlihat */
+}
+
+.word-tooltip .tooltip-word {
+    display: block;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.word-tooltip .tooltip-detail {
+    display: block;
+    margin-bottom: 4px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.word-tooltip .tooltip-detail.not-found {
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .full-preview-content {
+        padding: 20px 3%;
+        margin-top: 10px;
+    }
+    .poem-full-text {
+        font-size: 1.1em;
+    }
+    .word-tooltip {
+        max-width: 90%; /* Batasi lebar tooltip di mobile */
+        padding: 10px 15px;
+        font-size: 0.85em;
+    }
+}

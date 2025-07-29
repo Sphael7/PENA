@@ -138,22 +138,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getAndCombinePoems() {
         const storedPoems = JSON.parse(localStorage.getItem('poems')) || [];
-        poemsData = [...storedPoems.map(p => ({ ...p, theme: p.theme || 'white' })), ...initialPoems];
+        const combinedPoemsMap = new Map(); // Menggunakan Map untuk menghindari duplikasi berdasarkan judul
+
+        // Tambahkan initialPoems terlebih dahulu dengan originalIndex
+        initialPoems.forEach((poem, index) => {
+            combinedPoemsMap.set(poem.title.toLowerCase(), { ...poem, theme: poem.theme || 'white', originalIndex: `initial-${index}` });
+        });
+
+        // Timpa dengan storedPoems (jika ada judul yang sama)
+        storedPoems.forEach((poem, index) => {
+            combinedPoemsMap.set(poem.title.toLowerCase(), { ...poem, theme: poem.theme || 'white', originalIndex: `stored-${index}` });
+        });
+
+        poemsData = Array.from(combinedPoemsMap.values());
     }
 
     function renderPoems(filterText = '', filterType = currentFilter) {
         if (!poemGrid) return;
         
+        // Pastikan poemsData sudah diisi
         if (poemsData.length === 0) {
-            emptyState.style.display = 'flex';
-            poemGrid.style.display = 'none';
-            if(createBtn) createBtn.style.display = 'none'; 
-            return;
-        } else {
-            emptyState.style.display = 'none';
-            poemGrid.style.display = 'grid';
-            if(createBtn) createBtn.style.display = 'flex';
+            getAndCombinePoems(); // Panggil lagi jika belum diisi, untuk berjaga-jaga
+            if (poemsData.length === 0) { // Cek lagi setelah dipanggil
+                emptyState.style.display = 'flex';
+                poemGrid.style.display = 'none';
+                if(createBtn) createBtn.style.display = 'none'; 
+                return;
+            }
         }
+        
+        emptyState.style.display = 'none';
+        poemGrid.style.display = 'grid';
+        if(createBtn) createBtn.style.display = 'flex';
+        
 
         const filteredPoems = poemsData.filter(poem => {
             const textToFilter = filterType === 'title' ? poem.title : poem.author;
@@ -162,15 +179,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const fragment = document.createDocumentFragment();
 
-        filteredPoems.forEach((poem, index) => {
+        filteredPoems.forEach((poem) => { // Tidak perlu index di sini, gunakan poem.originalIndex
             const card = document.createElement('div');
             card.classList.add('poem-card', poem.theme || 'white'); 
-            const originalIndex = poemsData.indexOf(poem);
-            card.setAttribute('data-id', originalIndex);
+            card.setAttribute('data-id', poem.originalIndex); // Gunakan originalIndex yang sudah ada
             
             const previewContent = poem.content.split('\n\n')[0];
             const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-            const isFavorite = favorites.includes(originalIndex);
+            const isFavorite = favorites.includes(poem.originalIndex); // Cek favorit berdasarkan originalIndex
 
             card.innerHTML = `
                 <h2>${poem.title}</h2>
@@ -178,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="poem-content">
                     <p>${previewContent}</p>
                 </div>
-                <i class="fas fa-heart favorite-icon ${isFavorite ? 'active' : ''}" data-id="${originalIndex}"></i>
+                <i class="fas fa-heart favorite-icon ${isFavorite ? 'active' : ''}" data-id="${poem.originalIndex}"></i>
             `;
             fragment.appendChild(card); 
         });
@@ -248,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleFavoriteClick(e) {
         e.stopPropagation();
-        const poemId = parseInt(this.getAttribute('data-id'));
+        const poemId = this.getAttribute('data-id'); // Mengambil originalIndex
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         const index = favorites.indexOf(poemId);
         if (index > -1) {
@@ -266,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             return;
         }
-        const poemId = this.getAttribute('data-id');
+        const poemId = this.getAttribute('data-id'); // Mengambil originalIndex dari kartu yang diklik
         localStorage.setItem('selectedPoemId', poemId);
         // Menggunakan transisi halaman manual dari common.js
         if (typeof animatePageTransition === 'function') {
@@ -277,6 +293,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    getAndCombinePoems();
+    getAndCombinePoems(); // Panggil saat DOMContentLoaded
     renderPoems();
 });

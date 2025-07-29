@@ -1,0 +1,193 @@
+/* hall-of-fame.css */
+
+.hall-of-fame-content {
+    padding: 40px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: linear-gradient(to bottom, var(--background-color), #e8e8e8);
+    border-radius: 20px;
+    box-shadow: var(--box-shadow-light);
+    min-height: 70vh;
+}
+
+.poem-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.fame-poem-card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-light);
+    padding: 25px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.fame-poem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-medium);
+}
+
+.fame-poem-card h3 {
+    font-family: 'Pacifico', cursive;
+    font-size: 1.8em;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.fame-poem-card .author {
+    font-size: 1em;
+    font-style: italic;
+    color: var(--soft-text);
+    margin-bottom: 15px;
+}
+
+.fame-poem-card .preview-content {
+    font-size: 0.95em;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Show up to 3 lines */
+    -webkit-box-orient: vertical;
+}
+
+.fame-poem-card .read-more {
+    font-size: 0.9em;
+    color: var(--secondary-color);
+    text-decoration: none;
+    font-weight: bold;
+    align-self: flex-end;
+}
+
+/* Poem Detail View */
+.poem-detail-view {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-medium);
+    padding: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.poem-detail-view .back-button {
+    background: none;
+    border: none;
+    color: var(--primary-color);
+    font-size: 1.1em;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.poem-detail-view .back-button:hover {
+    background-color: rgba(var(--primary-color-rgb-values), 0.1);
+}
+
+.poem-detail-view h2 {
+    font-family: 'Pacifico', cursive;
+    font-size: 3em;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.poem-detail-view #detail-poem-author {
+    font-size: 1.2em;
+    font-style: italic;
+    color: var(--soft-text);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.poem-detail-view #detail-poem-content {
+    font-family: 'Lora', serif; /* Mempertahankan font yang nyaman dibaca */
+    font-size: 1.1em;
+    line-height: 1.9;
+    color: #4a4a4a;
+    white-space: pre-wrap; /* Mempertahankan format baris puisi */
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.poem-detail-view .detail-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.poem-detail-view .detail-actions button {
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 25px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.poem-detail-view .detail-actions button:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* Responsive adjustments for Hall of Fame */
+@media (max-width: 768px) {
+    .hall-of-fame-content {
+        padding: 20px 3%;
+    }
+    .poem-gallery-grid {
+        grid-template-columns: 1fr; /* Satu kolom di mobile */
+    }
+    .fame-poem-card {
+        padding: 20px;
+    }
+    .fame-poem-card h3 {
+        font-size: 1.5em;
+    }
+    .fame-poem-card .author {
+        font-size: 0.9em;
+    }
+    .fame-poem-card .preview-content {
+        font-size: 0.9em;
+    }
+    .poem-detail-view {
+        padding: 20px;
+    }
+    .poem-detail-view h2 {
+        font-size: 2em;
+    }
+    .poem-detail-view #detail-poem-author {
+        font-size: 1.1em;
+    }
+    .poem-detail-view #detail-poem-content {
+        font-size: 1em;
+    }
+    .poem-detail-view .detail-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .poem-detail-view .detail-actions button {
+        width: 100%;
+        justify-content: center;
+    }
+}

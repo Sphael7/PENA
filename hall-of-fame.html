@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pena - Kumpulan Puisi</title>
+    <title>Pena - Hall of Fame</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="hall-of-fame.css"> <!-- CSS khusus Hall of Fame -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;700&family=Lora:wght@400;700&family=Merriweather:wght@440;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;700&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="common.js"></script>
 </head>
-<body id="home-page">
+<body id="hall-of-fame-page">
     <div id="page-transition-overlay" class="page-transition-overlay"></div>
 
     <header class="app-header">
@@ -21,22 +22,11 @@
             </a>
         </div>
         <div class="header-center">
-            <!-- Teks "PENA" diganti dengan gambar -->
-            <img id="main-header-title-image" src="teks-pena.png" alt="PENA" height="140" style="max-height: 140px; width: auto; margin-bottom: 15px;">
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="search-input" class="search-input" placeholder="Cari puisi...">
-                <div class="custom-select">
-                    <div id="filter-selected" class="select-selected">Judul <i class="fas fa-chevron-down select-arrow"></i></div>
-                    <div id="filter-items" class="select-items">
-                        <div data-value="title">Judul</div>
-                        <div data-value="author">Penulis</div>
-                    </div>
-                </div>
-            </div>
+            <h1 class="my-poem-page-title">Hall of Fame</h1>
+            <p class="subtitle">Karya Legendaris yang Menginspirasi</p>
         </div>
         <div class="header-right">
-            <a href="my-poem.html" class="icon-button" aria-label="Puisi Saya"><i class="fas fa-book"></i></a>
+            <a href="my-poem.html" class="icon-button" aria-label="Puisi Saya"><i class="fas fa-file-alt"></i></a>
             <a href="settings.html" class="icon-button" aria-label="Pengaturan Aplikasi"><i class="fas fa-cog"></i></a>
         </div>
     </header>
@@ -53,7 +43,7 @@
                 <li><a href="pembelajaran.html"><i class="fas fa-book-open"></i> Pembelajaran</a></li>
                 <li><a href="ide-generator.html"><i class="fas fa-lightbulb"></i> Penghasil Ide</a></li>
                 <li><a href="my-poem.html"><i class="fas fa-file-alt"></i> Puisi Saya</a></li>
-                <li><a href="hall-of-fame.html"><i class="fas fa-trophy"></i> Hall of Fame</a></li> <!-- Tautan baru -->
+                <li><a href="hall-of-fame.html"><i class="fas fa-trophy"></i> Hall of Fame</a></li>
                 <li><a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a></li>
             </ul>
         </nav>
@@ -61,24 +51,23 @@
 
     <div class="overlay" id="overlay"></div>
 
-    <main class="content">
-        <div id="poem-grid" class="poem-grid">
-            <!-- Puisi akan dirender di sini oleh JavaScript -->
+    <main class="hall-of-fame-content">
+        <div id="poem-gallery" class="poem-gallery-grid">
+            <!-- Puisi legendaris akan dimuat di sini -->
         </div>
-        <div id="empty-state" class="empty-state" style="display: none;">
-            <p>Wah, belum ada puisi di sini. Yuk, mulai tulis yang pertama!</p>
-            <a href="write.html" class="create-btn empty-state-btn">
-                <i class="fas fa-pen-nib"></i>
-            </a>
+
+        <div id="poem-detail-view" class="poem-detail-view" style="display: none;">
+            <button id="back-to-gallery-btn" class="back-button"><i class="fas fa-arrow-left"></i> Kembali ke Galeri</button>
+            <h2 id="detail-poem-title"></h2>
+            <p id="detail-poem-author"></p>
+            <div id="detail-poem-content"></div>
+            <div class="detail-actions">
+                <button id="share-poem-btn"><i class="fas fa-share-alt"></i> Bagikan</button>
+                <button id="save-to-collection-btn"><i class="fas fa-bookmark"></i> Simpan ke Koleksi</button>
+            </div>
         </div>
     </main>
-    
-    <div class="footer-action">
-        <a href="write.html" class="create-btn" id="create-btn">
-            <i class="fas fa-pen-nib"></i>
-        </a>
-    </div>
 
-    <script src="script.js"></script> 
+    <script src="hall-of-fame.js"></script> <!-- JS khusus Hall of Fame -->
 </body>
 </html>

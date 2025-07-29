@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const FONT_STORAGE_KEY = 'selectedPoemFont';
 
 
+    // Gabungan data thesaurus awal dan yang baru, dimasukkan langsung ke rawThesaurusData
     const rawThesaurusData = `Sayang: Cinta, Kasih, Asih, Rindu, Gemar, Suka, Kekasih - Benci, Bencian, Muak, Dendam, Jijik, Antipati
 Indah: Cantik, Elok, Molek, Permai, Asri, Menawan, Rupawan, Mempesona, Anggun - Jelek, Buruk, Huduh, Tampan, Busuk, Kotor, Kumal
 Besar: Agung, Raya, Akbar, Gede, Luas, Lebar, Agung, Megah, Hebat, Utama, Penting - Kecil, Mungil, Mini, Kerdil, Remeh, Sepele
@@ -191,8 +192,82 @@ Baik: Bagus, Prima - Buruk, Jelek
 Lama: Klasik, Lawas - Baru, Modern
 Hilang: Lenyap, Musnah - Ditemukan, Ada
 Setuju: Sepakat, Mufakat - Tolak, Menolak
+Kala: waktu, saat, ketika, masa, periode, detik, momen - kekekalan, keabadian, selamanya, tak terbatas
+Mentari: matahari, surya, sang surya, cahaya pagi, pelita langit, sinar mentari, siang - malam, kegelapan, rembulan, senja, bayang-bayang
+Menyapa: memberi salam, menyambut, menyentuh, menyongsong, menjumpai, menegur, menyambangi - mengabaikan, menjauh, menolak, membelakangi, memalingkan
+Pagi: fajar, dini hari, subuh, awal hari, permulaan, pagi buta, mentari terbit - malam, petang, sore, senja, akhir hari, dini malam
+Embun: titik air, butiran air, tetesan pagi, kabut pagi, kelembaban udara, embun pagi, uap air - kekeringan, panas, gersang, kemarau, tandus
+Menari: bergerak lincah, melayang, mengalun, berlenggok, meliuk, meliuk-liuk, bergoyang - diam, membeku, kaku, berhenti, terpaku
+Ujung: akhir, puncak, tepi, sisi, batas, pinggir, penghujung - awal, tengah, dasar, pusat, inti, permulaan
+Jari: ruas tangan, jemari, telunjuk, tangan kecil, ujung tangan, jari jemari - (tidak relevan untuk antonim langsung karena bagian tubuh)
+Langit: cakrawala, angkasa, samudra udara, ufuk, mega, udara luas, semesta atas - bumi, tanah, daratan, dunia bawah, permukaan
+Biru: nila, laut, langit cerah, biru langit, indigo, safir, toska - merah, kuning, jingga, hitam, abu-abu
+Saksi: pengamat, penonton, penyaksi, pelihat, bukti, penguji, pelacak - pelaku, tersangka, yang disembunyikan, anonim, rahasia
+Bisu: diam, membisu, tanpa suara, sunyi, senyap, tak bersuara, sepi - ramai, nyaring, bersuara, lantang, bising, ribut
+Janji: ikrar, sumpah, tekad, komitmen, nazar, akad, pernyataan - pengingkaran, pembatalan, pelanggaran, kebohongan, pengkhianatan
+Layu: layu, lemas, lemah, redup, pudar, luntur, lusuh - segar, mekar, hidup, tumbuh, cerah, bersinar
+Langkah: jejak, tapak, gerakan, tindakan, pergerakan, ayunan kaki, langkah kaki - berhenti, mundur, diam, diam diri, henti
+Kecil: mungil, mini, sempit, ringkas, pendek, ringan, sederhana - besar, luas, tinggi, panjang, lebar, megah
+Menapaki: melangkahi, melewati, menginjak, menyusuri, mengarungi, menelusuri - meninggalkan, menghindari, menjauhi, menyimpang
+Jejak: bekas, tapak, langkah, bayangan, warisan, lintasan, cetakan - kehampaan, jejak hilang, kekosongan, penghapusan
+Mengukir: membentuk, mencetak, menoreh, menggurat, melukis, menyusun - menghapus, menghilangkan, menghancurkan, merusak, melunturkan
+Mimpi: harapan, angan, cita-cita, bayangan, khayalan, impian, niat - kenyataan, realita, fakta, dunia nyata, kepastian
+Terelak: terhindar, tercegah, terelakkan, terhindari, terselamatkan, tidak terjadi - pasti terjadi, tak terhindarkan, tak bisa dicegah, niscaya
+Dunia: alam, jagat, bumi, eksistensi, realita, semesta - akhirat, surga, nirwana, imajinasi, khayalan
+Fana: sementara, tidak kekal, rapuh, sesaat, cepat lenyap, bisa mati - abadi, kekal, lestari, selamanya, tak hancur
+Abadi: kekal, lestari, selamanya, terus-menerus, tidak berubah, langgeng - fana, hancur, musnah, berakhir, punah
+Kisah: cerita, dongeng, narasi, riwayat, legenda, hikayat, peristiwa - kenyataan, fakta, realita, dunia nyata
+Terukir: tercatat, terukirkan, tergambar, tertoreh, terekam, terpahat - terhapus, terabaikan, terhapuskan, lenyap, dilupakan
+Selamanya: abadi, selama-lamanya, kekal, tak berakhir, terus-menerus, tak berujung - sementara, sesaat, fana, sebentar, singkat
+Heningnya: sepinya, senyap, tenang, sunyi, diam, membisu, lengang - ramai, bising, gaduh, ribut, hiruk-pikuk
+Bisiknya: lirih, pelan, suara kecil, gumaman, desir, desauan - teriakan, jeritan, lantang, nyaring, keras
+Angin: hembusan, udara, bayu, semilir, arus udara, angin semilir - kehampaan udara, vakum, ruang hampa
+Melodi: irama, nada, lagu, musik, nyanyian, denting, harmonisasi - kebisingan, gangguan suara, hiruk pikuk, suara kacau
+Terganti: tergantikan, tersubstitusi, tertukar, terlupakan, tergantikan tempatnya - tetap, lestari, abadi, tak tergantikan, tak tergeser
+Menyimpan: menyelamatkan, mengabadikan, menaruh, menanamkan, mengekalkan, menyimpan dalam - membuang, menghapus, melupakan, melepaskan, mengabaikan
+Kenangan: ingatan, memori, nostalgia, peristiwa, pengalaman, masa lalu - kelupaan, kekosongan, ketidakpedulian, penghapusan
+Terpatri: terpahat, terukir, melekat, tertanam, tergurat, tersemat - terhapus, luntur, menghilang, tercabut
+Hati: nurani, kalbu, jiwa, sanubari, batin, relung - kebekuan, ketegaan, kekosongan batin, pikiran (kontras dalam konteks)
+Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tumbuh, berkembang, bernyawa
 `;
 
+    // Fungsi untuk mengurai data thesaurus mentah
+    function parseThesaurusData(rawData) {
+        const parsedMap = {}; // Akan mengembalikan objek/map
+        const lines = rawData.split('\n').filter(line => line.trim() !== '');
+
+        lines.forEach(line => {
+            const parts = line.split(':');
+            if (parts.length < 2) {
+                console.warn("Skipping malformed thesaurus entry:", line);
+                return;
+            }
+
+            const wordPart = parts[0].trim();
+            let relatedPart = parts[1].trim();
+
+            const subParts = relatedPart.split(' - ');
+            let synonymsPart = subParts[0] ? subParts[0].trim() : '';
+            let antonymsPart = subParts[1] ? subParts[1].trim() : '';
+
+            // Handle "tidak relevan" or similar explicit exclusions by making them empty arrays
+            if (synonymsPart.includes('(tidak relevan')) {
+                synonymsPart = '';
+            }
+            if (antonymsPart.includes('(tidak relevan')) {
+                antonymsPart = '';
+            }
+
+            parsedMap[wordPart.toLowerCase()] = { // Simpan dalam lowercase untuk pencarian
+                sinonim: synonymsPart ? synonymsPart.split(',').map(s => s.trim()) : [],
+                antonim: antonymsPart ? antonymsPart.split(',').map(s => s.trim()) : []
+            };
+        });
+        return parsedMap;
+    }
+
+    // Fixed: Mengakses data thesaurus dari global `window.thesaurusDataMap`
+    // Variabel `thesaurusData` lokal hanya digunakan untuk fungsi `renderThesaurusList`
     let thesaurusData = []; 
 
     // --- Fungsi untuk Mengelola Data Kustom Pengguna di Local Storage ---
@@ -295,43 +370,6 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
 
     // -------------------------------------------------------------------
 
-    function parseThesaurusData(rawData) {
-        const parsedBuiltIn = rawData.split('\n').map(line => {
-            line = line.trim();
-            if (!line) return null;
-
-            const parts = line.split(':');
-            if (parts.length < 2) {
-                console.warn("Skipping malformed built-in thesaurus entry (missing colon or incomplete):", line);
-                return null;
-            }
-
-            const wordPart = parts[0].trim();
-            const relatedPart = parts[1].trim();
-
-            const subParts = relatedPart.split(' - ');
-            const synonymsPart = subParts[0] ? subParts[0].trim() : '';
-            const antonymsPart = subParts[1] ? subParts[1].trim() : '';
-
-            return {
-                word: wordPart,
-                synonyms: synonymsPart ? synonymsPart.split(',').map(s => s.trim()) : [],
-                antonyms: antonymsPart ? antonymsPart.split(',').map(s => s.trim()) : [],
-                isCustom: false
-            };
-        }).filter(entry => entry !== null);
-
-        const userEntries = loadUserThesaurusData().map(entry => ({ ...entry, isCustom: true })); 
-        
-        // Gabungkan, pastikan userEntries menimpa bawaan jika nama kata utama sama
-        // Menggunakan Map untuk memastikan kata utama unik (prioritas kustom)
-        const combinedDataMap = new Map();
-        parsedBuiltIn.forEach(entry => combinedDataMap.set(entry.word.toLowerCase(), entry)); 
-        userEntries.forEach(entry => combinedDataMap.set(entry.word.toLowerCase(), entry)); 
-
-        return Array.from(combinedDataMap.values());
-    }
-
     let copyFeedbackTimeout;
     function showCopyFeedback(message, targetElement) {
         const existingFeedback = targetElement.querySelector('.contextual-copy-feedback');
@@ -368,14 +406,35 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
 
     // Event listener utama untuk re-rendering
     function handleThesaurusSearchInput() {
-        thesaurusData = parseThesaurusData(rawThesaurusData); 
+        // Karena `window.thesaurusDataMap` adalah sumber kebenaran utama sekarang,
+        // kita perlu membangun `thesaurusData` (untuk rendering list) dari sana.
+        thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+            const entry = window.thesaurusDataMap[word];
+            // Tambahkan properti `isCustom` jika ada dalam data user, atau default ke false
+            const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
+            return {
+                word: word, // Tetap gunakan word aslinya (lowercase) untuk key map, tapi untuk tampilan pakai .word di original entry
+                synonyms: entry.sinonim,
+                antonyms: entry.antonim,
+                isCustom: isCustom
+            };
+        });
         renderThesaurusList(thesaurusSearchInput.value);
     }
 
     // Event listener untuk tombol hapus pencarian
     function handleClearSearchClick() {
         thesaurusSearchInput.value = '';
-        thesaurusData = parseThesaurusData(rawThesaurusData); 
+        thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+            const entry = window.thesaurusDataMap[word];
+            const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
+            return {
+                word: word,
+                synonyms: entry.sinonim,
+                antonyms: entry.antonim,
+                isCustom: isCustom
+            };
+        });
         renderThesaurusList('');
         thesaurusSearchInput.focus(); 
     }
@@ -386,7 +445,19 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
 
         const lowerCaseFilter = filterText.toLowerCase();
 
-        const currentThesaurusData = Array.from(thesaurusData); 
+        // Menggunakan data yang sudah di-parse dan diubah ke array untuk sorting dan filtering
+        // Pastikan currentThesaurusData mengambil data dari `window.thesaurusDataMap`
+        const currentThesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+            const entry = window.thesaurusDataMap[word];
+            const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
+            return {
+                word: word, // Gunakan key map sebagai kata utama
+                synonyms: entry.sinonim,
+                antonyms: entry.antonim,
+                isCustom: isCustom
+            };
+        });
+        
         currentThesaurusData.sort((a, b) => a.word.localeCompare(b.word));
 
         const filteredData = currentThesaurusData.filter(entry => {
@@ -441,8 +512,8 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
 
             const sanitizedWordForId = entry.word.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '');
 
-            const synonymTags = createInteractiveTags(entry.synonyms, lowerCaseFilter, entry.word, 'synonyms', entry.isCustom);
-            const antonymTags = createInteractiveTags(entry.antonyms, lowerCaseFilter, entry.word, 'antonyms', entry.isCustom);
+            const synonymTags = createInteractiveTags(entry.synonyms, lowerCaseFilter, entry.word, 'sinonim', entry.isCustom);
+            const antonymTags = createInteractiveTags(entry.antonyms, lowerCaseFilter, entry.word, 'antonim', entry.isCustom);
 
             const listItem = document.createElement('div');
             listItem.classList.add('thesaurus-item');
@@ -466,9 +537,9 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
                         <div class="detail-label clickable-dropdown" data-target="synonym-content-${sanitizedWordForId}" aria-label="Lihat Sinonim untuk ${entry.word}">
                             Sinonim <i class="fas fa-chevron-down dropdown-arrow"></i>
                         </div>
-                        <div id="synonym-content-${sanitizedWordForId}" class="detail-content" data-main-word="${entry.word}" data-type="synonyms">
+                        <div id="synonym-content-${sanitizedWordForId}" class="detail-content" data-main-word="${entry.word}" data-type="sinonim">
                             <div class="tag-container">${synonymTags}</div>
-                            <button class="add-inline-term-btn" data-type="synonyms" data-main-word="${entry.word}" title="Tambah Sinonim" aria-label="Tambah Sinonim"><i class="fas fa-plus"></i> Tambah</button>
+                            <button class="add-inline-term-btn" data-type="sinonim" data-main-word="${entry.word}" title="Tambah Sinonim" aria-label="Tambah Sinonim"><i class="fas fa-plus"></i> Tambah</button>
                             <button class="copy-button" data-copy-text="${entry.synonyms.join(', ')}" aria-label="Salin Sinonim"><i class="fas fa-copy"></i></button>
                         </div>
                     </div>
@@ -476,9 +547,9 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
                         <div class="detail-label clickable-dropdown" data-target="antonym-content-${sanitizedWordForId}" aria-label="Lihat Antonim untuk ${entry.word}">
                             Antonim <i class="fas fa-chevron-down dropdown-arrow"></i>
                         </div>
-                        <div id="antonym-content-${sanitizedWordForId}" class="detail-content" data-main-word="${entry.word}" data-type="antonyms">
+                        <div id="antonym-content-${sanitizedWordForId}" class="detail-content" data-main-word="${entry.word}" data-type="antonim">
                             <div class="tag-container">${antonymTags}</div>
-                            <button class="add-inline-term-btn" data-type="antonyms" data-main-word="${entry.word}" title="Tambah Antonim" aria-label="Tambah Antonim"><i class="fas fa-plus"></i> Tambah</button>
+                            <button class="add-inline-term-btn" data-type="antonim" data-main-word="${entry.word}" title="Tambah Antonim" aria-label="Tambah Antonim"><i class="fas fa-plus"></i> Tambah</button>
                             <button class="copy-button" data-copy-text="${entry.antonyms.join(', ')}" aria-label="Salin Antonim"><i class="fas fa-copy"></i></button>
                         </div>
                     </div>
@@ -642,7 +713,8 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
             if (newTermsString) {
                 const newTerms = newTermsString.split(',').map(s => s.trim()).filter(s => s !== '');
                 
-                const currentEntry = thesaurusData.find(e => e.word.toLowerCase() === mainWord.toLowerCase());
+                // Fixed: Menggunakan window.thesaurusDataMap untuk memeriksa keberadaan kata
+                const currentEntry = window.thesaurusDataMap[mainWord.toLowerCase()];
                 const existingTerms = currentEntry ? currentEntry[type].map(s => s.toLowerCase()) : [];
                 const termsToAdd = newTerms.filter(term => !existingTerms.includes(term.toLowerCase()));
                 
@@ -654,12 +726,44 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
                          return;
                     }
                 }
-            thesaurusData = parseThesaurusData(rawThesaurusData);
+            // Fixed: Refresh thesaurusData dari global map
+            // Harus membuat ulang window.thesaurusDataMap terlebih dahulu untuk menyertakan perubahan user
+            const userThesaurusEntries = loadUserThesaurusData();
+            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Re-parse all built-in
+            // Kemudian tambahkan data user ke window.thesaurusDataMap
+            userThesaurusEntries.forEach(entry => {
+                window.thesaurusDataMap[entry.word.toLowerCase()] = {
+                    sinonim: entry.sinonim,
+                    antonim: entry.antonim,
+                    isCustom: true // Tandai sebagai kustom
+                };
+            });
+
+            thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+                const entry = window.thesaurusDataMap[word];
+                const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
+                return {
+                    word: word,
+                    synonyms: entry.sinonim,
+                    antonyms: entry.antonim,
+                    isCustom: isCustom
+                };
+            });
             renderThesaurusList(thesaurusSearchInput.value);
         });
 
         inputContainer.querySelector('.cancel-inline-add-btn').addEventListener('click', () => {
-            thesaurusData = parseThesaurusData(rawThesaurusData); 
+            // Fixed: Refresh thesaurusData dari global map
+            thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+                const entry = window.thesaurusDataMap[word];
+                const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
+                return {
+                    word: word,
+                    synonyms: entry.sinonim,
+                    antonyms: entry.antonim,
+                    isCustom: isCustom
+                };
+            });
             renderThesaurusList(thesaurusSearchInput.value);
         });
 
@@ -700,7 +804,8 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
         inputContainer.querySelector('.save-inline-edit-term-btn').addEventListener('click', () => {
             const newTerm = inputField.value.trim();
             if (newTerm && newTerm.toLowerCase() !== originalTerm.toLowerCase()) {
-                 const currentEntry = thesaurusData.find(e => e.word.toLowerCase() === mainWord.toLowerCase());
+                 // Fixed: Menggunakan window.thesaurusDataMap untuk memeriksa keberadaan kata
+                 const currentEntry = window.thesaurusDataMap[mainWord.toLowerCase()];
                  if (currentEntry && currentEntry[type].map(s => s.toLowerCase()).includes(newTerm.toLowerCase())) {
                     alert(`"${newTerm}" sudah ada dalam daftar ini.`);
                     inputField.focus();
@@ -708,12 +813,43 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
                  }
                 updateTermInEntry(mainWord, type, originalTerm, newTerm);
             }
-            thesaurusData = parseThesaurusData(rawThesaurusData);
+            // Fixed: Refresh thesaurusData dari global map
+            // Harus membuat ulang window.thesaurusDataMap terlebih dahulu untuk menyertakan perubahan user
+            const userThesaurusEntries = loadUserThesaurusData();
+            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Re-parse all built-in
+            // Kemudian tambahkan data user ke window.thesaurusDataMap
+            userThesaurusEntries.forEach(entry => {
+                window.thesaurusDataMap[entry.word.toLowerCase()] = {
+                    sinonim: entry.sinonim,
+                    antonim: entry.antonim,
+                    isCustom: true // Tandai sebagai kustom
+                };
+            });
+            thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+                const entry = window.thesaurusDataMap[word];
+                const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
+                return {
+                    word: word,
+                    synonyms: entry.sinonim,
+                    antonyms: entry.antonim,
+                    isCustom: isCustom
+                };
+            });
             renderThesaurusList(thesaurusSearchInput.value);
         });
 
         inputContainer.querySelector('.cancel-inline-edit-term-btn').addEventListener('click', () => {
-            thesaurusData = parseThesaurusData(rawThesaurusData); 
+            // Fixed: Refresh thesaurusData dari global map
+            thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+                const entry = window.thesaurusDataMap[word];
+                const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
+                return {
+                    word: word,
+                    synonyms: entry.sinonim,
+                    antonyms: entry.antonim,
+                    isCustom: isCustom
+                };
+            });
             renderThesaurusList(thesaurusSearchInput.value);
         });
 
@@ -738,7 +874,28 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
 
         if (confirm(`Anda yakin ingin menghapus tag "${termToDelete}"?`)) {
             deleteTermFromEntry(mainWord, type, termToDelete);
-            thesaurusData = parseThesaurusData(rawThesaurusData);
+            // Fixed: Refresh thesaurusData dari global map
+            // Harus membuat ulang window.thesaurusDataMap terlebih dahulu untuk menyertakan perubahan user
+            const userThesaurusEntries = loadUserThesaurusData();
+            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Re-parse all built-in
+            // Kemudian tambahkan data user ke window.thesaurusDataMap
+            userThesaurusEntries.forEach(entry => {
+                window.thesaurusDataMap[entry.word.toLowerCase()] = {
+                    sinonim: entry.sinonim,
+                    antonim: entry.antonim,
+                    isCustom: true // Tandai sebagai kustom
+                };
+            });
+            thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+                const entry = window.thesaurusDataMap[word];
+                const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
+                return {
+                    word: word,
+                    synonyms: entry.sinonim,
+                    antonyms: entry.antonim,
+                    isCustom: isCustom
+                };
+            });
             renderThesaurusList(thesaurusSearchInput.value);
         }
     }
@@ -752,8 +909,8 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
             modalTitle.textContent = 'Edit Kata Tesaurus'; // Pergantian nama
             mainWordInput.value = entry.word;
             mainWordInput.readOnly = true; 
-            synonymsInput.value = entry.synonyms.join(', ');
-            antonymsInput.value = entry.antonyms.join(', ');
+            synonymsInput.value = entry.sinonim.join(', '); // Fixed: Use sinonim
+            antonymsInput.value = entry.antonim.join(', '); // Fixed: Use antonim
             originalMainWordForEdit.value = entry.word; 
 
             wordFormModal.style.display = 'block';
@@ -766,7 +923,28 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
 
         if (confirm(`Anda yakin ingin menghapus kata kustom "${wordToDelete}" dan semua sinonim/antonimnya?`)) {
             deleteUserThesaurusEntry(wordToDelete);
-            thesaurusData = parseThesaurusData(rawThesaurusData);
+            // Fixed: Refresh thesaurusData dari global map
+            // Harus membuat ulang window.thesaurusDataMap terlebih dahulu untuk menyertakan perubahan user
+            const userThesaurusEntries = loadUserThesaurusData();
+            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Re-parse all built-in
+            // Kemudian tambahkan data user ke window.thesaurusDataMap
+            userThesaurusEntries.forEach(entry => {
+                window.thesaurusDataMap[entry.word.toLowerCase()] = {
+                    sinonim: entry.sinonim,
+                    antonim: entry.antonim,
+                    isCustom: true // Tandai sebagai kustom
+                };
+            });
+            thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+                const entry = window.thesaurusDataMap[word];
+                const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
+                return {
+                    word: word,
+                    synonyms: entry.sinonim,
+                    antonyms: entry.antonim,
+                    isCustom: isCustom
+                };
+            });
             renderThesaurusList(thesaurusSearchInput.value);
         }
     }
@@ -799,29 +977,77 @@ Setuju: Sepakat, Mufakat - Tolak, Menolak
 
         const entry = {
             word: newWord,
-            synonyms: newSynonyms,
-            antonyms: newAntonyms
+            sinonim: newSynonyms, 
+            antonim: newAntonyms 
         };
 
         const originalWordForEditVal = originalMainWordForEdit.value;
         if (originalWordForEditVal !== '') {
-            updateUserThesaurusEntry(originalWordForEditVal, entry);
+            updateUserThesaurusEntry(originalWordForEditVal, { ...entry, isCustom: true }); 
         } else {
-            const existingWords = thesaurusData.map(e => e.word.toLowerCase()); 
-            if (existingWords.includes(newWord.toLowerCase())) {
-                alert(`Kata "${newWord}" sudah ada dalam Tesaurus.`); // Pergantian nama
+            // Fixed: Periksa keberadaan kata di global map thesaurus
+            if (window.thesaurusDataMap[newWord.toLowerCase()]) {
+                alert(`Kata "${newWord}" sudah ada dalam Tesaurus.`); 
                 return;
             }
-            addUserThesaurusEntry(entry);
+            addUserThesaurusEntry({ ...entry, isCustom: true }); 
         }
         
-        thesaurusData = parseThesaurusData(rawThesaurusData); 
+        // Fixed: Setelah submit, perbarui window.thesaurusDataMap juga
+        // Ini adalah langkah penting agar full-preview.js bisa melihat perubahan
+        const userThesaurusEntries = loadUserThesaurusData(); // Ambil data user terbaru
+        window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Re-parse built-in 
+        // Kemudian tambahkan/timpa data user ke window.thesaurusDataMap
+        userThesaurusEntries.forEach(userEntry => {
+            window.thesaurusDataMap[userEntry.word.toLowerCase()] = {
+                sinonim: userEntry.sinonim,
+                antonim: userEntry.antonim,
+                isCustom: true
+            };
+        });
+
+        // Fixed: Refresh thesaurusData (lokal untuk halaman thesaurus) dari global map
+        thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+            const entry = window.thesaurusDataMap[word];
+            const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
+            return {
+                word: word,
+                synonyms: entry.sinonim,
+                antonyms: entry.antonim,
+                isCustom: isCustom
+            };
+        });
+
         renderThesaurusList(thesaurusSearchInput ? thesaurusSearchInput.value : ''); 
         wordFormModal.style.display = 'none';
         document.getElementById('overlay').style.display = 'none';
     }
 
     // Inisialisasi utama
-    thesaurusData = parseThesaurusData(rawThesaurusData); 
+    // Data thesaurus akan diinisialisasi secara global sekali dan digabungkan dengan data user
+    const userThesaurusEntriesOnLoad = loadUserThesaurusData(); // Ambil data user saat load
+    window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Parse data built-in
+    
+    // Gabungkan data user ke global map saat inisialisasi
+    userThesaurusEntriesOnLoad.forEach(entry => {
+        window.thesaurusDataMap[entry.word.toLowerCase()] = {
+            sinonim: entry.sinonim,
+            antonim: entry.antonim,
+            isCustom: true // Tandai sebagai kustom
+        };
+    });
+
+    // thesaurusData lokal untuk keperluan rendering halaman thesaurus itu sendiri
+    thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
+        const entry = window.thesaurusDataMap[word];
+        const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word); // Check custom status
+        return {
+            word: word,
+            synonyms: entry.sinonim,
+            antonyms: entry.antonim,
+            isCustom: isCustom
+        };
+    });
+    
     renderThesaurusList(thesaurusSearchInput ? thesaurusSearchInput.value : '');
 });
