@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;700&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="common.js"></script>
-    <script src="thesaurus.js"></script> <!-- Pastikan thesaurus.js dimuat SEBELUM full-preview.js -->
+    <script type="module" src="dictionary.js"></script> <!-- NEW: Load dictionary.js as a module -->
 </head>
 <body id="full-preview-page">
     <div id="page-transition-overlay" class="page-transition-overlay"></div>
@@ -70,6 +70,6 @@
         <span id="tooltip-antonym" class="tooltip-detail"></span>
     </div>
 
-    <script src="full-preview.js"></script>
+    <script type="module" src="full-preview.js"></script> <!-- NEW: Load full-preview.js as a module -->
 </body>
 </html>

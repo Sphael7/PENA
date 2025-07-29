@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;700&family=Lora:wght@400;700&family=Merriweather:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="common.js"></script>
+    <script type="module" src="dictionary.js"></script> <!-- NEW: Load dictionary.js as a module -->
 </head>
 <body id="thesaurus-page">
     <div id="page-transition-overlay" class="page-transition-overlay"></div>
@@ -68,7 +69,7 @@
         </div>
     </main>
 
-    <div id="word-form-modal" class="modal">
+    <div id="word-form-modal" class="modal" style="display: none;"> <!-- NEW: Tambahkan style="display: none;" -->
         <div class="modal-content">
             <span class="close-button" id="close-modal-btn">&times;</span>
             <h2 id="modal-title">Tambah Kata Tesaurus Baru</h2>
@@ -87,6 +88,6 @@
         </div>
     </div>
 
-    <script src="thesaurus.js"></script>
+    <script type="module" src="thesaurus.js"></script> <!-- NEW: Load thesaurus.js as a module -->
 </body>
 </html>

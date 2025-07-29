@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordCountDisplay = document.getElementById('word-count');
     const draftMessage = document.getElementById('draft-message');
     const autosaveMessage = document.getElementById('autosave-message');
+    const submissionMessage = document.getElementById('submission-message'); // NEW: Referensi elemen pesan
 
     // Elements for idea suggestion
     const ideaSuggestionContainer = document.getElementById('idea-suggestion-box'); // Corrected ID
@@ -84,6 +85,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     }
 
+    // NEW: Fungsi untuk menampilkan pesan submission
+    function showSubmissionMessage(message, duration = 3000) {
+        if (submissionMessage) {
+            submissionMessage.textContent = message;
+            submissionMessage.classList.add('show');
+            setTimeout(() => {
+                submissionMessage.classList.remove('show');
+            }, duration);
+        }
+    }
+
+
     function saveDraft() {
         if (!isFormDirty) { // Hanya simpan jika ada perubahan
             return;
@@ -118,8 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
+            // Pesan draf akan muncul dan akan hilang setelah beberapa detik
             draftMessage.textContent = 'Draf berhasil dimuat.';
             draftMessage.classList.add('show');
+            setTimeout(() => { // NEW: Tambahkan setTimeout untuk menyembunyikan draftMessage
+                draftMessage.classList.remove('show');
+            }, 3000); 
             
             updateWordCount();
             checkFormValidity();
@@ -168,8 +185,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateWordCount();
                 checkFormValidity();
                 console.log(`Editing poem with ID: ${editId}`);
+                // Pesan mode edit akan muncul dan akan hilang setelah beberapa detik
                 draftMessage.textContent = 'Mode Edit: Puisi dimuat.';
                 draftMessage.classList.add('show');
+                setTimeout(() => { // NEW: Tambahkan setTimeout untuk menyembunyikan draftMessage
+                    draftMessage.classList.remove('show');
+                }, 3000); 
                 localStorage.removeItem('poemDraft'); // Clear draft when editing
             } else {
                 console.warn(`Poem to edit with ID ${editId} not found.`);
@@ -192,13 +213,13 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("write.js: Applied saved font to textarea:", savedFontClass);
     }
 
-    // New function to load idea suggestion from URL
+    // New: Function to load idea suggestion from URL
     function loadIdeaSuggestionFromURL() {
         const urlParams = new URLSearchParams(window.location.search);
         const idea = urlParams.get('idea');
 
         if (idea) {
-            ideaSuggestionContainer.style.display = 'block'; // Make sure the container is visible
+            ideaSuggestionContainer.style.display = 'flex'; // Make sure the container is visible
             ideaSuggestionText.textContent = idea;
             
             // Optionally, you could pre-fill the textarea with the idea
@@ -217,6 +238,9 @@ document.addEventListener('DOMContentLoaded', () => {
             ideaSuggestionText.textContent = '';
             // Also clear the URL parameter from the browser history
             window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // NEW: Tampilkan notifikasi "Ide telah dihilangkan"
+            showSubmissionMessage('Ide telah dihilangkan. Selamat berkreativitas!');
         });
     }
 
@@ -250,11 +274,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (form) { 
-        form.addEventListener('submit', async (event) => { // Make submit async for showAlert/Confirm
+        form.addEventListener('submit', async (event) => { 
             event.preventDefault();
 
             if (publishBtn.hasAttribute('disabled')) {
-                await window.showAlert('Mohon lengkapi semua kolom dan pilih tema puisi!', 'Form Tidak Lengkap'); 
+                // OLD: await window.showAlert('Mohon lengkapi semua kolom dan pilih tema puisi!', 'Form Tidak Lengkap'); 
+                showSubmissionMessage('Mohon lengkapi semua kolom dan pilih tema puisi!'); // NEW: Ganti dengan pesan non-modal
                 return;
             }
 
@@ -272,11 +297,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (editId !== undefined && poems[parseInt(editId)]) {
                 // Update existing poem
                 poems[parseInt(editId)] = poemToSave;
-                await window.showAlert('Puisi berhasil diperbarui!', 'Berhasil!');
+                // OLD: await window.showAlert('Puisi berhasil diperbarui!', 'Berhasil!');
+                showSubmissionMessage('Puisi berhasil diperbarui!'); // NEW: Ganti dengan pesan non-modal
             } else {
                 // Add new poem
                 poems.push(poemToSave);
-                await window.showAlert('Puisi berhasil dipublikasikan!', 'Berhasil!');
+                // OLD: await window.showAlert('Puisi berhasil dipublikasikan!', 'Berhasil!');
+                showSubmissionMessage('Puisi berhasil dipublikasikan!'); // NEW: Ganti dengan pesan non-modal
             }
             
             localStorage.setItem('poems', JSON.stringify(poems));

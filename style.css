@@ -442,7 +442,7 @@ h2, h3, h4, h5, h6
 .sidebar-menu a {
     display: flex;
     align-items: center;
-    gap: 15px;
+    /* gap: 15px; REMOVED: Adjusting gap with icon width */
     padding: 10px;
     text-decoration: none;
     color: var(--text-color);
@@ -450,6 +450,8 @@ h2, h3, h4, h5, h6
     border-radius: 8px;
     transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
     font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
+    padding-left: 15px; /* Adjust as needed for left alignment */
+    justify-content: flex-start; /* Ensure content is left-aligned */
 }
 .sidebar-menu a:hover {
     background-color: var(--background-color);
@@ -459,6 +461,10 @@ h2, h3, h4, h5, h6
 .sidebar-menu a i {
     font-size: 1.5em;
     color: var(--primary-color);
+    /* NEW: Ensure consistent spacing for text alignment */
+    min-width: 28px; /* Slightly reduced min-width for icon container */
+    text-align: left; /* Align icon to the left within its allocated width */
+    margin-right: 12px; /* Adjusted margin to the right of the icon */
 }
 
 .overlay {
@@ -711,6 +717,33 @@ h2, h3, h4, h5, h6
 .autosave-message.show {
     opacity: 1;
 }
+
+/* NEW: Gaya untuk pesan notifikasi umum di bawah halaman */
+.submission-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(45, 75, 106, 0.9); /* primary-color dengan transparansi */
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 1em;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+    z-index: 2000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
+    white-space: nowrap; /* Pastikan teks tidak patah */
+}
+
+.submission-message.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
 .empty-state {
     text-align: center;
     margin-top: 50px;
@@ -1216,6 +1249,66 @@ h2, h3, h4, h5, h6
     opacity: 1;
     transform: translate(-50%, 0); 
 }
+
+/* NEW: Gaya untuk kotak saran ide */
+.idea-suggestion-box {
+    background-color: rgba(86, 116, 255, 0.35); /* Warna background baru */
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap; /* Izinkan wrap untuk elemen di dalamnya */
+    align-items: center;
+    gap: 10px; /* Jarak antar elemen dalam kotak */
+    font-family: 'Lora', serif; /* Font yang lebih fleksibel */
+    color: var(--text-color);
+    box-shadow: var(--box-shadow-light);
+}
+
+.idea-suggestion-box p {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: var(--primary-color); /* Warna teks untuk label */
+    flex-shrink: 0; /* Jangan menyusut */
+}
+
+.idea-suggestion-text {
+    font-size: 1.1em;
+    font-style: italic;
+    color: #555;
+    flex-grow: 1; /* Memungkinkan teks ide mengisi ruang */
+    white-space: nowrap; /* Pastikan teks ide tidak pecah baris */
+    overflow: hidden; /* Sembunyikan overflow jika terlalu panjang */
+    text-overflow: ellipsis; /* Tampilkan elipsis jika tersembunyi */
+}
+
+.clear-idea-suggestion-btn {
+    background-color: rgba(0, 0, 0, 0.6); /* Warna background tombol hapus */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Quicksand', sans-serif; /* Font tombol tidak terlalu fleksibel */
+    flex-shrink: 0; /* Jangan menyusut */
+}
+
+.clear-idea-suggestion-btn:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: translateY(-1px);
+}
+
+.clear-idea-suggestion-btn i {
+    font-size: 0.9em;
+}
+
+
 /* Responsive adjustments for Thesaurus */
 @media (max-width: 768px) {
     .thesaurus-content {
@@ -1250,5 +1343,17 @@ h2, h3, h4, h5, h6
     .contextual-copy-feedback {
         font-size: 0.75em;
         padding: 3px 6px;
+    }
+    /* Responsive untuk kotak saran ide */
+    .idea-suggestion-box {
+        flex-direction: column; /* Tata letak vertikal di mobile */
+        align-items: flex-start;
+    }
+    .idea-suggestion-box p, .idea-suggestion-text, .clear-idea-suggestion-btn {
+        width: 100%; /* Lebar penuh */
+        text-align: center; /* Teks rata tengah */
+        white-space: normal; /* Biarkan teks membungkus */
+        overflow: visible; /* Biarkan overflow terlihat */
+        text-overflow: clip; /* Jangan pakai elipsis */
     }
 }

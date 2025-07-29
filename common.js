@@ -39,15 +39,15 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log("common.js: overlay clicked!");
             if(sidebar) sidebar.classList.remove('active'); // Tutup sidebar
             
-            // Tutup semua modal kustom jika terbuka
-            document.querySelectorAll('.modal.show').forEach(modal => {
-                modal.classList.remove('show');
-                modal.addEventListener('transitionend', function handler() {
-                    modal.style.display = 'none';
-                    modal.style.pointerEvents = 'none';
-                    modal.removeEventListener('transitionend', handler);
-                }, { once: true });
-            });
+            // Perbaikan: Hapus logika penutupan modal kustom karena modal itu sendiri akan dihapus
+            // document.querySelectorAll('.modal.show').forEach(modal => {
+            //     modal.classList.remove('show');
+            //     modal.addEventListener('transitionend', function handler() {
+            //         modal.style.display = 'none';
+            //         modal.style.pointerEvents = 'none';
+            //         modal.removeEventListener('transitionend', handler);
+            //     }, { once: true });
+            // });
 
             if (overlay) overlay.classList.remove('active'); // Nonaktifkan overlay
         }
@@ -144,9 +144,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 !targetLink.classList.contains('icon-button') && 
                 !targetLink.classList.contains('create-btn') && 
                 !targetLink.classList.contains('empty-state-btn') &&
-                !targetLink.classList.contains('learning-editor-btn') && // Tambahkan kembali ini
-                !targetLink.classList.contains('modal-btn') && // Tombol modal tidak perlu transisi
-                !targetLink.classList.contains('close-button') // Tombol tutup modal tidak perlu transisi
+                !targetLink.classList.contains('learning-editor-btn') && 
+                !targetLink.classList.contains('modal-btn') && 
+                !targetLink.classList.contains('close-button') 
             ) {
                 console.log("common.js: Internal link clicked, preventing default.", targetLink.href);
                 e.preventDefault(); 
@@ -157,144 +157,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- CUSTOM MODAL (Pengganti alert/confirm) ---
-    // Struktur modal kustom ini akan dibuat di common.js agar global
-    const customAlertModal = document.createElement('div');
-    customAlertModal.id = 'custom-alert-modal';
-    // Gunakan kelas .modal untuk gaya dasar yang konsisten dengan modal lain
-    customAlertModal.classList.add('modal'); 
-    customAlertModal.innerHTML = `
-        <div class="modal-content small-modal">
-            <span class="close-button" id="custom-alert-close-btn">&times;</span>
-            <h2 id="custom-alert-title"></h2>
-            <p id="custom-alert-message"></p>
-            <div class="modal-actions">
-                <button id="custom-alert-ok-btn" class="modal-btn ok-btn">OK</button>
-                <button id="custom-alert-cancel-btn" class="modal-btn cancel-btn" style="display:none;">Batal</button>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(customAlertModal);
-
-    const customAlertTitle = document.getElementById('custom-alert-title');
-    const customAlertMessage = document.getElementById('custom-alert-message');
-    const customAlertOkBtn = document.getElementById('custom-alert-ok-btn');
-    const customAlertCancelBtn = document.getElementById('custom-alert-cancel-btn');
-    const customAlertCloseBtn = document.getElementById('custom-alert-close-btn');
-
-    // Fungsi utilitas untuk menutup modal kustom
-    function closeCustomModal(modalElement, callback, result = false) {
-        modalElement.classList.remove('show');
-        modalElement.addEventListener('transitionend', function handler() {
-            modalElement.style.display = 'none';
-            modalElement.style.pointerEvents = 'none';
-            modalElement.removeEventListener('transitionend', handler);
-            if (callback) callback(result); 
-        }, { once: true });
-        // Hapus semua listener sementara
-        customAlertOkBtn.removeEventListener('click', okListener);
-        customAlertCancelBtn.removeEventListener('click', cancelListener);
-        customAlertCloseBtn.removeEventListener('click', cancelListener);
-        customAlertModal.removeEventListener('click', handleOutsideClickForCustomModal);
-    }
-
-    // Listener untuk OK/Cancel (perlu scope global agar bisa di-remove)
-    let okListener, cancelListener;
-
-    // Listener untuk klik di luar modal (langsung di background modal)
-    function handleOutsideClickForCustomModal(e) {
-        if (e.target === customAlertModal) {
-            closeCustomModal(customAlertModal, cancelListener ? cancelListener : okListener, false); 
-        }
-    }
-
+    // Perbaikan: Hapus seluruh logika untuk modal kustom alert/confirm
+    // Ganti dengan fungsi placeholder yang hanya melakukan console.log
     window.showAlert = (message, title = 'Notifikasi') => {
-        return new Promise(resolve => {
-            customAlertTitle.textContent = title;
-            customAlertMessage.textContent = message;
-            customAlertCancelBtn.style.display = 'none'; 
-
-            customAlertModal.style.display = 'flex'; 
-            setTimeout(() => {
-                customAlertModal.classList.add('show');
-                customAlertModal.style.pointerEvents = 'auto'; 
-            }, 10);
-            
-            okListener = () => {
-                closeCustomModal(customAlertModal, resolve, true);
-            };
-            customAlertOkBtn.addEventListener('click', okListener, { once: true });
-            customAlertCloseBtn.addEventListener('click', okListener, { once: true }); 
-            customAlertModal.addEventListener('click', handleOutsideClickForCustomModal); 
-        });
+        console.log(`[ALERT - ${title}]: ${message}`);
+        // Jika Anda ingin pesan ini muncul di UI secara non-intrusif, 
+        // Anda perlu mengimplementasikan sistem pesan global di sini
+        // atau memastikan halaman-halaman yang memanggil ini memiliki penanganan UI sendiri.
     };
 
     window.showConfirm = (message, title = 'Konfirmasi') => {
-        return new Promise(resolve => {
-            customAlertTitle.textContent = title;
-            customAlertMessage.textContent = message;
-            customAlertCancelBtn.style.display = 'inline-block'; 
-
-            customAlertModal.style.display = 'flex'; 
-            setTimeout(() => {
-                customAlertModal.classList.add('show');
-                customAlertModal.style.pointerEvents = 'auto'; 
-            }, 10);
-
-            okListener = () => {
-                closeCustomModal(customAlertModal, resolve, true);
-            };
-            cancelListener = () => {
-                closeCustomModal(customAlertModal, resolve, false);
-            };
-
-            customAlertOkBtn.addEventListener('click', okListener, { once: true });
-            customAlertCancelBtn.addEventListener('click', cancelListener, { once: true });
-            customAlertCloseBtn.addEventListener('click', cancelListener, { once: true }); 
-            customAlertModal.addEventListener('click', handleOutsideClickForCustomModal); 
-        });
+        console.log(`[CONFIRM - ${title}]: ${message}`);
+        // Karena ini confirm, asumsikan default 'true' jika tidak ada UI
+        // atau pertimbangkan untuk hanya digunakan di tempat di mana tidak ada efek samping serius.
+        return Promise.resolve(true); // Selalu mengembalikan true (konfirmasi berhasil)
     };
 
-    // Style untuk modal kustom (modal-actions, modal-btn, ok-btn, cancel-btn, small-modal)
-    // Dibuat sebagai <style> tag karena CSS ini spesifik untuk modal yang dibuat oleh JS
-    const customModalStyle = document.createElement('style');
-    customModalStyle.innerHTML = `
-        /* Gaya dasar modal sudah di settings.css atau common.css, ini penambahan untuk fungsionalitas */
-        .modal-actions {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .modal-btn {
-            padding: 10px 20px;
-            border-radius: 20px;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
-        }
-        .ok-btn {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        .ok-btn:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-        .cancel-btn {
-            background-color: #f0f0f0;
-            color: var(--text-color);
-        }
-        .cancel-btn:hover {
-            background-color: #e0e0e0;
-            transform: translateY(-2px);
-        }
-        .small-modal {
-            max-width: 400px; /* Lebar lebih kecil untuk alert/confirm */
-        }
-    `;
-    document.head.appendChild(customModalStyle);
-
+    // Hapus <style> tag yang dibuat oleh JS untuk modal kustom (jika ada di common.js)
+    // const customModalStyle = document.createElement('style');
+    // customModalStyle.innerHTML = `...`;
+    // document.head.appendChild(customModalStyle);
 });

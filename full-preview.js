@@ -1,3 +1,7 @@
+// full-preview.js
+// IMPORT: Mengimpor thesaurusDataMap dari dictionary.js
+import { thesaurusDataMap } from './dictionary.js';
+
 // Membungkus seluruh kode dalam DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
     console.log("initFullPreviewPage called!"); 
@@ -130,6 +134,39 @@ Di ujung malam, di sanubariku.`,
         },
     ];
     let poemsData = [];
+
+    // Fungsi untuk memuat data thesaurus kustom dari localStorage
+    function loadUserThesaurusData() {
+        try {
+            const data = localStorage.getItem('userThesaurusData'); // Kunci yang sama dengan thesaurus.js
+            return data ? JSON.parse(data) : [];
+        } catch (e) {
+            console.error("Error loading user thesaurus data from localStorage:", e);
+            return [];
+        }
+    }
+
+    // Gabungkan data thesaurus bawaan dengan data kustom pengguna
+    const combinedThesaurusDataMap = (() => {
+        const userEntries = loadUserThesaurusData();
+        let combinedMap = { ...thesaurusDataMap }; // Mulai dengan data dari dictionary.js
+
+        userEntries.forEach(entry => {
+            // Timpa atau tambahkan entri kustom
+            combinedMap[entry.word.toLowerCase()] = {
+                sinonim: entry.sinonim,
+                antonim: entry.antonim,
+                isCustom: true // Tandai sebagai kustom
+            };
+        });
+        return combinedMap;
+    })();
+
+    // Tetapkan thesaurusDataMap yang sudah digabungkan ke window agar bisa diakses secara global
+    // (berguna jika modul lain di luar `type="module"` memerlukannya)
+    window.thesaurusDataMap = combinedThesaurusDataMap;
+    console.log("full-preview.js: window.thesaurusDataMap is now available and includes custom data.");
+
 
     // BUG FIX: Ensure unique IDs for all poems, similar to script.js logic
     function getAndCombinePoems() {
@@ -274,9 +311,9 @@ Di ujung malam, di sanubariku.`,
                         // Hapus tanda baca dari awal/akhir kata, jika ada, untuk pencarian yang lebih akurat
                         const cleanedWord = rawWord.replace(/^[.,!?;:()"']+|[.,!?;:()"']+$|[^\w\s-]/g, '').toLowerCase(); 
 
-                        // Periksa apakah window.thesaurusDataMap sudah ada dan berisi data
-                        if (window.thesaurusDataMap) {
-                            const entry = window.thesaurusDataMap[cleanedWord];
+                        // Gunakan combinedThesaurusDataMap yang sudah diinisialisasi
+                        if (combinedThesaurusDataMap) {
+                            const entry = combinedThesaurusDataMap[cleanedWord];
                             if (entry) {
                                 console.log(`Found thesaurus entry for "${cleanedWord}":`, entry);
                                 showTooltip(wordElement, entry);
@@ -285,7 +322,7 @@ Di ujung malam, di sanubariku.`,
                                 showTooltip(wordElement, { sinonim: [], antonim: [] }); // Tampilkan tooltip dengan pesan "Tidak ada"
                             }
                         } else {
-                            console.error("Thesaurus data map (window.thesaurusDataMap) is not available.");
+                            console.error("Thesaurus data map (combinedThesaurusDataMap) is not available.");
                             showTooltip(wordElement, { sinonim: [], antonim: [] }); // Fallback
                         }
                     });
@@ -316,12 +353,6 @@ Di ujung malam, di sanubariku.`,
         }
     }
     
-    // Pastikan thesaurusDataMap sudah dimuat sebelum loadPoem
-    // thesaurus.js harus dimuat sebelum full-preview.js di HTML
-    const checkThesaurusReady = setInterval(() => {
-        if (window.thesaurusDataMap) {
-            clearInterval(checkThesaurusReady);
-            loadPoem();
-        }
-    }, 100); // Cek setiap 100ms
+    // Langsung panggil loadPoem karena thesaurusDataMap sudah diimpor
+    loadPoem();
 });

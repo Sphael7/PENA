@@ -48,28 +48,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateFavoriteState(button, idea) {
+        console.log("updateFavoriteState dipanggil untuk:", idea);
         const isFavorited = favoriteIdeas.some(fav =>
             fav.type === idea.type && fav.value === idea.value
         );
         if (isFavorited) {
             button.classList.add('active');
             button.innerHTML = '<i class="fas fa-heart"></i> Hapus Favorit';
+            console.log("Ide ditandai sebagai favorit (active).");
         } else {
             button.classList.remove('active');
             button.innerHTML = '<i class="fas fa-heart"></i> Simpan Favorit';
+            console.log("Ide ditandai sebagai bukan favorit (inactive).");
         }
     }
 
     function toggleFavorite(idea) {
+        console.log("toggleFavorite dipanggil untuk:", idea);
         const index = favoriteIdeas.findIndex(fav =>
             fav.type === idea.type && fav.value === idea.value
         );
         if (index > -1) {
             favoriteIdeas.splice(index, 1);
+            console.log("Ide dihapus dari favorit. Total favorit:", favoriteIdeas.length);
         } else {
             favoriteIdeas.push(idea);
+            console.log("Ide ditambahkan ke favorit. Total favorit:", favoriteIdeas.length);
         }
         localStorage.setItem('favoriteIdeas', JSON.stringify(favoriteIdeas));
+        console.log("favoriteIdeas disimpan ke localStorage.");
     }
 
     // --- Fungsi untuk Mengelola Status Tombol Slot ---
@@ -80,10 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (regenerateSlotBtn) regenerateSlotBtn.disabled = disabled;
         if (saveBtn) saveBtn.disabled = disabled;
         if (useBtn) useBtn.disabled = disabled;
+        console.log(`Status tombol Slot Kata disetel: regenerate=${!disabled}, save=${!disabled}, use=${!disabled}`);
     }
 
     // --- Logika Tab Navigasi ---
     function showZone(zoneId) {
+        console.log("Mengubah zona ke:", zoneId);
         if (zoneId === 'classic') {
             zoneClassic.classList.add('active');
             zoneSlot.classList.remove('active');
@@ -151,20 +160,29 @@ document.addEventListener('DOMContentLoaded', () => {
         updateFavoriteState(favBtn, ideaData);
 
         favBtn.addEventListener('click', () => {
+            console.log("Tombol Simpan/Hapus Favorit (Kartu Klasik) diklik:", ideaData);
             toggleFavorite(ideaData);
             updateFavoriteState(favBtn, ideaData);
         });
 
         card.querySelector('.use-for-challenge-btn').addEventListener('click', (e) => {
             const ideaValue = e.currentTarget.dataset.ideaValue;
+            console.log("Tombol Gunakan (Kartu Klasik) diklik. Mengirim ide:", ideaValue);
             // Redirect to write page, passing the idea as a URL parameter
-            animatePageTransition(`write.html?idea=${encodeURIComponent(ideaValue)}`);
+            // Pastikan animatePageTransition ada di common.js dan berfungsi
+            if (typeof animatePageTransition === 'function') {
+                animatePageTransition(`write.html?idea=${encodeURIComponent(ideaValue)}`);
+            } else {
+                console.warn("animatePageTransition tidak ditemukan, navigasi langsung.");
+                window.location.href = `write.html?idea=${encodeURIComponent(ideaValue)}`;
+            }
         });
 
         return card;
     }
 
     function renderClassicIdeas() {
+        console.log("Rendering ulang kartu ide klasik...");
         classicGrid.innerHTML = '';
         const types = ['word', 'theme', 'quote', 'image']; // Jenis kartu yang akan ditampilkan
         types.forEach(type => {
@@ -173,10 +191,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (regenerateClassicBtn) {
             regenerateClassicBtn.disabled = false; // Pastikan tombol aktif
         }
+        console.log("Kartu ide klasik selesai dirender.");
     }
 
     // --- Logika Zona Slot Kata ---
     function initializeSlotKataUI() {
+        console.log("Menginisialisasi UI Slot Kata...");
         zoneSlot.innerHTML = `
             <div class="slot-machine-container">
                 <div class="slot-column" id="slot-column-1"></div>
@@ -192,15 +212,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
             </div>
         `;
-        // Initial spin to populate slots
         // Pastikan event listeners terpasang setelah elemen dibuat
         attachSlotEventListeners();
         // Setel status tombol ke disabled selama putaran awal
         setSlotButtonStates(true); 
         spinSlots(); // Mulai putaran awal
+        console.log("UI Slot Kata selesai diinisialisasi dan memulai putaran awal.");
     }
 
     function spinSlots() {
+        console.log("Memulai putaran slot...");
         const column1 = document.getElementById('slot-column-1');
         const column2 = document.getElementById('slot-column-2');
         const column3 = document.getElementById('slot-column-3');
@@ -245,6 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Set data-attribute untuk tombol 'Gunakan Kombinasi Ini' setelah currentSlotIdea disetel
             const useBtn = document.getElementById('use-slot-idea-btn');
             if (useBtn) useBtn.dataset.ideaValue = currentSlotIdea.value; 
+            console.log("Putaran slot selesai. Hasil:", currentSlotIdea.value);
         });
     }
 
@@ -255,6 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
         finalItem.classList.add('slot-item', 'final-result');
         finalItem.textContent = finalResult;
         column.appendChild(finalItem);
+        console.log(`Slot ${column.id} berhenti di: ${finalResult}`);
     }
 
     function attachSlotEventListeners() {
@@ -270,23 +293,38 @@ document.addEventListener('DOMContentLoaded', () => {
             useBtn.removeEventListener('click', handleUseSlotIdeaClick); // Hapus listener lama jika ada
             useBtn.addEventListener('click', handleUseSlotIdeaClick);
         }
+        console.log("Event listeners untuk tombol Slot Kata terpasang.");
     }
 
     function handleSaveSlotIdeaClick() {
-        if (!currentSlotIdea) return;
+        console.log("Tombol Simpan Inspirasi (Slot Kata) diklik.");
+        if (!currentSlotIdea) {
+            console.warn("Tidak ada ide slot saat ini untuk disimpan.");
+            return;
+        }
         toggleFavorite(currentSlotIdea);
         updateSaveButtonStateSlot();
     }
 
     function handleUseSlotIdeaClick(e) {
         const ideaValue = e.currentTarget.dataset.ideaValue;
-        animatePageTransition(`write.html?idea=${encodeURIComponent(ideaValue)}`);
+        console.log("Tombol Gunakan Kombinasi Ini (Slot Kata) diklik. Mengirim ide:", ideaValue);
+        // Pastikan animatePageTransition ada di common.js dan berfungsi
+        if (typeof animatePageTransition === 'function') {
+            animatePageTransition(`write.html?idea=${encodeURIComponent(ideaValue)}`);
+        } else {
+            console.warn("animatePageTransition tidak ditemukan, navigasi langsung.");
+            window.location.href = `write.html?idea=${encodeURIComponent(ideaValue)}`;
+        }
     }
 
 
     function updateSaveButtonStateSlot() {
         const saveBtn = document.getElementById('save-slot-idea-btn');
-        if (!saveBtn || !currentSlotIdea) return;
+        if (!saveBtn || !currentSlotIdea) {
+            console.warn("Tombol simpan slot atau ide saat ini tidak ditemukan untuk update status.");
+            return;
+        }
 
         const isFavorited = favoriteIdeas.some(fav =>
             fav.type === currentSlotIdea.type && fav.value === currentSlotIdea.value
@@ -295,9 +333,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isFavorited) {
             saveBtn.classList.add('active');
             saveBtn.innerHTML = '<i class="fas fa-heart"></i> Hapus Inspirasi';
+            console.log("Status tombol simpan slot: aktif (favorit).");
         } else {
             saveBtn.classList.remove('active');
             saveBtn.innerHTML = '<i class="fas fa-heart"></i> Simpan Inspirasi';
+            console.log("Status tombol simpan slot: tidak aktif (bukan favorit).");
         }
     }
 
@@ -309,11 +349,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listener untuk tombol Regenerasi di Zona Klasik
     if (regenerateClassicBtn) {
         regenerateClassicBtn.addEventListener('click', renderClassicIdeas);
+        console.log("Event listener untuk regenerateClassicBtn terpasang.");
     }
 
     // Event listener untuk tombol Regenerasi di Zona Slot
     if (regenerateSlotBtn) {
         regenerateSlotBtn.addEventListener('click', spinSlots);
+        console.log("Event listener untuk regenerateSlotBtn terpasang.");
     }
 
 
