@@ -23,7 +23,7 @@
 }
 
 .analytics-section h2 {
-    font-family: 'Pacifico', cursive;
+    font-family: 'Pacifico', cursive; /* Pertahankan font khusus */
     font-size: 2.2em;
     color: var(--primary-color);
     margin-top: 0;
@@ -64,6 +64,7 @@
 }
 
 .analytics-item span {
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 0.95em;
     color: var(--text-color);
     text-align: center;
@@ -71,6 +72,7 @@
 }
 
 .analytics-item strong {
+    font-family: inherit; /* Akan mengikuti font global */
     display: block;
     font-size: 1.3em;
     color: var(--primary-color);
@@ -106,6 +108,7 @@
     font-size: 0.9em;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-family: inherit; /* Akan mengikuti font global */
 }
 
 .filter-btn:hover:not(.active) {
@@ -133,7 +136,7 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
-    font-family: 'Quicksand', sans-serif;
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 0.9em;
     color: var(--text-color);
     cursor: pointer;
@@ -172,7 +175,7 @@
 }
 
 .my-poem-card h3 {
-    font-family: 'Pacifico', cursive;
+    font-family: 'Pacifico', cursive; /* Pertahankan font khusus */
     font-size: 1.8em;
     color: var(--primary-color);
     margin-top: 0;
@@ -181,6 +184,7 @@
 }
 
 .my-poem-card .poem-author {
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 0.95em;
     font-style: italic;
     color: var(--soft-text);
@@ -188,7 +192,7 @@
 }
 
 .my-poem-card .poem-preview {
-    font-family: 'Lora', serif;
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 1em;
     color: #555;
     line-height: 1.6;
@@ -200,6 +204,7 @@
 }
 
 .my-poem-card .poem-meta {
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 0.85em;
     color: var(--soft-text);
     border-top: 1px solid #eee;
@@ -226,6 +231,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    font-family: inherit; /* Akan mengikuti font global */
 }
 
 .my-poem-card .action-btn:hover {

@@ -131,9 +131,25 @@ Di ujung malam, di sanubariku.`,
     ];
     let poemsData = [];
 
+    // BUG FIX: Ensure unique IDs for all poems, similar to script.js logic
     function getAndCombinePoems() {
         const storedPoems = JSON.parse(localStorage.getItem('poems')) || [];
-        poemsData = [...storedPoems.map(p => ({ ...p, theme: p.theme || 'white' })), ...initialPoems];
+        const combinedPoemsMap = new Map(); // Using Map to avoid duplication based on ID
+
+        // Add initialPoems first with unique IDs
+        initialPoems.forEach((poem, index) => {
+            const id = `initial-${index}`;
+            combinedPoemsMap.set(id, { ...poem, theme: poem.theme || 'white', id: id });
+        });
+
+        // Add storedPoems, they will have 'stored-X' IDs or original IDs if edited
+        storedPoems.forEach((poem, index) => {
+            // Assume stored poems already have an 'id' or assign one if missing
+            const id = poem.id || `stored-${index}`; // If poem has an ID, use it. Otherwise, generate.
+            combinedPoemsMap.set(id, { ...poem, theme: poem.theme || 'white', id: id });
+        });
+
+        poemsData = Array.from(combinedPoemsMap.values());
     }
 
     // Fungsi untuk membungkus setiap kata dalam tag span
@@ -151,7 +167,8 @@ Di ujung malam, di sanubariku.`,
 
             // Regex untuk memecah teks berdasarkan spasi atau tanda baca, tapi mempertahankan tanda baca
             // Menangkap kata (\b\w+\b), tanda baca tunggal ([.,!?;:()"]), atau spasi (\s+)
-            const wordsAndPunctuation = paragraph.match(/(\b\w+\b|[.,!?;:()"']|\s+)/g);
+            // Updated regex to handle more punctuation and contractions correctly
+            const wordsAndPunctuation = paragraph.match(/(\b[\w'-]+\b|[.,!?;:()"'\-—–—\u2013-\u2015]|\s+)/g);
             
             if (!wordsAndPunctuation) {
                 tokenizedHtml += `<p>${paragraph}</p>`; // Jika tidak ada kata, biarkan apa adanya dalam p
@@ -160,16 +177,17 @@ Di ujung malam, di sanubariku.`,
 
             let paragraphHtml = '';
             wordsAndPunctuation.forEach(part => {
-                if (/\b\w+\b/.test(part)) { // Jika ini adalah kata (alfanumerik dengan batasan kata)
+                // Check if part is a word (contains at least one letter/number and not just punctuation)
+                if (/\w/.test(part) && !/^[.,!?;:()"'\-—–—\u2013-\u2015]+$/.test(part)) { 
                     paragraphHtml += `<span class="word">${part}</span>`;
-                } else if (part === '\n') { // Jika ada newline di tengah paragraf
-                    paragraphHtml += '<br>'; // Ganti dengan <br>
+                } else if (part === '\n') { // If there's a newline in the middle of a paragraph
+                    paragraphHtml += '<br>'; // Replace with <br>
                 }
-                else { // Jika ini spasi atau tanda baca lainnya
+                else { // If it's spaces or other punctuation
                     paragraphHtml += part;
                 }
             });
-            tokenizedHtml += `<p>${paragraphHtml}</p>`; // Bungkus setiap paragraf dengan tag <p>
+            tokenizedHtml += `<p>${paragraphHtml}</p>`; // Wrap each paragraph with <p> tag
         });
         return tokenizedHtml;
     }
@@ -206,10 +224,10 @@ Di ujung malam, di sanubariku.`,
             top = rect.bottom + scrollY + 15; // Posisikan di bawah kata
         }
         if (left - (wordTooltip.offsetWidth / 2) < scrollX) { // Jika keluar dari kiri viewport (perhitungan setelah transform -50%)
-            left = scrollX + (wordTooltip.offsetWidth / 2); // Sesuaikan agar tidak keluar kiri
+            left = scrollX + (wordTooltip.offsetWidth / 2) + 5; // Sesuaikan agar tidak keluar kiri, tambah sedikit margin
         }
         if (left + (wordTooltip.offsetWidth / 2) > window.innerWidth + scrollX) { // Jika keluar dari kanan viewport
-            left = window.innerWidth + scrollX - (wordTooltip.offsetWidth / 2); // Sesuaikan agar tidak keluar kanan
+            left = window.innerWidth + scrollX - (wordTooltip.offsetWidth / 2) - 5; // Sesuaikan agar tidak keluar kanan, kurangi sedikit margin
         }
         
         wordTooltip.style.top = `${top}px`;
@@ -235,32 +253,17 @@ Di ujung malam, di sanubariku.`,
     function loadPoem() {
         const selectedPoemId = localStorage.getItem('selectedPoemId');
         
-        getAndCombinePoems();
+        getAndCombinePoems(); // Load all poems with their assigned unique IDs
 
         if (selectedPoemId !== null) {
-            // Find poem by originalIndex
-            const poem = poemsData.find((p, idx) => {
-                // Determine if it's an initial poem or a stored poem to match the ID format
-                const isInitialPoem = initialPoems.some(ip => ip.title === p.title && ip.author === p.author && ip.content === p.content);
-                const prefix = isInitialPoem ? 'initial-' : 'stored-';
-                // Find the original index within its respective array (initialPoems or storedPoems)
-                let actualIndex;
-                if (isInitialPoem) {
-                    actualIndex = initialPoems.findIndex(ip => ip.title === p.title && ip.author === p.author && ip.content === p.content);
-                } else {
-                    const stored = JSON.parse(localStorage.getItem('poems')) || [];
-                    actualIndex = stored.findIndex(sp => sp.title === p.title && sp.author === p.author && sp.content === p.content);
-                }
-                
-                return `${prefix}${actualIndex}` === selectedPoemId;
-            });
+            // Find poem by its unique 'id'
+            const poem = poemsData.find(p => p.id === selectedPoemId);
 
             if (poem) {
                 titleElement.textContent = poem.title;
                 authorElement.textContent = `- ${poem.author}`;
                 
                 // Tokenisasi konten puisi untuk fitur Click for Know
-                // Memastikan konten dipecah per paragraf dan setiap baris di dalamnya
                 contentElement.innerHTML = tokenizePoemContent(poem.content);
 
                 // Tambahkan event listener ke setiap kata yang di-tokenize

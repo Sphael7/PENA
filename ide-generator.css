@@ -39,6 +39,7 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    font-family: inherit; /* Akan mengikuti font global */
 }
 
 .tab-button:hover:not(.active) {
@@ -83,6 +84,7 @@
     align-items: center;
     gap: 8px;
     box-shadow: var(--box-shadow-medium);
+    font-family: inherit; /* Akan mengikuti font global */
 }
 
 .regenerate-zone-btn:hover:not(:disabled) {
@@ -136,6 +138,7 @@
 }
 
 .idea-card .card-type-classic {
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 0.9em;
     color: var(--soft-text);
     margin-bottom: 15px;
@@ -154,7 +157,7 @@
 }
 
 .idea-card .idea-text-classic {
-    font-family: 'Lora', serif;
+    font-family: 'Lora', serif; /* Pertahankan font khusus */
     font-size: 1.5em;
     color: var(--primary-color);
     margin: 0;
@@ -163,7 +166,7 @@
 }
 
 .idea-card .idea-quote-classic {
-    font-family: 'Merriweather', serif;
+    font-family: 'Merriweather', serif; /* Pertahankan font khusus */
     font-size: 1.2em;
     font-style: italic;
     color: var(--text-color);
@@ -171,6 +174,7 @@
     margin: 0;
 }
 .idea-card .quote-source {
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 0.9em;
     color: var(--soft-text);
     margin-top: 5px;
@@ -198,6 +202,7 @@
 }
 
 .idea-card .image-quote-overlay-classic {
+    font-family: inherit; /* Akan mengikuti font global */
     position: absolute;
     bottom: 0;
     left: 0;
@@ -235,6 +240,7 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
+    font-family: inherit; /* Akan mengikuti font global */
 }
 
 .classic-action-btn:hover {
@@ -287,7 +293,7 @@
     flex-direction: column;
     justify-content: center; /* Pusatkan item di tengah */
     align-items: center;
-    font-family: 'Quicksand', sans-serif;
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 1.5em;
     font-weight: bold;
     color: var(--primary-color);
@@ -348,6 +354,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    font-family: inherit; /* Akan mengikuti font global */
 }
 
 .idea-action-btn.favorite-btn:hover:not(:disabled) {
@@ -378,6 +385,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    font-family: inherit; /* Akan mengikuti font global */
 }
 
 .use-for-challenge-btn-slot:hover:not(:disabled) {

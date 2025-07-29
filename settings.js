@@ -1,34 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("settings.js: DOMContentLoaded triggered. (Settings script loaded)");
 
-    // Elemen Modal Font
-    const fontSelectorTrigger = document.getElementById('font-selector-trigger');
-    const fontModal = document.getElementById('font-modal');
-    const closeFontModalBtn = document.getElementById('close-font-modal-btn');
-    const fontOptionsGrid = document.getElementById('font-options-grid');
-    const overlay = document.getElementById('overlay'); // Dapatkan overlay yang sama dari common.js
+    // Elemen Modal Font (sekarang dikomentari karena dihapus dari HTML)
+    // const fontSelectorTrigger = document.getElementById('font-selector-trigger');
+    // const fontModal = document.getElementById('font-modal');
+    // const closeFontModalBtn = document.getElementById('close-font-modal-btn');
+    // const fontOptionsGrid = document.getElementById('font-options-grid');
 
-    // LOG: Memeriksa apakah elemen-elemen Font Selector ditemukan
-    console.log("settings.js: Font Selector Elements - trigger:", fontSelectorTrigger, "modal:", fontModal, "closeBtn:", closeFontModalBtn, "grid:", fontOptionsGrid);
+    // Hapus referensi ke variabel global font yang tidak lagi dibutuhkan di settings.js
+    // const availableFonts = window.availableFonts;
+    // const FONT_STORAGE_KEY = window.FONT_STORAGE_KEY;
+    // const applyFontToBody = window.applyFontToBody;
 
-
-    // Definisi font yang tersedia
-    const availableFonts = [
-        { name: 'Quicksand (Default)', className: 'font-quicksand', style: 'font-family: "Quicksand", sans-serif;' },
-        { name: 'Lora', className: 'font-lora', style: 'font-family: "Lora", serif;' },
-        { name: 'Merriweather', className: 'font-merriweather', style: 'font-family: "Merriweather", serif;' },
-        { name: 'Playfair Display', className: 'font-playfair', style: 'font-family: "Playfair Display", serif;' }
-    ];
-    const FONT_STORAGE_KEY = 'selectedPoemFont';
-
-    // Fungsi untuk merender pilihan font
+    // Fungsi untuk merender pilihan font (sekarang tidak lagi dipanggil)
+    /*
     function renderFontOptions() {
         if (!fontOptionsGrid) {
             console.error("settings.js: fontOptionsGrid not found, cannot render font options.");
             return;
         }
         fontOptionsGrid.innerHTML = '';
-        const currentFontClass = localStorage.getItem(FONT_STORAGE_KEY) || 'font-quicksand'; // Default Quicksand
+        const currentFontClass = localStorage.getItem(FONT_STORAGE_KEY) || 'font-quicksand';
 
         availableFonts.forEach(font => {
             const fontCard = document.createElement('div');
@@ -37,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 fontCard.classList.add('active');
             }
             fontCard.setAttribute('data-font-class', font.className);
-            fontCard.style = font.style; // Terapkan gaya font langsung untuk preview
+            fontCard.style = font.style;
 
             fontCard.innerHTML = `
                 <p class="font-preview-text">Puisi adalah kehidupan</p>
@@ -45,56 +37,63 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             fontOptionsGrid.appendChild(fontCard);
         });
-        console.log("settings.js: Font options rendered.");
+        console.log("settings.js: Font options rendered into grid.");
     }
+    */
 
-    // Fungsi untuk menerapkan font ke body (untuk elemen puisi yang inherit)
-    function applyFontToBody(fontClass) {
-        // Hapus semua kelas font sebelumnya
-        document.body.classList.remove(...availableFonts.map(f => f.className));
-        // Tambahkan kelas font yang baru
-        document.body.classList.add(fontClass);
-        // Simpan pilihan di localStorage
-        localStorage.setItem(FONT_STORAGE_KEY, fontClass);
-        console.log("settings.js: Applied font:", fontClass);
-    }
-
-    // Fungsi untuk memuat font yang tersimpan saat halaman dimuat
-    function loadSavedFont() {
-        const savedFont = localStorage.getItem(FONT_STORAGE_KEY);
-        if (savedFont) {
-            applyFontToBody(savedFont);
-        } else {
-            // Terapkan default jika belum ada pilihan
-            applyFontToBody('font-quicksand');
-        }
-        console.log("settings.js: Loaded saved font.");
-    }
-
-    // Event listener untuk membuka modal font
+    // Event listener untuk membuka modal font (sekarang dikomentari)
+    /*
     if (fontSelectorTrigger) {
         fontSelectorTrigger.addEventListener('click', () => {
             console.log("settings.js: Font selector trigger clicked. Opening modal.");
-            renderFontOptions(); // Render opsi setiap kali modal dibuka
-            if (fontModal) fontModal.style.display = 'block';
-            if (overlay) overlay.classList.add('active'); // Aktifkan overlay
+            renderFontOptions(); 
+
+            if (fontModal) {
+                fontModal.style.display = 'flex';
+                setTimeout(() => {
+                    fontModal.classList.add('show');
+                    fontModal.style.pointerEvents = 'auto';
+                }, 10);
+            }
+            const globalOverlay = document.getElementById('overlay');
+            if(globalOverlay) {
+                globalOverlay.classList.add('active');
+                globalOverlay.style.display = 'block';
+                globalOverlay.style.pointerEvents = 'auto';
+            }
         });
     } else {
         console.warn("settings.js: fontSelectorTrigger not found.");
     }
+    */
 
-    // Event listener untuk menutup modal font
+    // Event listener untuk menutup modal font (sekarang dikomentari)
+    /*
     if (closeFontModalBtn) {
         closeFontModalBtn.addEventListener('click', () => {
             console.log("settings.js: Close font modal button clicked. Closing modal.");
-            if (fontModal) fontModal.style.display = 'none';
-            if (overlay) overlay.classList.remove('active'); // Nonaktifkan overlay
+            if (fontModal) {
+                fontModal.classList.remove('show');
+                fontModal.addEventListener('transitionend', function handler() {
+                    fontModal.style.display = 'none';
+                    fontModal.style.pointerEvents = 'none';
+                    fontModal.removeEventListener('transitionend', handler);
+                }, { once: true });
+            }
+            const globalOverlay = document.getElementById('overlay');
+            if(globalOverlay) {
+                globalOverlay.classList.remove('active');
+                globalOverlay.style.display = 'none';
+                globalOverlay.style.pointerEvents = 'none';
+            }
         });
     } else {
         console.warn("settings.js: closeFontModalBtn not found.");
     }
+    */
 
-    // Event listener untuk memilih font dari grid
+    // Event listener untuk memilih font dari grid (sekarang dikomentari)
+    /*
     if (fontOptionsGrid) {
         fontOptionsGrid.addEventListener('click', (e) => {
             const fontCard = e.target.closest('.font-card');
@@ -102,12 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const selectedFontClass = fontCard.getAttribute('data-font-class');
                 if (selectedFontClass) {
                     console.log("settings.js: Font card clicked. Applying font:", selectedFontClass);
-                    applyFontToBody(selectedFontClass);
-                    // Perbarui status aktif pada kartu font
+                    applyFontToBody(selectedFontClass); 
                     document.querySelectorAll('.font-card').forEach(card => {
                         card.classList.remove('active');
                     });
                     fontCard.classList.add('active');
+                    if (closeFontModalBtn) closeFontModalBtn.click();
                 } else {
                     console.warn("settings.js: Clicked font card without data-font-class attribute.");
                 }
@@ -118,21 +117,5 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.warn("settings.js: fontOptionsGrid not found.");
     }
-
-    // Event listener untuk menutup modal jika klik di luar modal atau di overlay
-    if (overlay && fontModal) {
-        if (!overlay.hasAttribute('data-overlay-listener-added')) {
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) { 
-                    console.log("settings.js: Overlay clicked. Closing font modal.");
-                    if (fontModal) fontModal.style.display = 'none';
-                    overlay.classList.remove('active');
-                }
-            });
-            overlay.setAttribute('data-overlay-listener-added', 'true');
-        }
-    }
-    
-    // Muat font yang tersimpan saat pertama kali halaman Pengaturan dimuat
-    loadSavedFont();
+    */
 });

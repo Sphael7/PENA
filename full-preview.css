@@ -45,6 +45,7 @@
     transition: background-color 0.2s ease, border-radius 0.2s ease;
     padding: 2px 0; /* Sedikit padding agar highlight tidak terlalu menempel */
     display: inline-block; /* Penting agar hover dan posisi relatif bekerja baik di baris */
+    font-family: inherit; /* Pastikan ini juga mewarisi font */
 }
 
 .word:hover {
@@ -72,6 +73,7 @@
     word-wrap: break-word; /* Memastikan teks membungkus dalam kotak */
     overflow-wrap: break-word; /* Alternatif untuk word-wrap */
     white-space: normal; /* Pastikan teks membungkus, tidak hanya di satu baris */
+    font-family: inherit; /* Pastikan tooltip juga mewarisi font */
 }
 
 .word-tooltip.show {
@@ -86,17 +88,20 @@
     font-size: 1.1em;
     margin-bottom: 8px;
     color: #fff;
+    font-family: inherit; /* Pastikan mewarisi */
 }
 
 .word-tooltip .tooltip-detail {
     display: block;
     margin-bottom: 4px;
     color: rgba(255, 255, 255, 0.9);
+    font-family: inherit; /* Pastikan mewarisi */
 }
 
 .word-tooltip .tooltip-detail.not-found {
     font-style: italic;
     color: rgba(255, 255, 255, 0.7);
+    font-family: inherit; /* Pastikan mewarisi */
 }
 
 /* Responsive adjustments for smaller screens */

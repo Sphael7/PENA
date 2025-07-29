@@ -14,54 +14,207 @@ document.addEventListener('DOMContentLoaded', () => {
     // Data puisi pengguna akan diambil dari localStorage
     let userPoems = JSON.parse(localStorage.getItem('poems')) || [];
     let favoriteIdeas = JSON.parse(localStorage.getItem('favoriteIdeas')) || []; // Untuk menampilkan ide favorit
+    let poemFavorites = JSON.parse(localStorage.getItem('favorites')) || []; // Favorit puisi dari homepage
 
     console.log("my-poem.js: Initial userPoems from localStorage:", userPoems);
+
+    // Initial poems data (replicated for ID consistency, but ideally fetched from a single source)
+    const initialPoems = [
+        {
+            title: 'Senja di Pelupuk Mata',
+            author: 'Budi Santoso',
+            content: `Di antara senja yang merah,
+                    Larik-larik kata terukir indah.
+                    Mengalun lembut, meresap jiwa,
+                    Cinta dan rindu, sebuah cerita.
+
+                    Bintang berbisik pada rembulan,
+                    Tentang harapan yang tak terbilang.
+                    Menggenggam erat sehelai daun,
+                    Menanti pagi di ufuk timur.
+
+                    Warna jingga yang memudar,
+                    Adalah salam dari sang fajar.
+                    Menyambut malam yang kan tiba,
+                    Dalam sunyi, dalam cinta.`,
+            theme: 'yellow' 
+        },
+        {
+            title: 'Pagi yang Sunyi',
+            author: 'Citra Dewi',
+            content: `Kala mentari menyapa pagi,
+                    Embun menari di ujung jari.
+                    Langit biru jadi saksi bisu,
+                    Sebuah janji yang takkan layu.
+
+                    Langkah kecil menapaki jejak,
+                    Mengukir mimpi, tanpa terelak.
+                    Dunia fana, takkan abadi,
+                    Namun kisah ini kan terukir selamanya.
+
+                    Heningnya pagi, bisiknya angin,
+                    Adalah melodi yang takkan terganti.
+                    Menyimpan kenangan yang terpatri,
+                    Dalam hati yang takkan mati.`,
+            theme: 'blue' 
+        },
+        {
+            title: 'Lukisan Wajahmu',
+            author: 'Agus Salim',
+            content: `Wajahmu adalah lukisan pelangi,
+                    Yang mewarnai hariku setiap hari.
+                    Senyummu bagai cahaya purnama,
+                    Menerangi gelapnya jiwa.
+
+                    Di setiap kata yang terucap,
+                    Kudengar melodi yang indah.
+                    Kasihmu adalah samudra luas,
+                    Tempatku berlayar tanpa batas.
+
+                    Kau adalah bait puisi terindah,
+                    Yang takkan pernah kuakhiri.
+                    Terukir di setiap lembar hati,
+                    Untuk selamanya, untuk abadi.`,
+            theme: 'red' 
+        },
+        {
+            title: 'Rindu yang Tak Terucap',
+            author: 'Rina Purnama',
+            content: `Angin berhembus membawa berita,
+                    Tentang rindu yang tak terkira.
+                    Dedaunan berguguran di tanah,
+                    Menandakan waktu yang takkan kembali.
+
+                    Namun kenangan adalah abadi,
+                    Tersimpan rapi di dalam hati.
+                    Kisah kita kan tetap bersinar,
+                    Meski dunia terus berputar.
+
+                    Dalam sunyi, kuucapkan namamu,
+                    Berharap kau mendengarnya.
+                    Walau tak ada kata yang terucap,
+                    Rindu ini tetap memanggilmu.`,
+            theme: 'yellow' 
+        },
+        {
+            title: 'Hujan di Kota',
+            author: 'Budi Santoso',
+            content: `Hujan turun membasahi jalan,
+                    MemBawa kenangan yang tertinggal.
+                    Di balik jendela, kutuliskan kata,
+                    Tentang cerita yang takkan sirna.
+
+                    Gemericik air mengalun merdu,
+                    Menghapus jejak langkah yang pilu.
+                    Langit mendung menjadi saksi,
+                    Dari hati yang hampa tak berisi.
+
+                    Semua yang hilang, semua yang pergi,
+                    Akan kembali dalam mimpi.
+                    Hujan ini adalah teman setia,
+                    Menemani rindu yang tak bertepi.`,
+            theme: 'blue' 
+        },
+        {
+            title: 'Mimpi di Langit',
+            author: 'Rina Purnama',
+            content: `Di langit biru, kulihat awan,
+                    Melukis mimpi, tanpa batasan.
+                    Bintang-bintang menjadi saksi,
+                    Bahwa harapan takkan pernah mati.
+
+                    Angkasa luas tak bertepi,
+                    Adalah tempat jiwa kan berlari.
+                    Mengejar cahaya yang kan tiba,
+                    Menyambut takdir yang kan tiba.
+
+                    Meski tak semua mimpi terwujud,
+                    Setidaknya kita pernah berjuang.
+                    Cahaya itu kan tetap menyala,
+                    Di ujung malam, di sanubariku.`,
+            theme: 'red' 
+        },
+    ];
+
+    // Function to combine initial and stored poems, assigning unique IDs
+    function getCombinedPoemsForMyPoem() {
+        const stored = JSON.parse(localStorage.getItem('poems')) || [];
+        const combinedMap = new Map();
+
+        // Add initial poems with initial-X IDs
+        initialPoems.forEach((poem, index) => {
+            const id = `initial-${index}`;
+            combinedMap.set(id, { ...poem, id: id, isInitial: true });
+        });
+
+        // Add user-created poems with stored-X IDs.
+        // For simplicity, we assume 'poems' localStorage only contains user-created ones
+        // or that if an initial poem was edited and saved, it gets a 'stored-' ID.
+        stored.forEach((poem, index) => {
+            const id = `stored-${index}`;
+            combinedMap.set(id, { ...poem, id: id, isInitial: false });
+        });
+
+        return Array.from(combinedMap.values());
+    }
+
+    // Perbarui userPoems agar selalu menjadi gabungan dari keduanya dengan ID unik
+    let allDisplayablePoems = getCombinedPoemsForMyPoem();
 
 
     // --- Fungsi Utilitas ---
     function formatDate(dateString) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString('id-ID', options);
+        // Check if dateCreated exists and is valid, otherwise use a fallback date
+        try {
+            const date = new Date(dateString);
+            if (!isNaN(date.getTime())) { // Check for valid date
+                return date.toLocaleDateString('id-ID', options);
+            }
+        } catch (e) {
+            console.error("Invalid date string:", dateString, e);
+        }
+        return 'Tanggal tidak tersedia';
     }
 
     // Fungsi untuk merender daftar puisi
     function renderPoems(filter = 'all', sortBy = 'date-desc') {
-        let filteredPoems = [...userPoems]; // Buat salinan agar tidak mengubah array asli
+        // Always refresh all data from localStorage before rendering
+        userPoems = JSON.parse(localStorage.getItem('poems')) || [];
+        favoriteIdeas = JSON.parse(localStorage.getItem('favoriteIdeas')) || []; 
+        poemFavorites = JSON.parse(localStorage.getItem('favorites')) || []; // Reload poem favorites
+        allDisplayablePoems = getCombinedPoemsForMyPoem(); // Reload combined poems with correct IDs
+
+        let filteredPoems = [...allDisplayablePoems]; // Buat salinan agar tidak mengubah array asli
 
         // Filter
         if (filter !== 'all') {
             if (filter === 'favorites') {
-                // Asumsi puisi di localStorage disimpan dengan ID atau cara untuk mengidentifikasi favorit
-                // Untuk demo ini, kita akan menandai puisi sebagai favorit di sini jika id-nya ada di favoriteIdeas
-                filteredPoems = filteredPoems.filter((poem, index) => {
-                    // Ini adalah contoh sederhana. Jika puisi punya ID unik, gunakan itu.
-                    // Saat ini, favoriteIdeas menyimpan value dari generator ide, bukan indeks puisi.
-                    // Anda perlu menambahkan cara untuk menandai puisi yang disimpan sebagai favorit saat dibuat.
-                    // Untuk sementara, saya akan mengabaikan filter favorit jika struktur belum mendukung.
-                    // return false; // Nonaktifkan sementara atau butuh logika lebih kompleks
-                    const isPoemFavorite = favoriteIdeas.some(fav => 
-                        fav.type === "Puisi Tersimpan" && fav.value === poem.title
-                    );
-                    return isPoemFavorite;
-                });
+                // BUG FIX: Filter poems based on the actual 'favorites' array from script.js
+                filteredPoems = filteredPoems.filter(poem => poemFavorites.includes(poem.id));
             } else {
-                // Filter berdasarkan tema, misalnya
-                // filteredPoems = filteredPoems.filter(poem => poem.theme === filter);
+                // Tambahkan filter berdasarkan tema (jika ada properti tema di puisi)
+                filteredPoems = filteredPoems.filter(poem => poem.theme === filter);
             }
         }
 
         // Sort
         filteredPoems.sort((a, b) => {
+            // Tanggal dibuat hanya ada di puisi yang disimpan (`userPoems`), tidak di `initialPoems`
+            // Untuk puisi awal, kita bisa menggunakan tanggal fallback atau logika lain jika diperlukan.
+            // Untuk saat ini, asumsikan dateCreated ada atau default ke 0.
+            const dateA = new Date(a.dateCreated || 0);
+            const dateB = new Date(b.dateCreated || 0);
+
             if (sortBy === 'date-desc') {
-                return new Date(b.dateCreated || 0) - new Date(a.dateCreated || 0);
+                return dateB - dateA;
             } else if (sortBy === 'date-asc') {
-                return new Date(a.dateCreated || 0) - new Date(b.dateCreated || 0);
+                return dateA - dateB;
             } else if (sortBy === 'title-asc') {
                 return a.title.localeCompare(b.title);
             } else if (sortBy === 'title-desc') {
                 return b.title.localeCompare(a.title);
             }
-            // Tambahkan sortir berdasarkan panjang puisi, dll.
             return 0;
         });
 
@@ -69,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (filteredPoems.length === 0) {
             if (poemListContainer) poemListContainer.style.display = 'none';
-            if (noPoemsMessage) noPoemsMessage.style.display = 'flex'; // Changed to 'flex'
+            if (noPoemsMessage) noPoemsMessage.style.display = 'flex'; 
             console.log("my-poem.js: Displaying no poems message.");
             return;
         } else {
@@ -80,45 +233,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (poemListContainer) poemListContainer.innerHTML = ''; // Bersihkan daftar
 
-        filteredPoems.forEach((poem, index) => {
+        filteredPoems.forEach((poem) => { // No need for 'index' here, use poem.id
             const poemCard = document.createElement('div');
             poemCard.classList.add('my-poem-card', poem.theme || 'white'); // Gunakan tema puisi
 
-            // Gunakan indeks dari array `userPoems` yang asli untuk referensi yang akurat
-            // Penting: userPoems.indexOf(poem) mungkin tidak akurat jika ada duplikasi data
-            // Sebaiknya setiap puisi memiliki ID unik yang disimpan. Untuk demo ini, kita pakai indexOf.
-            const originalIndex = userPoems.indexOf(poem);
+            // Check if this poem is favorited using its unique ID
+            const isFavorited = poemFavorites.includes(poem.id);
             
             // Preview 2 baris puisi
-            const previewContent = poem.content.split('\n').filter(line => line.trim() !== '').slice(0, 2).join('<br>');
+            // Use regex to split by lines, filter out empty lines, then take first 2.
+            const previewContent = poem.content.split(/\r?\n/).filter(line => line.trim() !== '').slice(0, 2).join('<br>');
             const createdAt = poem.dateCreated ? formatDate(poem.dateCreated) : 'Tanggal tidak tersedia';
             
             // Generate tags HTML if available, otherwise an empty string
-            // Pastikan poem.tags adalah array sebelum memanggil map()
             const tagsHtml = (poem.tags && Array.isArray(poem.tags) && poem.tags.length > 0) 
                              ? poem.tags.map(tag => `<span class="poem-tag">${tag}</span>`).join('') 
                              : '';
             
-            // Check if this poem is favorited - DEFINITION ADDED HERE
-            const isFavorited = favoriteIdeas.some(fav => 
-                fav.type === "Puisi Tersimpan" && fav.value === poem.title
-            );
-
             poemCard.innerHTML = `
                 <h3>${poem.title}</h3>
                 <p class="poem-author">- ${poem.author}</p>
                 <div class="poem-preview">${previewContent}</div>
                 <div class="poem-meta">
                     <span>Dibuat: ${createdAt}</span>
-                    ${tagsHtml ? `<span>Tags: ${tagsHtml}</span>` : ''} 
+                    ${tagsHtml ? `<span class="poem-meta-tags">Tags: ${tagsHtml}</span>` : ''} 
                 </div>
                 <div class="poem-actions">
-                    <button class="action-btn favorite-toggle-btn ${isFavorited ? 'active' : ''}" data-index="${originalIndex}" data-title="${poem.title}">
+                    <button class="action-btn favorite-toggle-btn ${isFavorited ? 'active' : ''}" data-id="${poem.id}">
                         <i class="fas fa-heart"></i>
                     </button>
-                    <button class="action-btn view-detail-btn" data-index="${originalIndex}"><i class="fas fa-eye"></i> Detail</button>
-                    <button class="action-btn edit-btn" data-index="${originalIndex}"><i class="fas fa-edit"></i> Edit</button>
-                    <button class="action-btn delete-btn" data-index="${originalIndex}"><i class="fas fa-trash-alt"></i> Hapus</button>
+                    <button class="action-btn view-detail-btn" data-id="${poem.id}"><i class="fas fa-eye"></i> Detail</button>
+                    <button class="action-btn edit-btn" data-id="${poem.id}"><i class="fas fa-edit"></i> Edit</button>
+                    <button class="action-btn delete-btn" data-id="${poem.id}"><i class="fas fa-trash-alt"></i> Hapus</button>
                 </div>
             `;
             if (poemListContainer) poemListContainer.appendChild(poemCard);
@@ -131,8 +277,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function attachPoemCardListeners() {
         document.querySelectorAll('.view-detail-btn').forEach(button => {
             button.addEventListener('click', (e) => {
-                const index = parseInt(e.currentTarget.dataset.index);
-                localStorage.setItem('selectedPoemId', index);
+                const poemId = e.currentTarget.dataset.id;
+                localStorage.setItem('selectedPoemId', poemId);
                 // Pastikan animatePageTransition ada di common.js
                 if (typeof animatePageTransition === 'function') {
                     animatePageTransition('full-preview.html');
@@ -144,10 +290,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelectorAll('.edit-btn').forEach(button => {
             button.addEventListener('click', (e) => {
-                const index = parseInt(e.currentTarget.dataset.index);
+                const poemId = e.currentTarget.dataset.id;
                 // Redirect ke halaman tulis dengan puisi yang sudah ada
-                // Anda perlu memuat puisi ini di halaman tulis berdasarkan indeks
-                localStorage.setItem('editPoemId', index); // Simpan ID puisi yang akan diedit
+                localStorage.setItem('editPoemId', poemId); // Simpan ID puisi yang akan diedit
                  // Pastikan animatePageTransition ada di common.js
                  if (typeof animatePageTransition === 'function') {
                     animatePageTransition('write.html?edit=true');
@@ -158,36 +303,30 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.querySelectorAll('.delete-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                const index = parseInt(e.currentTarget.dataset.index);
-                // Menggunakan konfirmasi modal kustom jika alert/confirm tidak diinginkan
-                const userConfirmed = confirm('Anda yakin ingin menghapus puisi ini?'); // Perubahan sementara
+            button.addEventListener('click', async (e) => { // Make async to use await
+                const poemId = e.currentTarget.dataset.id;
+                // BUG FIX: Use custom showConfirm modal
+                const userConfirmed = await window.showConfirm('Anda yakin ingin menghapus puisi ini?', 'Hapus Puisi');
                 if (userConfirmed) {
-                    deletePoem(index);
+                    deletePoem(poemId);
                 }
             });
         });
 
         document.querySelectorAll('.favorite-toggle-btn').forEach(button => {
             button.addEventListener('click', (e) => {
-                const index = parseInt(e.currentTarget.dataset.index);
-                const poemTitle = e.currentTarget.dataset.title; // Menggunakan judul sebagai identifikasi sementara
+                const poemId = e.currentTarget.dataset.id;
                 
-                const ideaToToggle = { type: "Puisi Tersimpan", value: poemTitle };
-                // Perlu ada fungsi `toggleFavorite` di scope global atau common.js,
-                // atau definisikan ulang di sini jika hanya digunakan di my-poem.js
-                // Untuk saat ini, kita akan asumsikan ada di common.js atau ide-generator.js yang dimuat.
-                // Jika tidak, Anda perlu menambahkan implementasinya di sini.
-                // Contoh implementasi sederhana:
-                let currentFavorites = JSON.parse(localStorage.getItem('favoriteIdeas')) || [];
-                const favIndex = currentFavorites.findIndex(fav => fav.type === ideaToToggle.type && fav.value === ideaToToggle.value);
+                let currentPoemFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
+                const favIndex = currentPoemFavorites.indexOf(poemId);
+
                 if (favIndex > -1) {
-                    currentFavorites.splice(favIndex, 1);
+                    currentPoemFavorites.splice(favIndex, 1);
                 } else {
-                    currentFavorites.push(ideaToToggle);
+                    currentPoemFavorites.push(poemId);
                 }
-                localStorage.setItem('favoriteIdeas', JSON.stringify(currentFavorites));
-                favoriteIdeas = currentFavorites; // Update local array
+                localStorage.setItem('favorites', JSON.stringify(currentPoemFavorites));
+                poemFavorites = currentPoemFavorites; // Update local array
 
                 // Perbarui tampilan tombol
                 if (e.currentTarget.classList.contains('active')) {
@@ -196,21 +335,26 @@ document.addEventListener('DOMContentLoaded', () => {
                     e.currentTarget.classList.add('active');
                 }
                 updateAnalytics(); // Perbarui analitik karena daftar favorit berubah
+                renderPoems(document.querySelector('.filter-btn.active')?.dataset.filter || 'all', sortSelect.value); // Re-render for filter update
             });
         });
     }
 
     // Fungsi untuk menghapus puisi
-    function deletePoem(index) {
-        // Hapus dari userPoems
-        const deletedPoem = userPoems.splice(index, 1)[0]; 
+    function deletePoem(poemId) {
+        // Separate handling for initial vs. stored poems if necessary for deletion,
+        // but typically 'poems' in localStorage only tracks user-created ones.
+        // Assuming userPoems now contains ONLY user-created poems for deletion.
+        userPoems = userPoems.filter(poem => poem.id !== poemId); // Filter by ID
+
         localStorage.setItem('poems', JSON.stringify(userPoems));
 
-        // Hapus juga dari favorit jika puisi yang dihapus adalah favorit
-        if (deletedPoem && favoriteIdeas.some(fav => fav.type === "Puisi Tersimpan" && fav.value === deletedPoem.title)) {
-            favoriteIdeas = favoriteIdeas.filter(fav => !(fav.type === "Puisi Tersimpan" && fav.value === deletedPoem.title));
-            localStorage.setItem('favoriteIdeas', JSON.stringify(favoriteIdeas));
-        }
+        // Remove from poem favorites if it was favorited
+        poemFavorites = poemFavorites.filter(favId => favId !== poemId);
+        localStorage.setItem('favorites', JSON.stringify(poemFavorites));
+
+        // Also remove from allDisplayablePoems to keep local state consistent
+        allDisplayablePoems = allDisplayablePoems.filter(poem => poem.id !== poemId);
 
         renderPoems(document.querySelector('.filter-btn.active')?.dataset.filter || 'all', sortSelect.value);
         updateAnalytics(); // Perbarui analitik setelah penghapusan
@@ -218,12 +362,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fungsi untuk memperbarui analitik mini
     function updateAnalytics() {
-        const totalPoems = userPoems.length;
-        const totalFavoriteIdeas = favoriteIdeas.length; 
-        
+        const totalPoems = allDisplayablePoems.length; // Count all displayable poems
+        const totalFavoriteIdeas = favoriteIdeas.length; // Still counts ideas from generator
+        const totalFavoritedPoems = poemFavorites.length; // New: counts favorited poems
+
         // Hitung tema paling sering digunakan (contoh sederhana)
         const themeCounts = {};
-        userPoems.forEach(poem => {
+        allDisplayablePoems.forEach(poem => {
             const theme = poem.theme || 'white';
             themeCounts[theme] = (themeCounts[theme] || 0) + 1;
         });
@@ -246,7 +391,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="analytics-item">
                     <i class="fas fa-heart"></i>
-                    <span>Ide Favorit Disimpan: <strong>${totalFavoriteIdeas}</strong></span>
+                    <span>Puisi Favorit: <strong>${totalFavoritedPoems}</strong></span>
+                </div>
+                <div class="analytics-item">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Ide Favorit Tersimpan: <strong>${totalFavoriteIdeas}</strong></span>
                 </div>
                 <div class="analytics-item">
                     <i class="fas fa-palette"></i>
@@ -279,9 +428,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Inisialisasi Halaman ---
-    // Pastikan userPoems di-load ulang sebelum render
+    // Pastikan semua data di-load ulang sebelum render
+    allDisplayablePoems = getCombinedPoemsForMyPoem();
     userPoems = JSON.parse(localStorage.getItem('poems')) || [];
     favoriteIdeas = JSON.parse(localStorage.getItem('favoriteIdeas')) || [];
+    poemFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     
     renderPoems(); // Render puisi saat halaman dimuat
     updateAnalytics(); // Perbarui analitik saat halaman dimuat

@@ -13,17 +13,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const autosaveMessage = document.getElementById('autosave-message');
 
     // Elements for idea suggestion
-    const ideaSuggestionContainer = document.getElementById('idea-suggestion-container');
+    const ideaSuggestionContainer = document.getElementById('idea-suggestion-box'); // Corrected ID
     const ideaSuggestionText = document.getElementById('idea-suggestion-text');
-    const clearSuggestionBtn = document.getElementById('clear-suggestion-btn');
+    const clearSuggestionBtn = document.getElementById('clear-idea-suggestion'); // Corrected ID
 
 
     let selectedColor = 'white'; 
     let autosaveTimeout;
     let isFormDirty = false; 
 
-    // Kunci localStorage untuk font puisi
-    const FONT_STORAGE_KEY = 'selectedPoemFont';
+    // Kunci localStorage untuk font puisi (sekarang di common.js)
+    const FONT_STORAGE_KEY = window.FONT_STORAGE_KEY || 'selectedPoemFont';
+    // Available fonts (sekarang di common.js)
+    const availableFonts = window.availableFonts || [];
+
 
     function markFormDirty() {
         if (!isFormDirty) {
@@ -54,7 +57,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const titleFilled = poemTitleInput.value.trim() !== '';
         const authorFilled = poemAuthorInput.value.trim() !== '';
         const contentFilled = poemContentTextarea.value.trim() !== '';
-        const colorSelected = selectedColor !== null;
+        // Asumsi warna putih adalah default dan selalu valid, atau pastikan pengguna memilihnya
+        const colorSelected = selectedColor !== null && selectedColor !== ''; 
 
         if (titleFilled && authorFilled && contentFilled && colorSelected) {
             publishBtn.removeAttribute('disabled');
@@ -81,6 +85,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function saveDraft() {
+        if (!isFormDirty) { // Hanya simpan jika ada perubahan
+            return;
+        }
+
         const draft = {
             title: poemTitleInput.value,
             author: poemAuthorInput.value,
@@ -105,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     selectedColor = draft.theme;
                     colorCircles.forEach(c => c.classList.remove('active'));
                     draftColorCircle.classList.add('active');
+                    poemContentTextarea.classList.remove('yellow', 'blue', 'red', 'white'); // Hapus semua tema sebelumnya
                     poemContentTextarea.classList.add(selectedColor); 
                 }
             }
@@ -116,19 +125,71 @@ document.addEventListener('DOMContentLoaded', () => {
             checkFormValidity();
             markFormClean(); 
         } else {
+            // Set default color to white if no draft or theme
             selectedColor = 'white';
             const defaultWhiteCircle = document.querySelector(`.color-circle[data-color="white"]`);
             if (defaultWhiteCircle) {
                 defaultWhiteCircle.classList.add('active');
             }
+            poemContentTextarea.classList.remove('yellow', 'blue', 'red'); // Pastikan hanya 'white' yang aktif
             poemContentTextarea.classList.add('white'); 
             markFormClean(); 
         }
     }
 
+    // New: Handle editing an existing poem
+    function loadPoemForEdit() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const editId = urlParams.get('editId'); // Use 'editId' parameter
+
+        if (editId !== null) {
+            const poems = JSON.parse(localStorage.getItem('poems')) || [];
+            // Find the poem by its actual index or a unique ID if you implement one
+            // Currently, 'editPoemId' from my-poem.js stores the array index.
+            const poemToEdit = poems[parseInt(editId)]; 
+
+            if (poemToEdit) {
+                poemTitleInput.value = poemToEdit.title;
+                poemAuthorInput.value = poemToEdit.author;
+                poemContentTextarea.value = poemToEdit.content;
+                selectedColor = poemToEdit.theme || 'white';
+
+                const currentThemeCircle = document.querySelector(`.color-circle[data-color="${selectedColor}"]`);
+                if (currentThemeCircle) {
+                    colorCircles.forEach(c => c.classList.remove('active'));
+                    currentThemeCircle.classList.add('active');
+                }
+                poemContentTextarea.classList.remove('yellow', 'blue', 'red', 'white');
+                poemContentTextarea.classList.add(selectedColor);
+
+                // Store the editId globally for the form submit to know it's an update
+                form.dataset.editId = editId;
+
+                updateWordCount();
+                checkFormValidity();
+                console.log(`Editing poem with ID: ${editId}`);
+                draftMessage.textContent = 'Mode Edit: Puisi dimuat.';
+                draftMessage.classList.add('show');
+                localStorage.removeItem('poemDraft'); // Clear draft when editing
+            } else {
+                console.warn(`Poem to edit with ID ${editId} not found.`);
+                loadDraft(); // Fallback to draft if poem not found
+            }
+        } else {
+            loadDraft(); // Load draft if not in edit mode
+        }
+    }
+
+
+    // Fungsi untuk menerapkan font yang disimpan ke textarea
     function applySavedFontToTextarea() {
         const savedFontClass = localStorage.getItem(FONT_STORAGE_KEY) || 'font-quicksand';
+        // Hapus semua kelas font yang mungkin sudah ada sebelum menambahkan yang baru
+        if (availableFonts && availableFonts.length > 0) {
+            poemContentTextarea.classList.remove(...availableFonts.map(f => f.className));
+        }
         poemContentTextarea.classList.add(savedFontClass); 
+        console.log("write.js: Applied saved font to textarea:", savedFontClass);
     }
 
     // New function to load idea suggestion from URL
@@ -137,13 +198,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const idea = urlParams.get('idea');
 
         if (idea) {
+            ideaSuggestionContainer.style.display = 'block'; // Make sure the container is visible
             ideaSuggestionText.textContent = idea;
-            ideaSuggestionContainer.style.display = 'block';
             
             // Optionally, you could pre-fill the textarea with the idea
             // poemContentTextarea.value = idea; 
             // updateWordCount();
             // checkFormValidity();
+        } else {
+            ideaSuggestionContainer.style.display = 'none'; // Hide if no idea
         }
     }
 
@@ -187,30 +250,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (form) { 
-        form.addEventListener('submit', (event) => {
+        form.addEventListener('submit', async (event) => { // Make submit async for showAlert/Confirm
             event.preventDefault();
 
             if (publishBtn.hasAttribute('disabled')) {
-                alert('Mohon lengkapi semua kolom dan pilih tema puisi!'); 
+                await window.showAlert('Mohon lengkapi semua kolom dan pilih tema puisi!', 'Form Tidak Lengkap'); 
                 return;
             }
 
-            const newPoem = {
+            const poemToSave = {
                 title: poemTitleInput.value,
                 author: poemAuthorInput.value,
                 content: poemContentTextarea.value,
-                theme: selectedColor 
+                theme: selectedColor,
+                dateCreated: new Date().toISOString() // Tambahkan tanggal pembuatan
             };
 
             let poems = JSON.parse(localStorage.getItem('poems')) || [];
-            poems.push(newPoem);
-            localStorage.setItem('poems', JSON.stringify(poems));
+            const editId = form.dataset.editId; // Get the editId if in edit mode
 
+            if (editId !== undefined && poems[parseInt(editId)]) {
+                // Update existing poem
+                poems[parseInt(editId)] = poemToSave;
+                await window.showAlert('Puisi berhasil diperbarui!', 'Berhasil!');
+            } else {
+                // Add new poem
+                poems.push(poemToSave);
+                await window.showAlert('Puisi berhasil dipublikasikan!', 'Berhasil!');
+            }
+            
+            localStorage.setItem('poems', JSON.stringify(poems));
             localStorage.removeItem('poemDraft');
             markFormClean(); 
 
             // Menggunakan transisi halaman manual dari common.js
-            const nextUrl = 'index.html';
+            const nextUrl = 'my-poem.html'; // Arahkan ke my-poem setelah publikasi
             if (typeof animatePageTransition === 'function') { 
                 animatePageTransition(nextUrl);
             } else {
@@ -222,7 +296,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    loadDraft();
+    loadPoemForEdit(); // Call this first to check for edit mode
+    // If not in edit mode, it will call loadDraft internally.
     updateWordCount();
     checkFormValidity();
     applySavedFontToTextarea(); 

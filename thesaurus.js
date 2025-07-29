@@ -307,7 +307,7 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
             saveUserThesaurusData(userEntries);
         } else {
             console.warn(`Attempted to update non-existent word: ${originalWord}`);
-            addUserThesaurusEntry(updatedEntry);
+            addUserThesaurusEntry(updatedEntry); // If it's new, add it.
         }
     }
 
@@ -324,9 +324,15 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
         let entryToModify = userEntries.find(e => e.word.toLowerCase() === mainWord.toLowerCase());
 
         if (!entryToModify) { // Jika kata utama bukan kustom, salin dari bawaan
-            const builtInEntry = thesaurusData.find(e => e.word.toLowerCase() === mainWord.toLowerCase() && !e.isCustom);
-            if (builtInEntry) {
-                entryToModify = { ...builtInEntry, isCustom: true };
+            const builtInEntryData = window.thesaurusDataMap[mainWord.toLowerCase()];
+            if (builtInEntryData) {
+                // Clone the built-in entry and mark as custom
+                entryToModify = {
+                    word: mainWord,
+                    sinonim: [...builtInEntryData.sinonim],
+                    antonim: [...builtInEntryData.antonim],
+                    isCustom: true
+                };
                 userEntries.push(entryToModify);
             } else {
                 console.warn(`Could not find main word ${mainWord} to add terms to.`);
@@ -635,17 +641,19 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
             wordEntryForm.removeEventListener('submit', handleWordEntryFormSubmit);
             wordEntryForm.addEventListener('submit', handleWordEntryFormSubmit);
         }
-        if (!window.hasModalClickListener) { 
-            window.addEventListener('click', (event) => {
-                const modalElement = document.getElementById('word-form-modal');
-                const overlayElement = document.getElementById('overlay');
-                if (modalElement && overlayElement && (event.target == modalElement || event.target == overlayElement)) {
-                    modalElement.style.display = 'none';
-                    overlayElement.style.display = 'none';
-                }
-            });
-            window.hasModalClickListener = true;
-        }
+        // Listener untuk menutup modal saat klik overlay, hanya ditambahkan sekali
+        // Sudah ditangani di common.js, jadi tidak perlu di sini secara eksplisit.
+        // if (!window.hasModalClickListener) { 
+        //     window.addEventListener('click', (event) => {
+        //         const modalElement = document.getElementById('word-form-modal');
+        //         const overlayElement = document.getElementById('overlay');
+        //         if (modalElement && overlayElement && (event.target == modalElement || event.target == overlayElement)) {
+        //             modalElement.style.display = 'none';
+        //             overlayElement.style.display = 'none';
+        //         }
+        //     });
+        //     window.hasModalClickListener = true;
+        // }
     }
 
     const debouncedSearchInputHandler = debounce(handleThesaurusSearchInput, 300);
@@ -675,7 +683,7 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
             showCopyFeedback('Gagal menyalin!', this);
         }
     }
-    function handleAddInlineTerm(e) { 
+    async function handleAddInlineTerm(e) { // Make async for await showAlert
         console.log("Add Inline Term button clicked!"); 
         const addBtn = e.target;
         const detailContent = addBtn.closest('.detail-content');
@@ -708,12 +716,11 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
         const inputField = inputContainer.querySelector('.inline-add-input');
         inputField.focus();
 
-        inputContainer.querySelector('.save-inline-add-btn').addEventListener('click', () => {
+        inputContainer.querySelector('.save-inline-add-btn').addEventListener('click', async () => { // Make async
             const newTermsString = inputField.value.trim();
             if (newTermsString) {
                 const newTerms = newTermsString.split(',').map(s => s.trim()).filter(s => s !== '');
                 
-                // Fixed: Menggunakan window.thesaurusDataMap untuk memeriksa keberadaan kata
                 const currentEntry = window.thesaurusDataMap[mainWord.toLowerCase()];
                 const existingTerms = currentEntry ? currentEntry[type].map(s => s.toLowerCase()) : [];
                 const termsToAdd = newTerms.filter(term => !existingTerms.includes(term.toLowerCase()));
@@ -721,21 +728,20 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
                 if (termsToAdd.length > 0) {
                     addTermToEntry(mainWord, type, termsToAdd);
                 } else if (newTerms.length > 0) {
-                         alert("Kata-kata yang Anda coba tambahkan sudah ada.");
-                         inputField.focus();
-                         return;
-                    }
+                    // BUG FIX: Replace alert with custom modal
+                    await window.showAlert("Kata-kata yang Anda coba tambahkan sudah ada.", "Duplikasi Kata");
+                    inputField.focus();
+                    return;
                 }
-            // Fixed: Refresh thesaurusData dari global map
-            // Harus membuat ulang window.thesaurusDataMap terlebih dahulu untuk menyertakan perubahan user
+            }
+            // Re-parse all built-in, then add user data to window.thesaurusDataMap
             const userThesaurusEntries = loadUserThesaurusData();
-            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Re-parse all built-in
-            // Kemudian tambahkan data user ke window.thesaurusDataMap
+            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); 
             userThesaurusEntries.forEach(entry => {
                 window.thesaurusDataMap[entry.word.toLowerCase()] = {
                     sinonim: entry.sinonim,
                     antonim: entry.antonim,
-                    isCustom: true // Tandai sebagai kustom
+                    isCustom: true 
                 };
             });
 
@@ -753,7 +759,6 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
         });
 
         inputContainer.querySelector('.cancel-inline-add-btn').addEventListener('click', () => {
-            // Fixed: Refresh thesaurusData dari global map
             thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
                 const entry = window.thesaurusDataMap[word];
                 const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
@@ -774,7 +779,7 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
             }
         });
     }
-    function handleEditInlineTag(e) { 
+    async function handleEditInlineTag(e) { // Make async
         console.log("Edit Inline Tag button clicked!"); 
         const tagSpan = e.target.closest('.word-tag');
         if (!tagSpan) {
@@ -782,9 +787,9 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
             return;
         }
 
-        const mainWord = tagSpan.dataset.mainWord; // Corrected to camelCase
+        const mainWord = tagSpan.dataset.mainWord; 
         const type = tagSpan.dataset.type; 
-        const originalTerm = tagSpan.dataset.originalTerm; // Corrected to camelCase
+        const originalTerm = tagSpan.dataset.originalTerm; 
         const tagContainer = tagSpan.parentNode;
         
         tagSpan.style.display = 'none';
@@ -801,28 +806,26 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
         const inputField = inputContainer.querySelector('.inline-edit-input');
         inputField.focus();
 
-        inputContainer.querySelector('.save-inline-edit-term-btn').addEventListener('click', () => {
+        inputContainer.querySelector('.save-inline-edit-term-btn').addEventListener('click', async () => { // Make async
             const newTerm = inputField.value.trim();
             if (newTerm && newTerm.toLowerCase() !== originalTerm.toLowerCase()) {
-                 // Fixed: Menggunakan window.thesaurusDataMap untuk memeriksa keberadaan kata
                  const currentEntry = window.thesaurusDataMap[mainWord.toLowerCase()];
                  if (currentEntry && currentEntry[type].map(s => s.toLowerCase()).includes(newTerm.toLowerCase())) {
-                    alert(`"${newTerm}" sudah ada dalam daftar ini.`);
+                    // BUG FIX: Replace alert with custom modal
+                    await window.showAlert(`"${newTerm}" sudah ada dalam daftar ini.`, "Duplikasi Kata");
                     inputField.focus();
                     return;
                  }
                 updateTermInEntry(mainWord, type, originalTerm, newTerm);
             }
-            // Fixed: Refresh thesaurusData dari global map
-            // Harus membuat ulang window.thesaurusDataMap terlebih dahulu untuk menyertakan perubahan user
+            // Re-parse all built-in, then add user data to window.thesaurusDataMap
             const userThesaurusEntries = loadUserThesaurusData();
-            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Re-parse all built-in
-            // Kemudian tambahkan data user ke window.thesaurusDataMap
+            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); 
             userThesaurusEntries.forEach(entry => {
                 window.thesaurusDataMap[entry.word.toLowerCase()] = {
                     sinonim: entry.sinonim,
                     antonim: entry.antonim,
-                    isCustom: true // Tandai sebagai kustom
+                    isCustom: true 
                 };
             });
             thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
@@ -839,7 +842,6 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
         });
 
         inputContainer.querySelector('.cancel-inline-edit-term-btn').addEventListener('click', () => {
-            // Fixed: Refresh thesaurusData dari global map
             thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
                 const entry = window.thesaurusDataMap[word];
                 const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
@@ -860,7 +862,7 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
             }
         });
     }
-    function handleDeleteInlineTag(e) { 
+    async function handleDeleteInlineTag(e) { // Make async
         console.log("Delete Inline Tag button clicked!"); 
         const tagSpan = e.target.closest('.word-tag');
         if (!tagSpan) {
@@ -868,22 +870,22 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
             return;
         }
 
-        const mainWord = tagSpan.dataset.mainWord; // Corrected to camelCase
+        const mainWord = tagSpan.dataset.mainWord; 
         const type = tagSpan.dataset.type;
-        const termToDelete = tagSpan.dataset.originalTerm; // Corrected to camelCase
+        const termToDelete = tagSpan.dataset.originalTerm; 
 
-        if (confirm(`Anda yakin ingin menghapus tag "${termToDelete}"?`)) {
+        // BUG FIX: Replace confirm with custom modal
+        const userConfirmed = await window.showConfirm(`Anda yakin ingin menghapus tag "${termToDelete}"?`, "Hapus Tag");
+        if (userConfirmed) {
             deleteTermFromEntry(mainWord, type, termToDelete);
-            // Fixed: Refresh thesaurusData dari global map
-            // Harus membuat ulang window.thesaurusDataMap terlebih dahulu untuk menyertakan perubahan user
+            // Re-parse all built-in, then add user data to window.thesaurusDataMap
             const userThesaurusEntries = loadUserThesaurusData();
-            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Re-parse all built-in
-            // Kemudian tambahkan data user ke window.thesaurusDataMap
+            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); 
             userThesaurusEntries.forEach(entry => {
                 window.thesaurusDataMap[entry.word.toLowerCase()] = {
                     sinonim: entry.sinonim,
                     antonim: entry.antonim,
-                    isCustom: true // Tandai sebagai kustom
+                    isCustom: true 
                 };
             });
             thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
@@ -906,33 +908,33 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
         const entry = userEntries.find(e => e.word.toLowerCase() === wordToEdit.toLowerCase());
 
         if (entry) {
-            modalTitle.textContent = 'Edit Kata Tesaurus'; // Pergantian nama
+            modalTitle.textContent = 'Edit Kata Tesaurus'; 
             mainWordInput.value = entry.word;
             mainWordInput.readOnly = true; 
-            synonymsInput.value = entry.sinonim.join(', '); // Fixed: Use sinonim
-            antonymsInput.value = entry.antonim.join(', '); // Fixed: Use antonim
+            synonymsInput.value = entry.sinonim.join(', '); 
+            antonymsInput.value = entry.antonim.join(', '); 
             originalMainWordForEdit.value = entry.word; 
 
             wordFormModal.style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('overlay').classList.add('active'); // Activate overlay
         }
     }
-    function handleDeleteMainWord() { 
+    async function handleDeleteMainWord() { // Make async
         console.log("Delete Main Word button clicked!"); 
         const wordToDelete = this.dataset.word;
 
-        if (confirm(`Anda yakin ingin menghapus kata kustom "${wordToDelete}" dan semua sinonim/antonimnya?`)) {
+        // BUG FIX: Replace confirm with custom modal
+        const userConfirmed = await window.showConfirm(`Anda yakin ingin menghapus kata kustom "${wordToDelete}" dan semua sinonim/antonimnya?`, "Hapus Kata Utama");
+        if (userConfirmed) {
             deleteUserThesaurusEntry(wordToDelete);
-            // Fixed: Refresh thesaurusData dari global map
-            // Harus membuat ulang window.thesaurusDataMap terlebih dahulu untuk menyertakan perubahan user
+            // Re-parse all built-in, then add user data to window.thesaurusDataMap
             const userThesaurusEntries = loadUserThesaurusData();
-            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Re-parse all built-in
-            // Kemudian tambahkan data user ke window.thesaurusDataMap
+            window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); 
             userThesaurusEntries.forEach(entry => {
                 window.thesaurusDataMap[entry.word.toLowerCase()] = {
                     sinonim: entry.sinonim,
                     antonim: entry.antonim,
-                    isCustom: true // Tandai sebagai kustom
+                    isCustom: true 
                 };
             });
             thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
@@ -950,19 +952,19 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
     }
     function handleAddNewWordClick() { 
         console.log("Add New Word button clicked!"); 
-        modalTitle.textContent = 'Tambah Kata Tesaurus Baru'; // Pergantian nama
+        modalTitle.textContent = 'Tambah Kata Tesaurus Baru'; 
         wordEntryForm.reset(); 
         mainWordInput.readOnly = false; 
         originalMainWordForEdit.value = ''; 
         wordFormModal.style.display = 'block';
-        document.getElementById('overlay').style.display = 'block';
+        document.getElementById('overlay').classList.add('active'); // Activate overlay
     }
     function handleCloseModalClick() { 
         console.log("Close Modal button clicked!"); 
         wordFormModal.style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('overlay').classList.remove('active'); // Deactivate overlay
     }
-    function handleWordEntryFormSubmit(e) { 
+    async function handleWordEntryFormSubmit(e) { // Make async
         console.log("Word Entry Form submitted!"); 
         e.preventDefault();
 
@@ -971,7 +973,8 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
         const newAntonyms = antonymsInput.value.split(',').map(a => a.trim()).filter(a => a !== '');
 
         if (!newWord) {
-            alert('Kata Utama tidak boleh kosong!');
+            // BUG FIX: Replace alert with custom modal
+            await window.showAlert('Kata Utama tidak boleh kosong!', "Input Dibutuhkan");
             return;
         }
 
@@ -985,19 +988,17 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
         if (originalWordForEditVal !== '') {
             updateUserThesaurusEntry(originalWordForEditVal, { ...entry, isCustom: true }); 
         } else {
-            // Fixed: Periksa keberadaan kata di global map thesaurus
+            // BUG FIX: Replace alert with custom modal
             if (window.thesaurusDataMap[newWord.toLowerCase()]) {
-                alert(`Kata "${newWord}" sudah ada dalam Tesaurus.`); 
+                await window.showAlert(`Kata "${newWord}" sudah ada dalam Tesaurus.`, "Duplikasi Kata"); 
                 return;
             }
             addUserThesaurusEntry({ ...entry, isCustom: true }); 
         }
         
-        // Fixed: Setelah submit, perbarui window.thesaurusDataMap juga
-        // Ini adalah langkah penting agar full-preview.js bisa melihat perubahan
-        const userThesaurusEntries = loadUserThesaurusData(); // Ambil data user terbaru
-        window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Re-parse built-in 
-        // Kemudian tambahkan/timpa data user ke window.thesaurusDataMap
+        // After submission, update window.thesaurusDataMap
+        const userThesaurusEntries = loadUserThesaurusData(); 
+        window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); 
         userThesaurusEntries.forEach(userEntry => {
             window.thesaurusDataMap[userEntry.word.toLowerCase()] = {
                 sinonim: userEntry.sinonim,
@@ -1006,7 +1007,6 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
             };
         });
 
-        // Fixed: Refresh thesaurusData (lokal untuk halaman thesaurus) dari global map
         thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
             const entry = window.thesaurusDataMap[word];
             const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word);
@@ -1020,27 +1020,25 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
 
         renderThesaurusList(thesaurusSearchInput ? thesaurusSearchInput.value : ''); 
         wordFormModal.style.display = 'none';
-        document.getElementById('overlay').style.display = 'none';
+        document.getElementById('overlay').classList.remove('active'); // Deactivate overlay
     }
 
-    // Inisialisasi utama
-    // Data thesaurus akan diinisialisasi secara global sekali dan digabungkan dengan data user
-    const userThesaurusEntriesOnLoad = loadUserThesaurusData(); // Ambil data user saat load
-    window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); // Parse data built-in
+    // Main Initialization
+    const userThesaurusEntriesOnLoad = loadUserThesaurusData(); 
+    window.thesaurusDataMap = parseThesaurusData(rawThesaurusData); 
     
-    // Gabungkan data user ke global map saat inisialisasi
+    // Merge user data into the global map
     userThesaurusEntriesOnLoad.forEach(entry => {
         window.thesaurusDataMap[entry.word.toLowerCase()] = {
             sinonim: entry.sinonim,
             antonim: entry.antonim,
-            isCustom: true // Tandai sebagai kustom
+            isCustom: true 
         };
     });
 
-    // thesaurusData lokal untuk keperluan rendering halaman thesaurus itu sendiri
     thesaurusData = Array.from(Object.keys(window.thesaurusDataMap)).map(word => {
         const entry = window.thesaurusDataMap[word];
-        const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word); // Check custom status
+        const isCustom = loadUserThesaurusData().some(userEntry => userEntry.word.toLowerCase() === word); 
         return {
             word: word,
             synonyms: entry.sinonim,

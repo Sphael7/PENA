@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         selectOptions = selectItems.querySelectorAll('div');
     }
 
+    // Initial poems data
     const initialPoems = [
         {
             title: 'Senja di Pelupuk Mata',
@@ -136,30 +137,37 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     let poemsData = [];
 
+    // Function to combine initial and stored poems, assigning unique IDs
     function getAndCombinePoems() {
         const storedPoems = JSON.parse(localStorage.getItem('poems')) || [];
-        const combinedPoemsMap = new Map(); // Menggunakan Map untuk menghindari duplikasi berdasarkan judul
+        const combinedPoemsMap = new Map(); // Using Map to avoid duplication based on title, primarily
 
-        // Tambahkan initialPoems terlebih dahulu dengan originalIndex
+        // Add initialPoems first with unique IDs
         initialPoems.forEach((poem, index) => {
-            combinedPoemsMap.set(poem.title.toLowerCase(), { ...poem, theme: poem.theme || 'white', originalIndex: `initial-${index}` });
+            // Assign a unique ID that reflects its origin
+            const id = `initial-${index}`;
+            combinedPoemsMap.set(id, { ...poem, theme: poem.theme || 'white', id: id });
         });
 
-        // Timpa dengan storedPoems (jika ada judul yang sama)
+        // Add storedPoems. If a stored poem has the same title as an initial poem,
+        // it will overwrite the initial poem in the map, effectively acting as an "edited" version.
+        // We ensure stored poems also have a unique ID that won't clash with initial ones.
         storedPoems.forEach((poem, index) => {
-            combinedPoemsMap.set(poem.title.toLowerCase(), { ...poem, theme: poem.theme || 'white', originalIndex: `stored-${index}` });
+            const id = `stored-${index}`;
+            combinedPoemsMap.set(id, { ...poem, theme: poem.theme || 'white', id: id });
         });
 
+        // Convert map values back to an array
         poemsData = Array.from(combinedPoemsMap.values());
     }
 
     function renderPoems(filterText = '', filterType = currentFilter) {
         if (!poemGrid) return;
         
-        // Pastikan poemsData sudah diisi
+        // Ensure poemsData is populated
         if (poemsData.length === 0) {
-            getAndCombinePoems(); // Panggil lagi jika belum diisi, untuk berjaga-jaga
-            if (poemsData.length === 0) { // Cek lagi setelah dipanggil
+            getAndCombinePoems(); // Call again if not populated, just in case
+            if (poemsData.length === 0) { // Check again after calling
                 emptyState.style.display = 'flex';
                 poemGrid.style.display = 'none';
                 if(createBtn) createBtn.style.display = 'none'; 
@@ -179,14 +187,15 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const fragment = document.createDocumentFragment();
 
-        filteredPoems.forEach((poem) => { // Tidak perlu index di sini, gunakan poem.originalIndex
+        filteredPoems.forEach((poem) => { 
             const card = document.createElement('div');
             card.classList.add('poem-card', poem.theme || 'white'); 
-            card.setAttribute('data-id', poem.originalIndex); // Gunakan originalIndex yang sudah ada
+            card.setAttribute('data-id', poem.id); // Use the unique 'id' now
             
             const previewContent = poem.content.split('\n\n')[0];
             const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-            const isFavorite = favorites.includes(poem.originalIndex); // Cek favorit berdasarkan originalIndex
+            // Check favorite based on the unique 'id'
+            const isFavorite = favorites.includes(poem.id); 
 
             card.innerHTML = `
                 <h2>${poem.title}</h2>
@@ -194,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="poem-content">
                     <p>${previewContent}</p>
                 </div>
-                <i class="fas fa-heart favorite-icon ${isFavorite ? 'active' : ''}" data-id="${poem.originalIndex}"></i>
+                <i class="fas fa-heart favorite-icon ${isFavorite ? 'active' : ''}" data-id="${poem.id}"></i>
             `;
             fragment.appendChild(card); 
         });
@@ -264,7 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleFavoriteClick(e) {
         e.stopPropagation();
-        const poemId = this.getAttribute('data-id'); // Mengambil originalIndex
+        const poemId = this.getAttribute('data-id'); // Get the unique 'id'
         let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
         const index = favorites.indexOf(poemId);
         if (index > -1) {
@@ -275,6 +284,11 @@ document.addEventListener('DOMContentLoaded', () => {
             this.classList.add('active');
         }
         localStorage.setItem('favorites', JSON.stringify(favorites));
+        
+        // Also ensure 'my-poem.js' is notified if it's loaded
+        // This is a simple dispatch; my-poem.js would need to listen.
+        // For now, renderPoems() in my-poem.js will simply re-read localStorage
+        // when the page loads, which is sufficient.
     }
 
     function handlePoemCardClick(e) {
@@ -282,9 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
             e.stopPropagation();
             return;
         }
-        const poemId = this.getAttribute('data-id'); // Mengambil originalIndex dari kartu yang diklik
+        const poemId = this.getAttribute('data-id'); // Get the unique 'id' from the clicked card
         localStorage.setItem('selectedPoemId', poemId);
-        // Menggunakan transisi halaman manual dari common.js
+        // Using manual page transition from common.js
         if (typeof animatePageTransition === 'function') {
             animatePageTransition('full-preview.html');
         } else {
@@ -293,6 +307,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    getAndCombinePoems(); // Panggil saat DOMContentLoaded
+    getAndCombinePoems(); // Call on DOMContentLoaded
     renderPoems();
 });

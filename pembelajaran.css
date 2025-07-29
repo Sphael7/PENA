@@ -31,6 +31,7 @@
     gap: 8px;
     color: var(--text-color);
     font-weight: 500;
+    font-family: inherit; /* Akan mengikuti font global */
 }
 .learning-menu-item:hover {
     background-color: rgba(var(--primary-color-rgb-values), 0.1); /* Hover dengan nuansa primary */
@@ -60,7 +61,7 @@
 }
 
 .learning-display h2 {
-    font-family: 'Pacifico', cursive;
+    font-family: 'Pacifico', cursive; /* Pertahankan font khusus */
     font-size: 2.5em; 
     color: var(--primary-color);
     margin-top: 0;
@@ -69,7 +70,7 @@
 }
 
 .learning-display .learning-subtitle {
-    font-family: 'Quicksand', sans-serif;
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 1.1em;
     color: var(--soft-text);
     text-align: center;
@@ -77,7 +78,7 @@
 }
 
 .learning-display .topic-content-body {
-    font-family: 'Lora', serif; 
+    font-family: inherit; /* Akan mengikuti font global */
     line-height: 1.8;
     font-size: 1.1em;
     color: var(--learning-text-main);
@@ -92,19 +93,23 @@
     box-shadow: var(--box-shadow-light);
 }
 .learning-card h3 {
-    font-family: 'Quicksand', sans-serif;
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 1.5em;
     color: var(--primary-color);
     margin-top: 0;
     margin-bottom: 15px;
 }
 .learning-card p {
+    font-family: inherit; /* Akan mengikuti font global */
     margin-bottom: 1em;
 }
 .learning-card ul {
     list-style: none;
     padding-left: 20px;
     margin-bottom: 1em;
+}
+.learning-card ul li {
+    font-family: inherit; /* Akan mengikuti font global */
 }
 .learning-card ul li:before {
     content: '\2022'; 
@@ -131,6 +136,7 @@
     flex-shrink: 0;
 }
 .highlight-box p {
+    font-family: inherit; /* Akan mengikuti font global */
     margin: 0;
 }
 
@@ -144,14 +150,14 @@
     text-align: center;
 }
 .poem-example-box h4 {
-    font-family: 'Quicksand', sans-serif;
+    font-family: inherit; /* Akan mengikuti font global */
     color: var(--primary-color);
     margin-top: 0;
     margin-bottom: 10px;
     font-size: 1.1em;
 }
 .poem-example-box .poem-text {
-    font-family: 'Lora', serif;
+    font-family: inherit; /* Akan mengikuti font global */
     font-style: italic;
     white-space: pre-wrap; 
     line-height: 1.5;
@@ -168,7 +174,7 @@
     max-width: 350px;
 }
 .poem-structure-example .poem-line {
-    font-family: 'Playfair Display', serif; 
+    font-family: 'Playfair Display', serif; /* Pertahankan font khusus untuk contoh struktur puisi */
     font-size: 1.2em;
     line-height: 1.4;
     padding: 2px 0;
@@ -176,10 +182,11 @@
 }
 .poem-structure-example .line-1 { color: #8a2be2; } /* Ungu */
 .poem-structure-example .line-2 { color: #FF4500; } /* Merah Oranye */
-    .poem-structure-example .line-3 { color: #008000; } /* Hijau */
+.poem-structure-example .line-3 { color: #008000; } /* Hijau */
 .poem-structure-example .line-4 { color: #FF4500; } /* Merah Oranye */
 
 .explanation {
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 0.9em;
     color: var(--soft-text);
     margin-top: 10px;
@@ -197,7 +204,7 @@
     text-align: center;
 }
 .mini-quiz .question {
-    font-family: 'Lora', serif;
+    font-family: inherit; /* Akan mengikuti font global */
     font-size: 1.1em;
     margin-bottom: 20px;
     color: var(--text-color);
@@ -213,6 +220,7 @@
     cursor: pointer;
     transition: all 0.2s ease;
     font-size: 0.9em;
+    font-family: inherit; /* Akan mengikuti font global */
 }
 .mini-quiz .options button:hover:not(:disabled) {
     background-color: var(--primary-color);
@@ -223,6 +231,7 @@
     cursor: not-allowed;
 }
 .mini-quiz .feedback {
+    font-family: inherit; /* Akan mengikuti font global */
     margin-top: 15px;
     font-weight: bold;
     font-size: 1em;
@@ -253,6 +262,7 @@
     align-items: center;
     gap: 8px;
     text-decoration: none; 
+    font-family: inherit; /* Akan mengikuti font global */
 }
 .learning-nav-btn:hover:not(:disabled), .learning-editor-btn:hover {
     background-color: var(--primary-color);

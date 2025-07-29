@@ -1,0 +1,434 @@
+/* thesaurus.css - Gaya Khusus Thesaurus */
+
+.thesaurus-content {
+    padding: 40px 5%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+/* Add New Word Button */
+.add-new-word-button {
+    font-family: inherit; /* Akan mengikuti font global */
+    display: block;
+    width: fit-content;
+    margin: 20px auto 30px auto; 
+    padding: 12px 25px;
+    background-color: var(--primary-color); 
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: var(--box-shadow-medium); 
+    align-items: center;
+    display: flex; 
+    gap: 8px; 
+}
+
+.add-new-word-button:hover {
+    background-color: var(--secondary-color); 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
+}
+.add-new-word-button i {
+    font-size: 1.2em;
+}
+
+
+.thesaurus-list {
+    margin-top: 30px; 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 15px; 
+}
+
+.thesaurus-item {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow-light);
+    padding: 25px; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease; 
+    width: calc(50% - 7.5px); 
+    box-sizing: border-box; 
+    flex-grow: 1; 
+    flex-shrink: 1; 
+    min-width: 280px; 
+}
+.thesaurus-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-medium);
+}
+/* Style for custom (user-added) entries */
+.thesaurus-item.custom-entry {
+    background-color: rgba(var(--secondary-color-rgb-values), 0.1); /* Latar belakang kustom dari warna buttons */
+    border-color: rgba(var(--secondary-color-rgb-values), 0.5); /* Border kustom dari warna buttons */
+    box-shadow: 0 2px 8px rgba(var(--secondary-color-rgb-values), 0.3);
+}
+
+.main-word-row {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 10px;
+    position: relative; 
+}
+.main-word-row:hover .main-word {
+    color: var(--primary-color); 
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2); 
+}
+
+
+.word-number {
+    font-family: inherit; /* Akan mengikuti font global */
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.main-word {
+    font-family: 'Pacifico', cursive; /* Pertahankan font khusus */
+    font-size: 2.2em;
+    /* Gradasi warna utama baru */
+    background: linear-gradient(45deg, var(--accent-color), var(--primary-color), var(--theme-card-orange)); 
+    -webkit-background-clip: text; /* Fixed: Add vendor prefix */
+    background-clip: text; /* Fixed: Standard property */
+    -webkit-text-fill-color: transparent;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    word-break: break-word;
+    transition: color 0.3s ease, text-shadow 0.3s ease; 
+}
+
+/* Custom Actions (Edit/Delete buttons for custom entries) */
+.custom-actions {
+    display: flex;
+    gap: 5px;
+    margin-left: auto; 
+    flex-shrink: 0;
+    position: absolute; 
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+.thesaurus-item:hover .custom-actions {
+    opacity: 1; 
+}
+
+
+.custom-actions button {
+    background: none;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    color: var(--soft-text);
+    padding: 5px;
+    border-radius: 5px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    min-width: 30px; 
+    min-height: 30px; 
+}
+
+.custom-actions button:hover {
+    background-color: #eee;
+}
+
+.custom-actions .fa-edit:hover {
+    color: #2196F3; /* Blue for edit */
+}
+
+.custom-actions .fa-trash-alt:hover {
+    color: #F44336; /* Red for delete */
+}
+
+
+.word-details {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.detail-group {
+    margin-bottom: 10px;
+}
+
+.detail-label {
+    font-family: inherit; /* Akan mengikuti font global */
+    font-weight: bold;
+    color: var(--secondary-color); /* Menggunakan secondary-color baru */
+    margin-bottom: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0; 
+    border-bottom: 1px solid #eee;
+    transition: color 0.3s ease, background-color 0.3s ease, border-radius 0.3s ease; 
+    min-height: 44px; 
+}
+.detail-label:hover {
+    color: var(--primary-color);
+    background-color: rgba(0,0,0,0.03); 
+    border-radius: 5px;
+}
+.detail-label.active {
+    background-color: rgba(0,0,0,0.05);
+    color: var(--primary-color);
+    border-radius: 5px 5px 0 0; 
+}
+
+.dropdown-arrow {
+    font-family: inherit; /* Akan mengikuti font global */
+    transition: transform 0.3s ease;
+}
+.dropdown-arrow.active {
+    transform: rotate(180deg);
+}
+
+.detail-content {
+    background-color: #f8f8f8; 
+    border-radius: 0 0 8px 8px; 
+    padding: 0 15px; 
+    margin-top: -10px; 
+    overflow: hidden;
+    max-height: 0; 
+    opacity: 0;
+    transition: max-height 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.5s ease-out, padding 0.5s ease-out, margin-top 0.5s ease-out;
+    position: relative; 
+}
+
+.detail-content.expanded {
+    max-height: 200px; 
+    opacity: 1;
+    padding: 15px; 
+    margin-top: 0; 
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; 
+    padding-bottom: 5px; 
+    line-height: 1.5; 
+}
+.word-tag {
+    background-color: var(--secondary-color); /* Menggunakan secondary-color baru (warna buttons) */
+    color: white; 
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.9em;
+    white-space: nowrap; 
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    position: relative; /* Untuk ikon edit/delete tag */
+    font-family: inherit; /* Akan mengikuti font global */
+}
+.word-tag:hover {
+    background-color: var(--primary-color); /* Warna hover dari primary baru */
+    transform: translateY(-1px);
+}
+/* Penanda visual untuk tag kustom */
+.word-tag.custom-tag {
+    background-color: var(--secondary-color); /* Menggunakan warna buttons baru */
+}
+.word-tag.custom-tag:hover {
+    background-color: var(--primary-color); /* Menggunakan primary color baru */
+}
+
+/* Aksi Edit/Hapus pada tag individual (hanya muncul di tag kustom) */
+.word-tag .tag-actions {
+    position: absolute;
+    top: -8px; 
+    right: -8px; 
+    display: flex;
+    gap: 2px;
+    background-color: rgba(255,255,255,0.9);
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    z-index: 10;
+}
+.word-tag:hover .tag-actions {
+    opacity: 1;
+}
+.word-tag .tag-actions i {
+    font-size: 0.8em;
+    color: #555;
+    padding: 3px;
+    cursor: pointer;
+    transition: color 0.1s ease;
+}
+.word-tag .tag-actions .fa-edit:hover { color: #2196F3; }
+.word-tag .tag-actions .fa-trash-alt:hover { color: #F44336; }
+
+
+/* --- Inline Add/Edit Input --- */
+.inline-add-container,
+.inline-edit-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: nowrap; 
+    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.inline-add-input,
+.inline-edit-input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 0.9em;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit; /* Akan mengikuti font global */
+}
+.inline-add-input:focus,
+.inline-edit-input:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 3px rgba(var(--secondary-color-rgb-values), 0.4);
+}
+.inline-add-container button,
+.inline-edit-container button {
+    background-color: var(--secondary-color); /* Menggunakan secondary-color baru */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.85em;
+    flex-shrink: 0;
+    font-family: inherit; /* Akan mengikuti font global */
+}
+.inline-add-container button:hover,
+.inline-edit-container button:hover {
+    background-color: var(--primary-color); /* Warna hover dari primary baru */
+}
+.inline-add-container .fa-times,
+.inline-edit-container .fa-times {
+    color: #F44336;
+    background: none;
+    padding: 0;
+}
+.inline-add-container .fa-times:hover,
+.inline-edit-container .fa-times:hover {
+    background: none;
+    color: #D32F2F;
+}
+
+.add-inline-term-btn {
+    background-color: var(--accent-color); /* Menggunakan accent-color baru */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+    font-family: inherit; /* Akan mengikuti font global */
+}
+.add-inline-term-btn:hover {
+    background-color: var(--primary-color); /* Warna hover dari primary baru */
+}
+.add-inline-term-btn i {
+    font-size: 1em;
+}
+
+
+.highlight {
+    background-color: var(--highlight-color);
+    padding: 2px 4px;
+    border-radius: 4px;
+}
+
+.copy-button {
+    background: none;
+    border: none;
+    color: var(--soft-text);
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 5px;
+    margin-left: 10px;
+    opacity: 0; 
+    transition: opacity 0.2s ease, color 0.2s ease;
+    position: absolute; 
+    top: 50%; 
+    right: 5px;
+    transform: translateY(-50%); 
+    z-index: 5; 
+    min-width: 30px; 
+    min-height: 30px;
+}
+.detail-content:hover .copy-button {
+    opacity: 1; 
+}
+.copy-button:hover {
+    color: var(--primary-color);
+}
+.copy-button i {
+    font-size: 1.1em;
+}
+
+.contextual-copy-feedback {
+    font-family: inherit; /* Akan mengikuti font global */
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    z-index: 10;
+    opacity: 0;
+    transform: translate(-50%, 10px); 
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+    left: 50%; 
+}
+.contextual-copy-feedback.show {
+    opacity: 1;
+    transform: translate(-50%, 0); 
+}
+/* Responsive adjustments for Thesaurus */
+@media (max-width: 768px) {
+    .thesaurus-content {
+        padding: 20px 3%;
+    }
+    .thesaurus-list {
+        grid-template-columns: 1fr; 
+        gap: 15px; 
+    }
+    .thesaurus-item {
+        padding: 15px; 
+        width: 100%; 
+    }
+    .main-word {
+        font-size: 1.8em;
+    }
+    .detail-group {
+        min-width: 100%; 
+    }
+    .detail-label {
+        min-height: 44px; 
+    }
+    .copy-button {
+        top: 50%; 
+        transform: translateY(-50%); 
+        right: 8px;
+    }
+    .word-tag {
+        font-size: 0.85em; 
+        padding: 4px 8px;
+    }
+    .contextual-copy-feedback {
+        font-size: 0.75em;
+        padding: 3px 6px;
+    }
+}
