@@ -103,24 +103,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fungsi untuk menerapkan font yang dipilih dan menyimpannya di localStorage
     const applyFont = (font) => {
         const body = document.body;
-        let fontFamily = '';
+        
+        // Hapus kelas font yang ada
+        body.classList.remove('font-sans', 'font-serif', 'font-handwritten');
+        
+        // Tambahkan kelas font yang sesuai
         switch (font) {
             case 'sans-serif':
-                fontFamily = "'Quicksand', sans-serif";
+                body.classList.add('font-sans');
                 break;
             case 'serif':
-                fontFamily = "'Lora', serif";
+                body.classList.add('font-serif');
                 break;
             case 'handwritten':
-                fontFamily = "'Pacifico', cursive";
+                body.classList.add('font-handwritten');
                 break;
-            case 'custom':
-                fontFamily = "'Quicksand', sans-serif";
-                break;
-            default:
-                fontFamily = "'Quicksand', sans-serif";
         }
-        body.style.fontFamily = fontFamily;
+
+        // Simpan preferensi font ke localStorage
         localStorage.setItem('selectedFont', font);
     };
 

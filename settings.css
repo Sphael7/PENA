@@ -1,17 +1,7 @@
-/* Gaya untuk body, tema, dan font sekarang dikelola secara dinamis */
+/* Gaya untuk body, tema, dan font sekarang dikelola secara dinamis di style.css */
 :root {
     /* Tambahkan variabel warna teks untuk tema gelap */
     --pena-text-light: #e2e8f0;
-}
-
-body {
-    font-family: 'Quicksand', sans-serif;
-    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, font-family 0.5s ease-in-out, font-size 0.5s ease-in-out;
-    background: linear-gradient(to bottom, var(--background-color), #e8e8f0);
-    color: var(--text-color);
-}
-html {
-    transition: font-size 0.5s ease-in-out;
 }
 
 /* Aturan CSS untuk tema yang diaktifkan oleh JavaScript */
@@ -163,4 +153,47 @@ body[data-theme="dark"] .modal-content {
         opacity: 1;
         transform: scale(1);
     }
+}
+
+/* Gaya baru untuk tombol Home */
+.home-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1.125rem; /* Ukuran font 18px */
+    font-weight: 600;
+    color: black; /* Diubah menjadi hitam */
+    padding: 0.75rem 1.5rem; /* Padding 12px 24px */
+    border-radius: 9999px; /* Sangat bulat */
+    border: none;
+    cursor: pointer;
+    background: linear-gradient(45deg, var(--pena-primary), var(--pena-secondary)); /* Gradien warna */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08); /* Bayangan */
+    transition: all 0.3s ease-in-out;
+    letter-spacing: 0.05em; /* Jarak huruf */
+    text-transform: uppercase; /* Huruf kapital */
+}
+
+/* Efek saat tombol dihover atau difokuskan */
+.home-button:hover,
+.home-button:focus {
+    background: linear-gradient(45deg, var(--pena-primary-hover), var(--pena-secondary-hover));
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px) scale(1.02); /* Sedikit naik dan membesar */
+    color: black; /* Memastikan warna tetap hitam saat dihover */
+}
+
+/* Efek saat tombol ditekan */
+.home-button:active {
+    transform: translateY(1px); /* Sedikit turun */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.home-button i {
+    transition: transform 0.3s ease-in-out;
+}
+
+.home-button:hover i {
+    transform: scale(1.2) rotate(10deg); /* Icon berputar dan membesar */
 }

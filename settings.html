@@ -65,19 +65,6 @@
             height: 100%;
             width: 100%;
         }
-        .sidebar-home-btn {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border-radius: 8px;
-            transition: background-color 0.2s ease, transform 0.2s ease;
-            color: var(--pena-text-dark);
-            text-decoration: none;
-        }
-        .sidebar-home-btn:hover {
-            background-color: var(--pena-background-hover);
-            color: var(--pena-primary);
-        }
     </style>
 </head>
 <body class="min-h-screen bg-pena-background font-sans antialiased p-4 sm:p-6 lg:p-8">
@@ -85,10 +72,10 @@
     <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:flex min-h-[70vh] relative">
         <!-- Sidebar Navigasi -->
         <div class="md:w-1/4 bg-pena-background-sidebar p-6 border-r border-gray-200 rounded-l-xl z-10 relative flex flex-col">
-            <!-- Tombol Home sekarang di dalam sidebar -->
-            <a href="index.html" class="sidebar-home-btn mb-4">
-                <i class="fas fa-home w-6 h-6 mr-3 text-pena-primary"></i>
-                <span class="font-medium text-pena-primary">Beranda</span>
+            <!-- Tombol Home yang diperbarui -->
+            <a href="index.html" class="home-button mb-4">
+                <i class="fas fa-home w-6 h-6 mr-3"></i>
+                <span class="font-medium">Beranda</span>
             </a>
 
             <div class="mt-4">
@@ -253,11 +240,13 @@
                 <p class="text-pena-text-soft">Informasi aplikasi dan bantuan.</p>
                 <div class="bg-white p-6 rounded-lg shadow-sm space-y-4">
                     <h3 class="text-lg font-semibold text-pena-text-dark">Tentang Kami</h3>
-                    <p class="text-pena-text-soft">Aplikasi ini dibuat untuk membantu Anda mengekspresikan kreativitas melalui puisi. Kami berkomitmen untuk menyediakan platform yang mudah digunakan dan inspiratif bagi semua pecinta puisi.</p>
+                    <p class="text-pena-text-soft">Aplikasi ini dikembangkan oleh Christopher Alberto Hamonangan dan Leviana Dearma sebagai bagian dari proyek inovasi dalam ajang Lomba OPSI (Olimpiade Penelitian Siswa Indonesia).</p>
+                    <p class="text-pena-text-soft">Kami percaya bahwa puisi adalah bentuk ekspresi yang indah dan kuat. Melalui aplikasi ini, kami ingin menyediakan ruang digital yang mendukung kreativitas, kepekaan rasa, dan apresiasi terhadap bahasa. Harapan kami, aplikasi ini dapat menjadi sarana untuk meningkatkan minat literasi dan kecintaan terhadap sastra Indonesia, khususnya di kalangan generasi muda.</p>
+                    <p class="text-pena-text-soft">Dengan setiap kata yang ditulis, setiap bait yang dibaca, kami ingin menghadirkan pengalaman yang bukan hanya menyenangkan, tetapi juga memperkaya jiwa.</p>
                     <a href="#" id="privacy-policy-link" class="block text-pena-primary hover:underline">Kebijakan Privasi</a>
                     <a href="#" id="terms-of-service-link" class="block text-pena-primary hover:underline">Ketentuan Layanan</a>
                     <a href="mailto:support@example.com" class="block text-pena-primary hover:underline">Hubungi Dukungan</a>
-                    <p class="text-sm text-pena-text-soft mt-4">Versi Aplikasi: 1.0.0 (Terakhir Diperbarui: 31 Juli 2025)</p>
+                    <p class="text-sm text-pena-text-soft mt-4">Versi Aplikasi : Beta (Terakhir Diperbarui 3 Agustus 2025)</p>
                 </div>
             </div>
         </div>
@@ -291,7 +280,7 @@
                 <p><strong>Penghentian:</strong> Kami dapat menghentikan atau menangguhkan akses Anda ke aplikasi kami segera, tanpa pemberitahuan sebelumnya atau kewajiban, dengan alasan apa pun, termasuk tanpa batasan jika Anda melanggar Ketentuan ini.</p>
                 <p><strong>Batasan Tanggung Jawab:</strong> Aplikasi kami disediakan "sebagaimana adanya" tanpa jaminan apa pun, baik tersurat maupun tersirat. Kami tidak bertanggung jawab atas kerugian atau kerusakan apa pun yang timbul dari penggunaan atau ketidakmampuan Anda untuk menggunakan aplikasi.</p>
                 <p><strong>Perubahan pada Ketentuan Ini:</strong> Kami berhak, atas kebijakan kami sendiri, untuk memodifikasi atau mengganti Ketentuan ini kapan saja. Jika revisi bersifat material, kami akan mencoba memberikan pemberitahuan setidaknya 30 hari sebelum ketentuan baru berlaku.</p>
-                <p>Dengan terus mengakses atau menggunakan aplikasi kami setelah revisi tersebut berlaku, Anda setuju untuk terikat oleh ketentuan yang direvisi. Jika Anda tidak setuju dengan ketentuan baru, harap berhenti menggunakan aplikasi.</p>
+                <p>Dengan terus mengakses atau menggunakan aplikasi kami setelah revisi tersebut berlaku, Anda menyetujui untuk terikat oleh ketentuan yang direvisi. Jika Anda tidak setuju dengan ketentuan baru, harap berhenti menggunakan aplikasi.</p>
             </div>
         </div>
     </div>

@@ -2,6 +2,34 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log("common.js: DOMContentLoaded triggered. (Global script loaded)");
 
+    // Fungsi untuk menerapkan font yang dipilih dari localStorage
+    const applySavedFont = () => {
+        const savedFont = localStorage.getItem('selectedFont') || 'sans-serif';
+        const body = document.body;
+
+        // Hapus kelas font yang ada
+        body.classList.remove('font-sans', 'font-serif', 'font-handwritten');
+
+        // Terapkan kelas font yang disimpan
+        switch (savedFont) {
+            case 'sans-serif':
+                body.classList.add('font-sans');
+                break;
+            case 'serif':
+                body.classList.add('font-serif');
+                break;
+            case 'handwritten':
+                body.classList.add('font-handwritten');
+                break;
+            default:
+                body.classList.add('font-sans');
+        }
+        console.log(`common.js: Font disetel ke: ${savedFont}`);
+    };
+
+    // Terapkan font saat file dimuat pertama kali
+    applySavedFont();
+
     // Fungsi umum untuk mengelola sidebar
     const sidebar = document.getElementById('sidebar');
     const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
@@ -38,17 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === overlay) {
             console.log("common.js: overlay clicked!");
             if(sidebar) sidebar.classList.remove('active'); // Tutup sidebar
-            
-            // Perbaikan: Hapus logika penutupan modal kustom karena modal itu sendiri akan dihapus
-            // document.querySelectorAll('.modal.show').forEach(modal => {
-            //     modal.classList.remove('show');
-            //     modal.addEventListener('transitionend', function handler() {
-            //         modal.style.display = 'none';
-            //         modal.style.pointerEvents = 'none';
-            //         modal.removeEventListener('transitionend', handler);
-            //     }, { once: true });
-            // });
-
             if (overlay) overlay.classList.remove('active'); // Nonaktifkan overlay
         }
     }

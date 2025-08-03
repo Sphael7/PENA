@@ -48,8 +48,9 @@
     --learning-highlight-box-border: var(--theme-card-orange); /* Menggunakan orange baru untuk border */
 }
 
+/* Mengatur font secara global pada body menggunakan kelas */
 body {
-    font-family: 'Quicksand', sans-serif; /* Kembalikan ke font default awal */
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, font-family 0.5s ease-in-out, font-size 0.5s ease-in-out;
     background: linear-gradient(to bottom, var(--background-color), #e8e8e8); 
     color: var(--text-color);
     margin: 0;
@@ -57,20 +58,20 @@ body {
     overflow-x: hidden;
     position: relative;
     min-height: 100vh; 
-
     opacity: 1; 
-    transition: none; /* Pertahankan ini agar transisi di body tidak mengganggu */
 }
-
-/* Hapus aturan pewarisan font global, karena font akan diatur secara eksplisit atau default */
-/*
-p, span, div, a, li, input, textarea, button, select, label,
-h2, h3, h4, h5, h6
-{
-    font-family: inherit;
+body.font-sans {
+    font-family: 'Quicksand', sans-serif;
 }
-*/
-
+body.font-serif {
+    font-family: 'Lora', serif;
+}
+body.font-handwritten {
+    font-family: 'Pacifico', cursive;
+}
+html {
+    transition: font-size 0.5s ease-in-out;
+}
 
 /* --- OVERLAY Transisi Halaman --- */
 .page-transition-overlay {
@@ -165,7 +166,6 @@ h2, h3, h4, h5, h6
 
 .header-center .subtitle,
 .header-center p#poem-author-full { /* Subtitle dan author puisi */
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-size: 1.1em;
     color: var(--soft-text);
     margin-top: 5px; 
@@ -203,7 +203,6 @@ h2, h3, h4, h5, h6
     font-size: 1em;
     transition: all 0.3s ease;
     color: var(--text-color);
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
 }
 .search-input:focus {
     outline: none;
@@ -340,14 +339,12 @@ h2, h3, h4, h5, h6
     margin-top: 0;
 }
 .poem-card .author {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-size: 1em;
     font-style: italic;
     color: var(--soft-text);
     margin-bottom: 20px;
 }
 .poem-content p {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     line-height: 1.8;
     margin-bottom: 1em;
     font-size: 1.1em; 
@@ -387,7 +384,7 @@ h2, h3, h4, h5, h6
     background: var(--accent-color); 
     border: none;
     color: white;
-    font-size: 2em;
+    font-size: 1.15em;
     width: 70px;
     height: 70px;
     border-radius: 50%;
@@ -404,7 +401,8 @@ h2, h3, h4, h5, h6
 }
 .create-btn i {
     color: #fff;
-    transform: translate(-5px, -5px); 
+    font-size: 1.8em; 
+    transform: translate(-0.4px, -0.3px); 
 }
 /* SIDEBAR */
 .sidebar {
@@ -449,7 +447,6 @@ h2, h3, h4, h5, h6
     font-size: 1.1em;
     border-radius: 8px;
     transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     padding-left: 15px; /* Adjust as needed for left alignment */
     justify-content: flex-start; /* Ensure content is left-aligned */
 }
@@ -499,7 +496,6 @@ h2, h3, h4, h5, h6
 }
 
 .poem-full-text {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     line-height: 1.8;
     font-size: 1.3em; 
     color: #4a4a4a;
@@ -524,7 +520,6 @@ h2, h3, h4, h5, h6
 /* app-header h1#poem-title-full sudah dipindahkan ke blok judul khusus di atas */
 
 .app-header p#poem-author-full {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-size: 1.2em;
     font-style: italic;
     color: var(--soft-text);
@@ -555,7 +550,6 @@ h2, h3, h4, h5, h6
     align-items: flex-start;
 }
 .form-group label {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-size: 1.2em;
     font-weight: bold;
     color: var(--text-color);
@@ -566,7 +560,6 @@ h2, h3, h4, h5, h6
     padding: 10px 15px;
     border-radius: 10px;
     border: 1px solid #ddd;
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-size: 1em;
     transition: all 0.3s ease;
     color: #000;
@@ -579,14 +572,11 @@ h2, h3, h4, h5, h6
 .form-group textarea {
     height: 300px;
     resize: none;
-    /* Font ditentukan oleh kelas body */
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     line-height: 1.8;
     font-size: 1.2em; 
     color: #000; 
 }
 .word-count-display {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-size: 0.9em;
     color: var(--soft-text);
     text-align: right;
@@ -613,7 +603,6 @@ h2, h3, h4, h5, h6
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
 }
 #publish-btn.active {
     background-color: var(--primary-color); 
@@ -633,7 +622,6 @@ h2, h3, h4, h5, h6
 }
 /* Styling terkait color-label, color-options, color-circle dikembalikan */
 .color-label {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-size: 1em;
     font-weight: bold;
     color: var(--text-color);
@@ -688,7 +676,6 @@ h2, h3, h4, h5, h6
 
 
 .draft-message {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     color: var(--soft-text);
     text-align: center;
     font-style: italic;
@@ -700,7 +687,6 @@ h2, h3, h4, h5, h6
     opacity: 1;
 }
 .autosave-message {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     position: fixed;
     bottom: 20px;
     left: 50%;
@@ -734,7 +720,6 @@ h2, h3, h4, h5, h6
     transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
     z-index: 2000;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     white-space: nowrap; /* Pastikan teks tidak patah */
 }
 
@@ -756,7 +741,6 @@ h2, h3, h4, h5, h6
     align-items: center;
 }
 .empty-state p {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-size: 1.5em;
     color: var(--soft-text);
     margin-bottom: 20px;
@@ -830,13 +814,11 @@ h2, h3, h4, h5, h6
     align-self: flex-start; /* Memastikan panel sejajar di atas */
 }
 .settings-right-panel h3 {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-size: 1.5em;
     color: var(--primary-color);
     margin-bottom: 10px;
 }
 .settings-right-panel p {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     line-height: 1.6;
 }
 .settings-section {
@@ -845,7 +827,6 @@ h2, h3, h4, h5, h6
     border-radius: 10px;
 }
 .copyright {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     margin-top: auto;
     text-align: center;
     font-size: 0.9em;
@@ -860,7 +841,6 @@ h2, h3, h4, h5, h6
 }
 /* Add New Word Button */
 .add-new-word-button {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     display: block;
     width: fit-content;
     margin: 20px auto 30px auto; 
@@ -931,7 +911,6 @@ h2, h3, h4, h5, h6
 
 
 .word-number {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-size: 1.2em;
     font-weight: bold;
     color: var(--primary-color);
@@ -1006,7 +985,6 @@ h2, h3, h4, h5, h6
 }
 
 .detail-label {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     font-weight: bold;
     color: var(--secondary-color); /* Menggunakan secondary-color baru */
     margin-bottom: 5px;
@@ -1031,7 +1009,6 @@ h2, h3, h4, h5, h6
 }
 
 .dropdown-arrow {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     transition: transform 0.3s ease;
 }
 .dropdown-arrow.active {
@@ -1074,7 +1051,6 @@ h2, h3, h4, h5, h6
     white-space: nowrap; 
     transition: background-color 0.2s ease, transform 0.1s ease;
     position: relative; /* Untuk ikon edit/delete tag */
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
 }
 .word-tag:hover {
     background-color: var(--primary-color); /* Warna hover dari primary baru */
@@ -1103,7 +1079,7 @@ h2, h3, h4, h5, h6
     z-index: 10;
 }
 .word-tag:hover .tag-actions {
-    opacity: 1;
+    opacity: 1; 
 }
 .word-tag .tag-actions i {
     font-size: 0.8em;
@@ -1136,7 +1112,6 @@ h2, h3, h4, h5, h6
     font-size: 0.9em;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
 }
 .inline-add-input:focus,
 .inline-edit-input:focus {
@@ -1154,7 +1129,6 @@ h2, h3, h4, h5, h6
     transition: background-color 0.2s ease;
     font-size: 0.85em;
     flex-shrink: 0;
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
 }
 .inline-add-container button:hover,
 .inline-edit-container button:hover {
@@ -1186,7 +1160,6 @@ h2, h3, h4, h5, h6
     align-items: center;
     gap: 5px;
     width: fit-content;
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
 }
 .add-inline-term-btn:hover {
     background-color: var(--primary-color); /* Warna hover dari primary baru */
@@ -1231,7 +1204,6 @@ h2, h3, h4, h5, h6
 }
 
 .contextual-copy-feedback {
-    font-family: 'Quicksand', sans-serif; /* Kembali ke font awal */
     position: absolute;
     background-color: rgba(0, 0, 0, 0.75);
     color: #fff;
@@ -1295,7 +1267,6 @@ h2, h3, h4, h5, h6
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-family: 'Quicksand', sans-serif; /* Font tombol tidak terlalu fleksibel */
     flex-shrink: 0; /* Jangan menyusut */
 }
 
