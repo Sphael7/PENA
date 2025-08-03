@@ -1,43 +1,39 @@
 document.addEventListener('DOMContentLoaded', () => {
     const settingsNav = document.getElementById('settings-nav');
     const tabContentSections = document.querySelectorAll('.tab-content-section');
-    let activeTabId = 'account'; // Default active tab is now 'account'
+    let activeTabId = 'account'; // Tab aktif default adalah 'account'
 
-    // Function to initialize a custom dropdown
+    // Fungsi untuk menginisialisasi dropdown kustom
     function initializeCustomDropdown(wrapperId, initialValue, onChangeCallback = null) {
         const selectWrapper = document.getElementById(wrapperId);
-        if (!selectWrapper) return; // Exit if wrapper not found
+        if (!selectWrapper) return;
 
         const selectTrigger = selectWrapper.querySelector('.custom-select-trigger');
         const selectedValueSpan = selectTrigger.querySelector('.selected-value');
         const optionsList = selectWrapper.querySelector('.custom-options');
         const options = optionsList.querySelectorAll('.custom-option');
 
-        // Set initial selected value and mark it
+        // Atur nilai yang dipilih di awal
         let currentSelectedOption = optionsList.querySelector(`.custom-option[data-value="${initialValue}"]`);
         if (currentSelectedOption) {
             selectedValueSpan.textContent = currentSelectedOption.textContent;
             currentSelectedOption.classList.add('selected');
         } else if (options.length > 0) {
-            // Fallback to first option if initialValue not found
             selectedValueSpan.textContent = options[0].textContent;
             options[0].classList.add('selected');
-            initialValue = options[0].dataset.value; // Update initialValue
+            initialValue = options[0].dataset.value;
         }
 
-        // Execute callback for initial value
         if (onChangeCallback && initialValue) {
             onChangeCallback(initialValue);
         }
 
-        // Toggle dropdown visibility
         selectTrigger.addEventListener('click', (event) => {
-            event.stopPropagation(); // Prevent document click from immediately closing
-            // Close other open dropdowns
+            event.stopPropagation();
             document.querySelectorAll('.custom-options.open').forEach(openOptions => {
-                if (openOptions !== optionsList) { // Don't close self
+                if (openOptions !== optionsList) {
                     openOptions.classList.remove('open');
-                    openOptions.previousElementSibling.classList.remove('active'); // Trigger
+                    openOptions.previousElementSibling.classList.remove('active');
                 }
             });
 
@@ -45,32 +41,26 @@ document.addEventListener('DOMContentLoaded', () => {
             selectTrigger.classList.toggle('active');
         });
 
-        // Handle option selection
         options.forEach(option => {
             option.addEventListener('click', () => {
-                // Remove 'selected' class from previously selected option
                 const prevSelected = optionsList.querySelector('.custom-option.selected');
                 if (prevSelected) {
                     prevSelected.classList.remove('selected');
                 }
 
-                // Add 'selected' class to the clicked option
                 option.classList.add('selected');
                 selectedValueSpan.textContent = option.textContent;
                 const selectedValue = option.dataset.value;
 
-                // Execute callback with selected value
                 if (onChangeCallback) {
                     onChangeCallback(selectedValue);
                 }
 
-                // Close dropdown
                 optionsList.classList.remove('open');
                 selectTrigger.classList.remove('active');
             });
         });
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', (event) => {
             if (!selectWrapper.contains(event.target)) {
                 optionsList.classList.remove('open');
@@ -78,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Close dropdown with Escape key
         selectTrigger.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
                 optionsList.classList.remove('open');
@@ -87,40 +76,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Appearance Settings Logic ---
-
-    // Apply Theme Mode
+    // --- Logika Pengaturan Tampilan ---
+    // Fungsi untuk menerapkan tema yang dipilih dan menyimpannya di localStorage
     const applyTheme = (theme) => {
         const body = document.body;
-        const html = document.documentElement; // Get html element for font-size transition
-
-        body.classList.remove('theme-light', 'theme-dark'); // Remove existing themes
-        body.style.backgroundColor = ''; // Reset background color
-        body.style.color = ''; // Reset text color
+        body.classList.remove('theme-light', 'theme-dark');
 
         if (theme === 'light') {
             body.classList.add('theme-light');
-            body.style.backgroundColor = 'var(--pena-background)'; // PENA Light Cream
-            body.style.color = 'var(--pena-text-dark)'; // PENA Dark Gray
+            body.setAttribute('data-theme', 'light');
         } else if (theme === 'dark') {
             body.classList.add('theme-dark');
-            body.style.backgroundColor = '#2d3748'; // A dark gray for dark theme
-            body.style.color = 'var(--pena-background)'; // PENA Light Cream for text
+            body.setAttribute('data-theme', 'dark');
         } else if (theme === 'system') {
-            // Check system preference
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
                 body.classList.add('theme-dark');
-                body.style.backgroundColor = '#2d3748';
-                body.style.color = 'var(--pena-background)';
+                body.setAttribute('data-theme', 'dark');
             } else {
                 body.classList.add('theme-light');
-                body.style.backgroundColor = 'var(--pena-background)';
-                body.style.color = 'var(--pena-text-dark)';
+                body.setAttribute('data-theme', 'light');
             }
         }
+        localStorage.setItem('selectedTheme', theme);
     };
 
-    // Apply Primary Font
+    // Fungsi untuk menerapkan font yang dipilih dan menyimpannya di localStorage
     const applyFont = (font) => {
         const body = document.body;
         let fontFamily = '';
@@ -135,20 +115,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 fontFamily = "'Pacifico', cursive";
                 break;
             case 'custom':
-                fontFamily = "'Quicksand', sans-serif"; // Placeholder for custom font logic
+                fontFamily = "'Quicksand', sans-serif";
                 break;
             default:
                 fontFamily = "'Quicksand', sans-serif";
         }
         body.style.fontFamily = fontFamily;
+        localStorage.setItem('selectedFont', font);
     };
 
-    // Apply Font Size
+    // Fungsi untuk menerapkan ukuran font yang dipilih dan menyimpannya di localStorage
     const applyFontSize = (size) => {
-        const root = document.documentElement; // Apply to root for responsive scaling
+        const root = document.documentElement;
         switch (size) {
             case 'small':
-                root.style.fontSize = '14px'; // Base font size
+                root.style.fontSize = '14px';
                 break;
             case 'medium':
                 root.style.fontSize = '16px';
@@ -159,47 +140,47 @@ document.addEventListener('DOMContentLoaded', () => {
             default:
                 root.style.fontSize = '16px';
         }
+        localStorage.setItem('selectedFontSize', size);
     };
 
-    // Apply Background Style
+    // Fungsi untuk menerapkan gaya latar belakang yang dipilih dan menyimpannya di localStorage
     const applyBackgroundStyle = (style) => {
         const body = document.body;
-        body.style.backgroundImage = ''; // Reset background image
-        body.style.backgroundColor = ''; // Reset background color (will be set by theme if not custom)
+        body.style.backgroundImage = '';
+        body.classList.remove('textured');
 
-        if (style === 'flat') {
-            // Theme will handle flat background color
-        } else if (style === 'textured') {
-            body.style.backgroundImage = 'repeating-linear-gradient(45deg, rgba(var(--pena-background-rgb-values), 0.5) 0px, rgba(var(--pena-background-rgb-values), 0.5) 1px, transparent 1px, transparent 10px)';
-            body.style.backgroundColor = 'var(--pena-background)'; // A slightly different background for texture
+        if (style === 'textured') {
+            body.classList.add('textured');
         } else if (style === 'custom-upload') {
-            // For a real app, you'd trigger a file input here
             console.log('Fungsi unggah latar belakang kustom akan diimplementasikan di sini.');
-            // Example: body.style.backgroundImage = 'url("path/to/your/image.jpg")';
-            // body.style.backgroundSize = 'cover';
         }
+        localStorage.setItem('selectedBackgroundStyle', style);
     };
 
-    // Apply Poem Display Layout (Placeholder for actual layout change)
     const applyPoemLayout = (layout) => {
         console.log(`Tata Letak Tampilan Puisi diatur ke: ${layout}`);
-        // In a real application, you would change a class on a poem display container
-        // or update a state management system that affects how poems are rendered.
-        // For example:
-        // const poemContainer = document.getElementById('poem-display-area');
-        // poemContainer.className = `poem-display-${layout}`;
     };
+    
+    // Muat dan terapkan pengaturan dari localStorage saat halaman dimuat
+    const savedTheme = localStorage.getItem('selectedTheme') || 'light';
+    const savedFont = localStorage.getItem('selectedFont') || 'sans-serif';
+    const savedFontSize = localStorage.getItem('selectedFontSize') || 'medium';
+    const savedBackgroundStyle = localStorage.getItem('selectedBackgroundStyle') || 'flat';
+    
+    // Terapkan semua pengaturan yang tersimpan saat inisialisasi
+    applyTheme(savedTheme);
+    applyFont(savedFont);
+    applyFontSize(savedFontSize);
+    applyBackgroundStyle(savedBackgroundStyle);
 
-
-    // Initialize all custom dropdowns with their respective callbacks
-    initializeCustomDropdown('theme-mode-wrapper', 'light', applyTheme);
-    initializeCustomDropdown('primary-font-wrapper', 'sans-serif', applyFont);
-    initializeCustomDropdown('font-size-wrapper', 'medium', applyFontSize);
-    initializeCustomDropdown('background-style-wrapper', 'flat', applyBackgroundStyle);
+    // Inisialisasi semua dropdown kustom dengan nilai yang tersimpan
+    initializeCustomDropdown('theme-mode-wrapper', savedTheme, applyTheme);
+    initializeCustomDropdown('primary-font-wrapper', savedFont, applyFont);
+    initializeCustomDropdown('font-size-wrapper', savedFontSize, applyFontSize);
+    initializeCustomDropdown('background-style-wrapper', savedBackgroundStyle, applyBackgroundStyle);
     initializeCustomDropdown('poem-display-layout-wrapper', 'card', applyPoemLayout);
 
-
-    // --- Tab Switching Logic (existing) ---
+    // --- Logika Pergantian Tab ---
     const showTab = (tabId) => {
         const currentActiveSection = document.querySelector('.tab-content-section.active');
         const targetSection = document.getElementById(tabId);
@@ -240,23 +221,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     showTab(activeTabId);
 
-    // --- Modal Logic for About & Support ---
+    // --- Logika Modal untuk Tentang & Dukungan ---
     const privacyPolicyLink = document.getElementById('privacy-policy-link');
     const termsOfServiceLink = document.getElementById('terms-of-service-link');
     const privacyPolicyModal = document.getElementById('privacy-policy-modal');
     const termsOfServiceModal = document.getElementById('terms-of-service-modal');
 
-    // Function to open modal
     const openModal = (modalElement) => {
         modalElement.classList.remove('hidden');
     };
 
-    // Function to close modal
     const closeModal = (modalElement) => {
         modalElement.classList.add('hidden');
     };
 
-    // Event listeners for opening modals
     if (privacyPolicyLink) {
         privacyPolicyLink.addEventListener('click', (e) => {
             e.preventDefault();
@@ -271,7 +249,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Event listeners for closing modals (buttons and overlay click)
     document.querySelectorAll('.modal-close-button').forEach(button => {
         button.addEventListener('click', (e) => {
             closeModal(e.target.closest('.modal-overlay'));
@@ -280,13 +257,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) { // Only close if clicking the overlay itself, not content inside
+            if (e.target === overlay) {
                 closeModal(overlay);
             }
         });
     });
 
-    // Close modals with Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             document.querySelectorAll('.modal-overlay').forEach(modal => {

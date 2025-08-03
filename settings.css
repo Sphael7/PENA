@@ -1,58 +1,96 @@
-/* Optional: Custom font if needed, otherwise Tailwind's default sans-serif is good */
+/* Gaya untuk body, tema, dan font sekarang dikelola secara dinamis */
+:root {
+    /* Tambahkan variabel warna teks untuk tema gelap */
+    --pena-text-light: #e2e8f0;
+}
+
 body {
-    font-family: 'Quicksand', sans-serif; /* Set default body font to Quicksand */
-    /* Transisi untuk properti tampilan */
-    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, font-family 0.5s ease-in-out, font-size 0.5s ease-in-out, background-image 0.5s ease-in-out;
+    font-family: 'Quicksand', sans-serif;
+    transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out, font-family 0.5s ease-in-out, font-size 0.5s ease-in-out;
+    background: linear-gradient(to bottom, var(--background-color), #e8e8f0);
+    color: var(--text-color);
 }
 html {
-    /* Transisi untuk font-size, karena font-size pada html juga mempengaruhi rem units */
     transition: font-size 0.5s ease-in-out;
 }
 
+/* Aturan CSS untuk tema yang diaktifkan oleh JavaScript */
+body[data-theme="light"] {
+    background: linear-gradient(to bottom, var(--background-light), #e8e8f0);
+    color: var(--text-color);
+}
+body[data-theme="dark"] {
+    background: linear-gradient(to bottom, #2d3748, #1a202c);
+    color: var(--pena-text-light);
+}
+
+/* Gaya untuk latar belakang bertekstur */
+body.textured {
+    background-image: repeating-linear-gradient(45deg, rgba(var(--pena-background-rgb-values), 0.5) 0px, rgba(var(--pena-background-rgb-values), 0.5) 1px, transparent 1px, transparent 10px) !important;
+    background-color: var(--pena-background) !important;
+}
+
+
 /* Base styles for tab content sections */
 .tab-content-section {
-    opacity: 0; /* Mulai tidak terlihat */
-    visibility: hidden; /* Pastikan tidak interaktif dan tidak mengambil ruang saat tersembunyi */
-    position: absolute; /* Mengeluarkan dari alur dokumen agar tidak mempengaruhi layout lain */
-    top: 0; /* Posisikan di bagian atas kontainer relatif */
-    left: 0; /* Posisikan di bagian kiri kontainer relatif */
-    width: 100%; /* Memastikan lebar penuh kontainer */
-    height: 100%; /* Penting: Memastikan elemen mengisi tinggi parentnya */
-    pointer-events: none; /* Tidak interaktif saat tersembunyi */
-    /* Menambahkan transform untuk efek geser */
-    transform: translateX(100%); /* Mulai di luar layar ke kanan */
-    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, transform 0.5s ease-in-out; /* Transisi halus untuk opacity, visibility, dan transform */
+    display: none;
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
 }
+
 /* Styles for the active tab content section */
 .tab-content-section.active {
-    opacity: 1; /* Sepenuhnya terlihat */
-    visibility: visible; /* Jadikan interaktif */
-    pointer-events: auto; /* Interaktif saat terlihat */
-    transform: translateX(0); /* Geser ke posisi terlihat */
+    display: block;
+    opacity: 1;
 }
+
+/* Animasi untuk tampilan tab yang lebih halus */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 
 /* --- Custom Dropdown Styles --- */
-
-/* Gaya untuk kontainer dropdown kustom */
 .custom-select-wrapper {
-    /* relative sudah ada di HTML */
     font-size: 1rem;
-    color: var(--pena-text-dark); /* text-pena-text-dark */
+    color: var(--pena-text-dark);
+}
+body[data-theme="dark"] .custom-select-wrapper {
+    color: var(--pena-text-light);
+}
+body[data-theme="dark"] .custom-select-trigger {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: var(--pena-text-light);
+}
+body[data-theme="dark"] .custom-options {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+body[data-theme="dark"] .custom-option {
+    color: var(--pena-text-light);
+}
+body[data-theme="dark"] .custom-option:hover {
+    background-color: #4a5568;
 }
 
-/* Gaya untuk tombol yang terlihat (menyerupai select) */
+
 .custom-select-trigger {
-    /* Kelas Tailwind sudah banyak diterapkan di HTML */
-    /* Tambahan untuk panah SVG */
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition for focus */
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .custom-select-trigger.active {
-    border-color: var(--pena-secondary); /* pena-secondary */
-    box-shadow: 0 0 0 3px rgba(224, 152, 104, 0.5); /* pena-secondary with opacity */
+    border-color: var(--pena-secondary);
+    box-shadow: 0 0 0 3px rgba(224, 152, 104, 0.5);
 }
 
-/* Gaya untuk panah SVG */
 .custom-select-trigger svg {
     transition: transform 0.2s ease-in-out;
 }
@@ -61,49 +99,55 @@ html {
     transform: rotate(180deg);
 }
 
-/* Gaya untuk daftar opsi dropdown */
 .custom-options {
-    /* absolute, top-full, left-0, w-full, bg-white, border, rounded-md, shadow-lg, z-10, list-none, p-0, mt-1 sudah ada di HTML */
-    
-    /* Transisi fade-in/fade-out */
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-8px); /* Mulai sedikit di atas untuk efek slide ringan */
+    transform: translateY(-8px);
     transition: opacity 0.3s ease-out, transform 0.3s ease-out, visibility 0.3s ease-out;
 }
 
 .custom-options.open {
     opacity: 1;
     visibility: visible;
-    transform: translateY(0); /* Kembali ke posisi normal */
+    transform: translateY(0);
 }
 
-/* Gaya untuk setiap opsi */
 .custom-option {
-    /* padding, hover:bg-gray-100, cursor-pointer sudah ada di HTML */
-    transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.custom-option:hover {
+    transform: scale(1.02);
 }
 
 .custom-option.selected {
-    background-color: var(--pena-card-blue); /* pena-card-blue */
-    color: var(--pena-primary); /* pena-primary */
-    font-weight: 600; /* font-semibold */
+    background-color: var(--pena-card-blue);
+    color: var(--pena-primary);
+    font-weight: 600;
+    transform: scale(1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Hapus gaya select bawaan yang tidak lagi digunakan untuk dropdown kustom */
 select {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-image: none; /* Hapus panah SVG bawaan jika masih ada */
-    padding-right: 0; /* Hapus padding tambahan */
+    background-image: none;
+    padding-right: 0;
 }
 
 /* --- Modal Styles --- */
 .modal-overlay {
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    backdrop-filter: blur(5px); /* Optional: blur background */
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
     transition: opacity 0.3s ease-in-out;
+}
+body[data-theme="dark"] .modal-overlay {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+body[data-theme="dark"] .modal-content {
+    background-color: #2d3748;
+    color: var(--pena-text-light);
 }
 
 .modal-content {

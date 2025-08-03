@@ -6,6 +6,7 @@
     <title>Pengaturan Aplikasi</title>
     <!-- Menghubungkan ke file CSS eksternal -->
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="settings.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -46,26 +47,36 @@
         }
     </script>
     <style>
+        /* Gaya tab dan modal telah dipindahkan ke settings.css */
         .tab-content-section {
-            /* Gaya dasar untuk menyembunyikan tab */
             display: none;
-            /* Untuk transisi, kita akan menggunakan opacity yang dikontrol JS */
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
             height: 100%;
         }
 
         .tab-content-section.active {
-            /* Tampilkan tab aktif */
             display: block;
             opacity: 1;
         }
 
-        /* Gaya tambahan untuk perbaikan tata letak */
         .settings-content-wrapper {
             position: relative;
             height: 100%;
             width: 100%;
+        }
+        .sidebar-home-btn {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            color: var(--pena-text-dark);
+            text-decoration: none;
+        }
+        .sidebar-home-btn:hover {
+            background-color: var(--pena-background-hover);
+            color: var(--pena-primary);
         }
     </style>
 </head>
@@ -74,12 +85,13 @@
     <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:flex min-h-[70vh] relative">
         <!-- Sidebar Navigasi -->
         <div class="md:w-1/4 bg-pena-background-sidebar p-6 border-r border-gray-200 rounded-l-xl z-10 relative flex flex-col">
-            <!-- Tombol Home di kiri atas -->
-            <a href="index.html" class="absolute top-4 left-4 flex items-center p-3 rounded-full transition-colors duration-200 bg-pena-secondary text-white shadow-md hover:bg-pena-primary-hover">
-                <i class="fas fa-home w-6 h-6"></i>
+            <!-- Tombol Home sekarang di dalam sidebar -->
+            <a href="index.html" class="sidebar-home-btn mb-4">
+                <i class="fas fa-home w-6 h-6 mr-3 text-pena-primary"></i>
+                <span class="font-medium text-pena-primary">Beranda</span>
             </a>
 
-            <div class="mt-16">
+            <div class="mt-4">
                 <h1 class="text-3xl font-bold text-pena-text-dark mb-6">Pengaturan</h1>
                 <nav id="settings-nav" class="space-y-2">
                     <!-- Navigation buttons for Account Settings -->
