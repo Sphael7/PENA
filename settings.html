@@ -3,100 +3,288 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pena - Pengaturan</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link ke global style.css -->
-    <link rel="stylesheet" href="settings.css"> <!-- Link ke settings.css baru -->
+    <title>Pengaturan Aplikasi</title>
+    <!-- Menghubungkan ke file CSS eksternal -->
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Hapus impor semua font dari Google Fonts jika tidak digunakan untuk font default lainnya -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <script src="common.js"></script>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS Configuration for PENA Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // PENA Main Colors
+                        'pena-primary': 'rgb(45, 75, 106)', // Dark Blue
+                        'pena-primary-rgb-values': '45, 75, 106', // RGB values for rgba()
+                        'pena-secondary': 'rgb(224, 152, 104)', // Orange Peach
+                        'pena-secondary-rgb-values': '224, 152, 104', // RGB values for rgba()
+                        'pena-background': 'rgb(249, 245, 234)', // Light Cream
+                        'pena-background-rgb-values': '249, 245, 234', // RGB values for rgba()
+                        'pena-text-dark': '#333', // Dark Gray
+                        'pena-text-soft': '#666', // Medium Gray
+
+                        // PENA Card/Accent Colors
+                        'pena-card-blue': 'rgb(212, 228, 242)',
+                        'pena-card-orange': 'rgb(248, 221, 184)',
+                        'pena-card-pink': 'rgb(242, 209, 216)',
+
+                        // Derived/Utility Colors for better contrast/hover states
+                        'pena-primary-hover': 'rgb(35, 60, 85)', // Slightly darker primary for hover
+                        'pena-secondary-hover': 'rgb(190, 120, 80)', // Slightly darker secondary for hover
+                        'pena-background-hover': 'rgb(230, 225, 215)', // Slightly darker background for hover (for gray-200 equivalent)
+                        'pena-background-sidebar': 'rgb(240, 235, 225)', // A bit darker than main background for sidebar contrast
+                    },
+                    fontFamily: {
+                        sans: ['Quicksand', 'sans-serif'], // Default sans-serif to Quicksand
+                        serif: ['Lora', 'serif'], // Default serif to Lora
+                        handwritten: ['Pacifico', 'cursive'], // Map handwritten to Pacifico
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .tab-content-section {
+            /* Gaya dasar untuk menyembunyikan tab */
+            display: none;
+            /* Untuk transisi, kita akan menggunakan opacity yang dikontrol JS */
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            height: 100%;
+        }
+
+        .tab-content-section.active {
+            /* Tampilkan tab aktif */
+            display: block;
+            opacity: 1;
+        }
+
+        /* Gaya tambahan untuk perbaikan tata letak */
+        .settings-content-wrapper {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
 </head>
-<body id="settings-page">
-    <div id="page-transition-overlay" class="page-transition-overlay"></div>
+<body class="min-h-screen bg-pena-background font-sans antialiased p-4 sm:p-6 lg:p-8">
 
-    <header class="app-header">
-        <div class="header-left">
-            <button class="icon-button" id="toggle-sidebar-btn" aria-label="Buka Sidebar Navigasi"><i class="fas fa-bars"></i></button>
-            <a href="index.html" class="logo">
-                <img src="logo-pena.png" alt="Logo Pena" height="140">
+    <div class="max-w-6xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:flex min-h-[70vh] relative">
+        <!-- Sidebar Navigasi -->
+        <div class="md:w-1/4 bg-pena-background-sidebar p-6 border-r border-gray-200 rounded-l-xl z-10 relative flex flex-col">
+            <!-- Tombol Home di kiri atas -->
+            <a href="index.html" class="absolute top-4 left-4 flex items-center p-3 rounded-full transition-colors duration-200 bg-pena-secondary text-white shadow-md hover:bg-pena-primary-hover">
+                <i class="fas fa-home w-6 h-6"></i>
             </a>
-        </div>
-        <div class="header-center">
-            <h1>Pengaturan</h1>
-        </div>
-        <div class="header-right">
-            <a href="settings.html" class="icon-button" aria-label="Pengaturan Aplikasi"><i class="fas fa-cog"></i></a>
-        </div>
-    </header>
 
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <button class="icon-button" id="close-sidebar-btn" aria-label="Tutup Sidebar Navigasi"><i class="fas fa-times"></i></button>
-        </div>
-        <nav class="sidebar-menu">
-            <ul>
-                <li><a href="index.html"><i class="fas fa-home"></i> Beranda</a></li>
-                <li><a href="write.html"><i class="fas fa-pen-nib"></i> Tulis</a></li>
-                <li><a href="thesaurus.html"><i class="fas fa-book"></i> Tesaurus</a></li>
-                <li><a href="pembelajaran.html"><i class="fas fa-book-open"></i> Pembelajaran</a></li>
-                <li><a href="ide-generator.html"><i class="fas fa-lightbulb"></i> Penghasil Ide</a></li>
-                <li><a href="my-poem.html"><i class="fas fa-file-alt"></i> Puisi Saya</a></li>
-                <li><a href="hall-of-fame.html"><i class="fas fa-trophy"></i> Hall of Fame</a></li>
-                <li><a href="settings.html"><i class="fas fa-cog"></i> Pengaturan</a></li>
-            </ul>
-        </nav>
-    </aside>
-
-    <div class="overlay" id="overlay"></div>
-
-    <main class="settings-content">
-        <div class="settings-container">
-            <div class="settings-left-panel">
-                <div class="settings-option">
-                    <i class="fas fa-user-circle"></i>
-                    <span>Profil</span>
-                </div>
-                <!-- Hapus opsi pemilihan font -->
-                <!--
-                <div class="settings-option" id="font-selector-trigger">
-                    <i class="fas fa-font"></i>
-                    <span>Font</span>
-                </div>
-                -->
+            <div class="mt-16">
+                <h1 class="text-3xl font-bold text-pena-text-dark mb-6">Pengaturan</h1>
+                <nav id="settings-nav" class="space-y-2">
+                    <!-- Navigation buttons for Account Settings -->
+                    <button data-tab="account" class="w-full flex items-center p-3 rounded-lg text-left transition-colors duration-200 bg-pena-primary text-white shadow-md">
+                        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"></path>
+                        </svg>
+                        <span class="font-medium">Akun</span>
+                    </button>
+                    <!-- Navigation buttons for Appearance -->
+                    <button data-tab="appearance" class="w-full flex items-center p-3 rounded-lg text-left transition-colors duration-200 text-pena-text-dark hover:bg-pena-background-hover hover:text-pena-text-dark">
+                        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM12.3 6.7l-2.8 2.8c-.3.3-.7.3-1 0L6.7 8.3c-.3-.3-.3-.7 0-1L8 5.7c.3-.3.7-.3 1 0l2.8 2.8c.3.3.3.7 0 1z"></path>
+                        </svg>
+                        <span class="font-medium">Tampilan</span>
+                    </button>
+                    <!-- Navigation buttons for About & Support -->
+                    <button data-tab="about-support" class="w-full flex items-center p-3 rounded-lg text-left transition-colors duration-200 text-pena-text-dark hover:bg-pena-background-hover hover:text-pena-text-dark">
+                        <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11H9v2h2V7zm0 4H9v4h2v-4z"></path>
+                        </svg>
+                        <span class="font-medium">Tentang & Dukungan</span>
+                    </button>
+                </nav>
             </div>
+        </div>
 
-            <div class="settings-right-panel">
-                <div class="settings-section">
-                    <h3>Tentang Kami</h3>
-                    <p>Aplikasi ini dikembangkan oleh Christopher Alberto Hamonangan dan Leviana Dearma Belinda Pasaribu sebagai bagian dari proyek penelitian dalam program Olimpiade Penelitian Siswa Indonesia (OPSI). Aplikasi ini dirancang sebagai alat bantu pembuat puisi dengan tujuan utama meningkatkan literasi serta minat siswa terhadap sastra, khususnya dalam bidang Bahasa Indonesia. Melalui pendekatan teknologi yang interaktif dan kreatif, kami berharap aplikasi ini dapat menjadi jembatan yang menyenangkan antara generasi muda dan dunia puisi, sekaligus mendorong apresiasi yang lebih luas terhadap karya sastra dalam bahasa ibu.</p>
+        <!-- Konten Utama Pengaturan -->
+        <div class="md:w-3/4 relative overflow-hidden h-full">
+            <div class="settings-content-wrapper">
+                <!-- Account Settings Section -->
+                <div id="account" class="tab-content-section active space-y-4 p-6 sm:p-8 lg:p-10">
+                    <h2 class="text-2xl font-semibold text-pena-text-dark">Pengaturan Akun</h2>
+                    <p class="text-pena-text-soft">Kelola informasi profil dan akun Anda.</p>
+                    <div class="bg-white p-6 rounded-lg shadow-sm space-y-4">
+                        <div>
+                            <label for="profile-name" class="block text-sm font-medium text-pena-text-dark">Nama Tampilan</label>
+                            <input type="text" id="profile-name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-pena-secondary focus:border-pena-secondary sm:text-sm" placeholder="Nama Anda" />
+                        </div>
+                        <div>
+                            <label for="email-username" class="block text-sm font-medium text-pena-text-dark">Email / Username</label>
+                            <input type="email" id="email-username" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-pena-secondary focus:border-pena-secondary sm:text-sm" placeholder="email@example.com" />
+                        </div>
+                        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-pena-primary hover:bg-pena-primary-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pena-secondary">
+                            Ubah Kata Sandi
+                        </button>
+                        <div>
+                            <label for="profile-picture" class="block text-sm font-medium text-pena-text-dark">Foto Profil</label>
+                            <input type="file" id="profile-picture" accept="image/*" class="mt-1 block w-full text-sm text-pena-text-soft file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-pena-card-blue file:text-pena-primary hover:file:bg-pena-card-blue/80" />
+                        </div>
+                        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-red-700 bg-pena-card-pink hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Hapus Akun
+                        </button>
                     </div>
-                <div class="settings-section">
-                    <h3>Lisensi</h3>
-                    <p>Hak cipta © 2025 oleh Christopher Alberto Hamonangan dan Leviana Dearma Belinda Pasaribu.</p>
-                    <p>Aplikasi ini dikembangkan sebagai bagian dari proyek penelitian dalam rangka Olimpiade Penelitian Siswa Indonesia (OPSI).</p>
-                    <p>Aplikasi ini disediakan untuk tujuan pendidikan dan non-komersial. Pengguna diperbolehkan untuk menggunakan, mendistribusikan, dan memodifikasi aplikasi ini dengan tetap mencantumkan nama pengembang asli serta tidak menggunakannya untuk tujuan komersial tanpa izin tertulis.</p>
-                    <p>Segala bentuk penggunaan di luar ketentuan ini harus mendapatkan persetujuan resmi dari pengembang.</p>
                 </div>
-                <div class="copyright">
-                    © 2025 Pena
+
+                <!-- Appearance Section -->
+                <div id="appearance" class="tab-content-section space-y-4 p-6 sm:p-8 lg:p-10">
+                    <h2 class="text-2xl font-semibold text-pena-text-dark">Tampilan</h2>
+                    <p class="text-pena-text-soft">Sesuaikan tampilan aplikasi.</p>
+                    <div class="bg-white p-6 rounded-lg shadow-sm space-y-4">
+                        <!-- Custom Dropdown for Theme Mode -->
+                        <div>
+                            <label for="theme-mode-trigger" class="block text-sm font-medium text-pena-text-dark mb-2">Mode Tema</label>
+                            <div id="theme-mode-wrapper" class="custom-select-wrapper relative w-full">
+                                <div class="custom-select-trigger mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-md shadow-sm cursor-pointer flex justify-between items-center bg-white hover:shadow-md focus:outline-none focus:ring-pena-secondary focus:border-pena-secondary" tabindex="0">
+                                    <span class="selected-value">Terang</span>
+                                    <svg class="w-5 h-5 text-pena-text-soft transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <ul class="custom-options absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 list-none p-0 mt-1 opacity-0 visibility-hidden transform -translate-y-2 transition-all duration-300 ease-out">
+                                    <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer selected" data-value="light">Terang</li>
+                                    <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="dark">Gelap</li>
+                                    <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="system">Sistem Default</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Custom Dropdown for Primary Font -->
+                        <div>
+                            <label for="primary-font-trigger" class="block text-sm font-medium text-pena-text-dark mb-2">Font Utama</label>
+                            <div id="primary-font-wrapper" class="custom-select-wrapper relative w-full">
+                                <div class="custom-select-trigger mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-md shadow-sm cursor-pointer flex justify-between items-center bg-white hover:shadow-md focus:outline-none focus:ring-pena-secondary focus:border-pena-secondary" tabindex="0">
+                                    <span class="selected-value">Sans-serif</span>
+                                    <svg class="w-5 h-5 text-pena-text-soft transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                    </svg>
+                                </div>
+                                <ul class="custom-options absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 list-none p-0 mt-1 opacity-0 visibility-hidden transform -translate-y-2 transition-all duration-300 ease-out">
+                                    <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer selected" data-value="sans-serif">Sans-serif</li>
+                                    <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="serif">Serif</li>
+                                    <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="handwritten">Handwritten</li>
+                                    <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="custom">Kustom</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Dropdown for Font Size -->
+                    <div>
+                        <label for="font-size-trigger" class="block text-sm font-medium text-pena-text-dark mb-2">Ukuran Font</label>
+                        <div id="font-size-wrapper" class="custom-select-wrapper relative w-full">
+                            <div class="custom-select-trigger mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-md shadow-sm cursor-pointer flex justify-between items-center bg-white hover:shadow-md focus:outline-none focus:ring-pena-secondary focus:border-pena-secondary" tabindex="0">
+                                <span class="selected-value">Sedang</span>
+                                <svg class="w-5 h-5 text-pena-text-soft transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <ul class="custom-options absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 list-none p-0 mt-1 opacity-0 visibility-hidden transform -translate-y-2 transition-all duration-300 ease-out">
+                                <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="small">Kecil</li>
+                                <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer selected" data-value="medium">Sedang</li>
+                                <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="large">Besar</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Custom Dropdown for Background Style -->
+                    <div>
+                        <label for="background-style-trigger" class="block text-sm font-medium text-pena-text-dark mb-2">Gaya Latar Belakang</label>
+                        <div id="background-style-wrapper" class="custom-select-wrapper relative w-full">
+                            <div class="custom-select-trigger mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-md shadow-sm cursor-pointer flex justify-between items-center bg-white hover:shadow-md focus:outline-none focus:ring-pena-secondary focus:border-pena-secondary" tabindex="0">
+                                <span class="selected-value">Datar</span>
+                                <svg class="w-5 h-5 text-pena-text-soft transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <ul class="custom-options absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 list-none p-0 mt-1 opacity-0 visibility-hidden transform -translate-y-2 transition-all duration-300 ease-out">
+                                <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer selected" data-value="flat">Datar</li>
+                                <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="textured">Bertekstur</li>
+                                <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="custom-upload">Unggah Kustom</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Custom Dropdown for Poem Display Layout -->
+                    <div>
+                        <label for="poem-display-layout-trigger" class="block text-sm font-medium text-pena-text-dark mb-2">Tata Letak Tampilan Puisi</label>
+                        <div id="poem-display-layout-wrapper" class="custom-select-wrapper relative w-full">
+                            <div class="custom-select-trigger mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 rounded-md shadow-sm cursor-pointer flex justify-between items-center bg-white hover:shadow-md focus:outline-none focus:ring-pena-secondary focus:border-pena-secondary" tabindex="0">
+                                <span class="selected-value">Kartu</span>
+                                <svg class="w-5 h-5 text-pena-text-soft transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <ul class="custom-options absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10 list-none p-0 mt-1 opacity-0 visibility-hidden transform -translate-y-2 transition-all duration-300 ease-out">
+                                <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer selected" data-value="card">Kartu</li>
+                                <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="list">Daftar</li>
+                                <li class="custom-option p-2 hover:bg-gray-100 cursor-pointer" data-value="typing-effect">Efek Mengetik</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
 
-    <!-- Hapus modal font -->
-    <!--
-    <div id="font-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" id="close-font-modal-btn">&times;</span>
-            <h2>Pilih Font Puisi</h2>
-            <div class="font-options-grid" id="font-options-grid">
+            <!-- About & Support Section -->
+            <div id="about-support" class="tab-content-section space-y-4 p-6 sm:p-8 lg:p-10">
+                <h2 class="text-2xl font-semibold text-pena-text-dark">Tentang & Dukungan</h2>
+                <p class="text-pena-text-soft">Informasi aplikasi dan bantuan.</p>
+                <div class="bg-white p-6 rounded-lg shadow-sm space-y-4">
+                    <h3 class="text-lg font-semibold text-pena-text-dark">Tentang Kami</h3>
+                    <p class="text-pena-text-soft">Aplikasi ini dibuat untuk membantu Anda mengekspresikan kreativitas melalui puisi. Kami berkomitmen untuk menyediakan platform yang mudah digunakan dan inspiratif bagi semua pecinta puisi.</p>
+                    <a href="#" id="privacy-policy-link" class="block text-pena-primary hover:underline">Kebijakan Privasi</a>
+                    <a href="#" id="terms-of-service-link" class="block text-pena-primary hover:underline">Ketentuan Layanan</a>
+                    <a href="mailto:support@example.com" class="block text-pena-primary hover:underline">Hubungi Dukungan</a>
+                    <p class="text-sm text-pena-text-soft mt-4">Versi Aplikasi: 1.0.0 (Terakhir Diperbarui: 31 Juli 2025)</p>
                 </div>
+            </div>
         </div>
     </div>
-    -->
 
-    <script src="settings.js"></script>
+    <!-- Modal for Privacy Policy -->
+    <div id="privacy-policy-modal" class="modal-overlay hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 relative">
+            <button class="modal-close-button absolute top-4 right-4 text-pena-text-soft hover:text-pena-text-dark text-2xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold text-pena-text-dark mb-4">Kebijakan Privasi</h3>
+            <div class="text-pena-text-dark text-sm space-y-3">
+                <p>Kebijakan Privasi ini menjelaskan bagaimana kami mengumpulkan, menggunakan, dan melindungi informasi pribadi Anda saat Anda menggunakan aplikasi kami. Kami berkomitmen untuk melindungi privasi Anda.</p>
+                <p><strong>Informasi yang Kami Kumpulkan:</strong> Kami mungkin mengumpulkan informasi yang Anda berikan langsung kepada kami, seperti nama tampilan dan alamat email (jika Anda membuat akun). Kami juga dapat mengumpulkan data penggunaan non-pribadi untuk tujuan analitik guna meningkatkan layanan kami.</p>
+                <p><strong>Bagaimana Kami Menggunakan Informasi Anda:</strong> Informasi yang kami kumpulkan digunakan untuk menyediakan, memelihara, dan meningkatkan aplikasi kami, serta untuk berkomunikasi dengan Anda mengenai pembaruan atau masalah terkait akun. Kami tidak akan menjual atau menyewakan informasi pribadi Anda kepada pihak ketiga.</p>
+                <p><strong>Keamanan Data:</strong> Kami menerapkan langkah-langkah keamanan yang wajar untuk melindungi informasi pribadi Anda dari akses tidak sah, pengungkapan, perubahan, atau penghancuran. Namun, tidak ada metode transmisi melalui internet atau metode penyimpanan elektronik yang 100% aman.</p>
+                <p><strong>Perubahan pada Kebijakan Privasi Ini:</strong> Kami dapat memperbarui Kebijakan Privasi kami dari waktu ke waktu. Kami akan memberi tahu Anda tentang perubahan apa pun dengan memposting Kebijakan Privasi baru di halaman ini. Anda disarankan untuk meninjau Kebijakan Privasi ini secara berkala untuk setiap perubahan.</p>
+                <p>Dengan menggunakan aplikasi kami, Anda menyetujui pengumpulan dan penggunaan informasi sesuai dengan kebijakan ini.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Terms of Service -->
+    <div id="terms-of-service-modal" class="modal-overlay hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div class="modal-content bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 relative">
+            <button class="modal-close-button absolute top-4 right-4 text-pena-text-soft hover:text-pena-text-dark text-2xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold text-pena-text-dark mb-4">Ketentuan Layanan</h3>
+            <div class="text-pena-text-dark text-sm space-y-3">
+                <p>Selamat datang di aplikasi kami! Ketentuan Layanan ini mengatur penggunaan Anda atas aplikasi dan layanan kami. Dengan mengakses atau menggunakan aplikasi kami, Anda menyetujui untuk terikat oleh Ketentuan ini.</p>
+                <p><strong>Penggunaan Aplikasi:</strong> Anda setuju untuk menggunakan aplikasi kami hanya untuk tujuan yang sah dan sesuai dengan Ketentuan ini. Anda tidak boleh menggunakan aplikasi untuk tujuan ilegal atau tidak sah.</p>
+                <p><strong>Konten Pengguna:</strong> Anda bertanggung jawab penuh atas konten apa pun yang Anda buat, unggah, atau publikasikan melalui aplikasi kami. Anda menjamin bahwa Anda memiliki semua hak yang diperlukan untuk konten tersebut dan bahwa konten tersebut tidak melanggar hak pihak ketiga mana pun.</p>
+                <p><strong>Penghentian:</strong> Kami dapat menghentikan atau menangguhkan akses Anda ke aplikasi kami segera, tanpa pemberitahuan sebelumnya atau kewajiban, dengan alasan apa pun, termasuk tanpa batasan jika Anda melanggar Ketentuan ini.</p>
+                <p><strong>Batasan Tanggung Jawab:</strong> Aplikasi kami disediakan "sebagaimana adanya" tanpa jaminan apa pun, baik tersurat maupun tersirat. Kami tidak bertanggung jawab atas kerugian atau kerusakan apa pun yang timbul dari penggunaan atau ketidakmampuan Anda untuk menggunakan aplikasi.</p>
+                <p><strong>Perubahan pada Ketentuan Ini:</strong> Kami berhak, atas kebijakan kami sendiri, untuk memodifikasi atau mengganti Ketentuan ini kapan saja. Jika revisi bersifat material, kami akan mencoba memberikan pemberitahuan setidaknya 30 hari sebelum ketentuan baru berlaku.</p>
+                <p>Dengan terus mengakses atau menggunakan aplikasi kami setelah revisi tersebut berlaku, Anda setuju untuk terikat oleh ketentuan yang direvisi. Jika Anda tidak setuju dengan ketentuan baru, harap berhenti menggunakan aplikasi.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Menghubungkan ke file JavaScript eksternal -->
+    <script src="settings.js" defer></script>
 </body>
 </html>
