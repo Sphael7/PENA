@@ -84,21 +84,21 @@ html {
     opacity: 1; 
     transform: translateX(0); 
     z-index: 9999; 
-    transition: opacity 0.75s ease-in-out, transform 0.75s ease-in-out; /* Transisi utama */
+    transition: opacity 0.75s ease-in-out, transform 0.75s ease-in-out;
     display: block; 
-    pointer-events: auto; /* Aktif saat transisi */
+    pointer-events: auto;
 }
 
 .page-transition-overlay.overlay-exit {
     opacity: 0; 
     transform: translateX(-100%); 
-    pointer-events: none; /* Nonaktif saat keluar */
+    pointer-events: none;
 }
 
 .page-transition-overlay.overlay-active {
     opacity: 1; 
     transform: translateX(0); 
-    pointer-events: auto; /* Aktif saat masuk */
+    pointer-events: auto;
 }
 
 
@@ -141,13 +141,13 @@ html {
 
 /* Header Titles - Pertahankan font khusus untuk judul ini */
 .header-center #main-header-title,
-.header-center h1, /* Judul umum di header */
+.header-center h1,
 .header-center #thesaurus-title,
 .header-center .learning-page-title,
 .header-center .ide-generator-title,
-.app-header h1#poem-title-full /* Judul di full-preview */
+.app-header h1#poem-title-full
 { 
-    font-family: 'Pacifico', cursive; /* Pertahankan font khusus untuk judul-judul ini */
+    font-family: 'Pacifico', cursive;
     font-size: 4em; 
     background: linear-gradient(45deg, var(--accent-color), var(--primary-color), var(--theme-card-orange)); 
     -webkit-background-clip: text; 
@@ -165,14 +165,12 @@ html {
 }
 
 .header-center .subtitle,
-.header-center p#poem-author-full { /* Subtitle dan author puisi */
+.header-center p#poem-author-full {
     font-size: 1.1em;
     color: var(--soft-text);
     margin-top: 5px; 
     margin-bottom: 10px; 
 }
-
-/* header-center h2 akan menggunakan font default (Quicksand) */
 
 .search-container {
     display: flex;
@@ -238,7 +236,7 @@ html {
     border-left: 1px solid #eee;
     flex-shrink: 0;
     min-width: 120px;
-    z-index: 10;
+    z-index: 20;
 }
 .select-selected {
     display: flex;
@@ -271,7 +269,7 @@ html {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 11;
+    z-index: 21;
 }
 .select-items.select-open {
     transform: translateY(0) scale(1);
@@ -333,7 +331,7 @@ html {
     transition: transform 0.4s ease, opacity 0.4s ease;
 }
 .poem-card h2 {
-    font-family: 'Pacifico', cursive; /* Judul puisi di kartu juga pakai font khusus */
+    font-family: 'Pacifico', cursive;
     font-size: 1.8em;
     color: var(--primary-color);
     margin-top: 0;
@@ -349,7 +347,7 @@ html {
     margin-bottom: 1em;
     font-size: 1.1em; 
     color: #4a4a4a; 
-    text-align: center; /* Puisi rata tengah */
+    text-align: center;
 }
 
 /* Styling tema untuk poem-card dengan gradasi yang lebih natural (warna baru) */
@@ -404,30 +402,40 @@ html {
     font-size: 1.8em; 
     transform: translate(-0.4px, -0.3px); 
 }
-/* SIDEBAR */
+
+/* SIDEBAR - GAYA BARU */
 .sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    width: 250px;
+    width: 280px;
     height: 100%;
-    background: #fff;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(180deg, var(--background-light) 0%, var(--background-color) 100%);
+    box-shadow: 2px 0 20px rgba(0, 0, 0, 0.15);
     transform: translateX(-100%);
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1);
     z-index: 2000;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 20px 0;
+    border-right: 1px solid rgba(0,0,0,0.05);
 }
 .sidebar.active {
     transform: translateX(0);
 }
 .sidebar-header {
-    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 20px;
 }
 .sidebar-menu {
-    flex-grow: 1; 
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    padding-right: 10px;
 }
 .sidebar-menu ul {
     list-style: none;
@@ -435,34 +443,67 @@ html {
     margin: 0;
 }
 .sidebar-menu li {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 .sidebar-menu a {
     display: flex;
     align-items: center;
-    /* gap: 15px; REMOVED: Adjusting gap with icon width */
-    padding: 10px;
+    padding: 15px 25px;
     text-decoration: none;
     color: var(--text-color);
     font-size: 1.1em;
-    border-radius: 8px;
-    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-    padding-left: 15px; /* Adjust as needed for left alignment */
-    justify-content: flex-start; /* Ensure content is left-aligned */
+    font-weight: 500;
+    border-radius: 12px;
+    margin: 0 15px;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+}
+.sidebar-menu a:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(var(--secondary-color-rgb-values), 0.1));
+    transition: left 0.5s ease-out;
+}
+.sidebar-menu a:hover:before {
+    left: 0;
 }
 .sidebar-menu a:hover {
-    background-color: var(--background-color);
+    background-color: rgba(var(--primary-color-rgb-values), 0.05);
     color: var(--primary-color);
-    transform: translateX(5px);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+.sidebar-menu a.active {
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+    color: white;
+    box-shadow: 0 6px 15px rgba(var(--secondary-color-rgb-values), 0.4);
+    font-weight: 700;
+    transform: scale(1.05);
+}
+.sidebar-menu a.active:hover {
+    transform: scale(1.05);
 }
 .sidebar-menu a i {
-    font-size: 1.5em;
+    font-size: 1.6em;
     color: var(--primary-color);
-    /* NEW: Ensure consistent spacing for text alignment */
-    min-width: 28px; /* Slightly reduced min-width for icon container */
-    text-align: left; /* Align icon to the left within its allocated width */
-    margin-right: 12px; /* Adjusted margin to the right of the icon */
+    min-width: 40px;
+    text-align: left;
+    margin-right: 15px;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
+.sidebar-menu a:hover i {
+    transform: translateX(5px);
+}
+.sidebar-menu a.active i {
+    color: white;
+    transform: translateX(0);
+}
+
 
 .overlay {
     position: fixed;
@@ -475,13 +516,13 @@ html {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-    z-index: 1500; /* Z-index lebih rendah dari sidebar dan modal */
-    pointer-events: none; /* Default: tidak memblokir klik saat tidak aktif */
+    z-index: 1500;
+    pointer-events: none;
 }
 .overlay.active {
     opacity: 1;
     visibility: visible;
-    pointer-events: auto; /* Aktifkan saat aktif */
+    pointer-events: auto;
 }
 .full-preview-content {
     padding: 40px 5%;
@@ -499,7 +540,7 @@ html {
     line-height: 1.8;
     font-size: 1.3em; 
     color: #4a4a4a;
-    text-align: center; /* Puisi rata tengah */
+    text-align: center;
 }
 .poem-full-text p {
     margin-bottom: 1em;
@@ -517,7 +558,6 @@ html {
         transform: translateY(0);
     }
 }
-/* app-header h1#poem-title-full sudah dipindahkan ke blok judul khusus di atas */
 
 .app-header p#poem-author-full {
     font-size: 1.2em;
@@ -567,7 +607,7 @@ html {
 .form-group input:focus {
     outline: none;
     border-color: var(--secondary-color);
-    box-shadow: 0 0 5px rgba(var(--secondary-color-rgb-values), 0.5); /* Menggunakan secondary color rgb */
+    box-shadow: 0 0 5px rgba(var(--secondary-color-rgb-values), 0.5);
 }
 .form-group textarea {
     height: 300px;
@@ -620,7 +660,6 @@ html {
     cursor: not-allowed;
     animation: none;
 }
-/* Styling terkait color-label, color-options, color-circle dikembalikan */
 .color-label {
     font-size: 1em;
     font-weight: bold;
@@ -646,7 +685,6 @@ html {
 .color-circle.active {
     border-color: var(--primary-color);
 }
-/* Warna lingkaran tetap sama untuk representasi pilihan (warna baru) */
 .color-circle[data-color="yellow"] {
     background-color: var(--theme-card-orange); 
 }
@@ -660,9 +698,8 @@ html {
     background-color: #f0f0f0;
     border: 1px solid #ddd; 
 }
-/* Styling untuk textarea dengan tema (hanya untuk halaman write) dengan gradasi baru */
 #poem-content.yellow {
-    background: linear-gradient(to bottom, rgba(var(--theme-card-orange-rgb-values), 0.3), #FFFFFF); /* Fixed: Use rgb variable */
+    background: linear-gradient(to bottom, rgba(var(--theme-card-orange-rgb-values), 0.3), #FFFFFF);
 }
 #poem-content.blue {
     background: linear-gradient(to bottom, rgba(212, 228, 242, 0.3), #FFFFFF); 
@@ -704,13 +741,13 @@ html {
     opacity: 1;
 }
 
-/* NEW: Gaya untuk pesan notifikasi umum di bawah halaman */
+
 .submission-message {
     position: fixed;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(45, 75, 106, 0.9); /* primary-color dengan transparansi */
+    background: rgba(45, 75, 106, 0.9);
     color: white;
     padding: 12px 25px;
     border-radius: 25px;
@@ -720,7 +757,7 @@ html {
     transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
     z-index: 2000;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    white-space: nowrap; /* Pastikan teks tidak patah */
+    white-space: nowrap;
 }
 
 .submission-message.show {
@@ -777,7 +814,7 @@ html {
     border-radius: 20px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     min-height: 600px;
-    align-items: flex-start; /* Memastikan panel sejajar di atas */
+    align-items: flex-start;
 }
 .settings-left-panel {
     flex: 1;
@@ -786,7 +823,7 @@ html {
     gap: 15px;
     padding: 30px;
     border-right: 1px solid #eee;
-    align-self: flex-start; /* Memastikan panel sejajar di atas */
+    align-self: flex-start;
 }
 .settings-left-panel .settings-option {
     display: flex;
@@ -811,7 +848,7 @@ html {
     display: flex;
     flex-direction: column;
     gap: 30px;
-    align-self: flex-start; /* Memastikan panel sejajar di atas */
+    align-self: flex-start;
 }
 .settings-right-panel h3 {
     font-size: 1.5em;
@@ -839,8 +876,8 @@ html {
     max-width: 900px;
     margin: 0 auto;
 }
-/* Add New Word Button */
 .add-new-word-button {
+    font-family: inherit;
     display: block;
     width: fit-content;
     margin: 20px auto 30px auto; 
@@ -891,10 +928,9 @@ html {
     transform: translateY(-5px);
     box-shadow: var(--box-shadow-medium);
 }
-/* Style for custom (user-added) entries */
 .thesaurus-item.custom-entry {
-    background-color: rgba(var(--secondary-color-rgb-values), 0.1); /* Latar belakang kustom dari warna buttons */
-    border-color: rgba(var(--secondary-color-rgb-values), 0.5); /* Border kustom dari warna buttons */
+    background-color: rgba(var(--secondary-color-rgb-values), 0.1); 
+    border-color: rgba(var(--secondary-color-rgb-values), 0.5); 
     box-shadow: 0 2px 8px rgba(var(--secondary-color-rgb-values), 0.3);
 }
 
@@ -911,6 +947,7 @@ html {
 
 
 .word-number {
+    font-family: inherit;
     font-size: 1.2em;
     font-weight: bold;
     color: var(--primary-color);
@@ -919,19 +956,17 @@ html {
 }
 
 .main-word {
-    font-family: 'Pacifico', cursive; /* Pertahankan font khusus */
+    font-family: 'Pacifico', cursive;
     font-size: 2.2em;
-    /* Gradasi warna utama baru */
     background: linear-gradient(45deg, var(--accent-color), var(--primary-color), var(--theme-card-orange)); 
-    -webkit-background-clip: text; /* Fixed: Add vendor prefix */
-    background-clip: text; /* Fixed: Standard property */
+    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
     word-break: break-word;
     transition: color 0.3s ease, text-shadow 0.3s ease; 
 }
 
-/* Custom Actions (Edit/Delete buttons for custom entries) */
 .custom-actions {
     display: flex;
     gap: 5px;
@@ -967,11 +1002,11 @@ html {
 }
 
 .custom-actions .fa-edit:hover {
-    color: #2196F3; /* Blue for edit */
+    color: #2196F3;
 }
 
 .custom-actions .fa-trash-alt:hover {
-    color: #F44336; /* Red for delete */
+    color: #F44336;
 }
 
 
@@ -985,8 +1020,9 @@ html {
 }
 
 .detail-label {
+    font-family: inherit;
     font-weight: bold;
-    color: var(--secondary-color); /* Menggunakan secondary-color baru */
+    color: var(--secondary-color);
     margin-bottom: 5px;
     cursor: pointer;
     display: flex;
@@ -1009,6 +1045,7 @@ html {
 }
 
 .dropdown-arrow {
+    font-family: inherit;
     transition: transform 0.3s ease;
 }
 .dropdown-arrow.active {
@@ -1042,7 +1079,7 @@ html {
     line-height: 1.5; 
 }
 .word-tag {
-    background-color: var(--secondary-color); /* Menggunakan secondary-color baru (warna buttons) */
+    background-color: var(--secondary-color);
     color: white; 
     padding: 5px 10px;
     border-radius: 15px;
@@ -1050,21 +1087,19 @@ html {
     font-size: 0.9em;
     white-space: nowrap; 
     transition: background-color 0.2s ease, transform 0.1s ease;
-    position: relative; /* Untuk ikon edit/delete tag */
+    position: relative;
+    font-family: inherit;
 }
 .word-tag:hover {
-    background-color: var(--primary-color); /* Warna hover dari primary baru */
+    background-color: var(--primary-color);
     transform: translateY(-1px);
 }
-/* Penanda visual untuk tag kustom */
 .word-tag.custom-tag {
-    background-color: var(--secondary-color); /* Menggunakan warna buttons baru */
+    background-color: var(--secondary-color);
 }
 .word-tag.custom-tag:hover {
-    background-color: var(--primary-color); /* Menggunakan primary color baru */
+    background-color: var(--primary-color);
 }
-
-/* Aksi Edit/Hapus pada tag individual (hanya muncul di tag kustom) */
 .word-tag .tag-actions {
     position: absolute;
     top: -8px; 
@@ -1092,7 +1127,6 @@ html {
 .word-tag .tag-actions .fa-trash-alt:hover { color: #F44336; }
 
 
-/* --- Inline Add/Edit Input --- */
 .inline-add-container,
 .inline-edit-container {
     display: flex;
@@ -1112,6 +1146,7 @@ html {
     font-size: 0.9em;
     outline: none;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-family: inherit;
 }
 .inline-add-input:focus,
 .inline-edit-input:focus {
@@ -1120,7 +1155,7 @@ html {
 }
 .inline-add-container button,
 .inline-edit-container button {
-    background-color: var(--secondary-color); /* Menggunakan secondary-color baru */
+    background-color: var(--secondary-color);
     color: white;
     border: none;
     border-radius: 5px;
@@ -1129,10 +1164,11 @@ html {
     transition: background-color 0.2s ease;
     font-size: 0.85em;
     flex-shrink: 0;
+    font-family: inherit;
 }
 .inline-add-container button:hover,
 .inline-edit-container button:hover {
-    background-color: var(--primary-color); /* Warna hover dari primary baru */
+    background-color: var(--primary-color);
 }
 .inline-add-container .fa-times,
 .inline-edit-container .fa-times {
@@ -1147,7 +1183,7 @@ html {
 }
 
 .add-inline-term-btn {
-    background-color: var(--accent-color); /* Menggunakan accent-color baru */
+    background-color: var(--accent-color);
     color: white;
     border: none;
     border-radius: 5px;
@@ -1160,9 +1196,10 @@ html {
     align-items: center;
     gap: 5px;
     width: fit-content;
+    font-family: inherit;
 }
 .add-inline-term-btn:hover {
-    background-color: var(--primary-color); /* Warna hover dari primary baru */
+    background-color: var(--primary-color);
 }
 .add-inline-term-btn i {
     font-size: 1em;
@@ -1204,6 +1241,7 @@ html {
 }
 
 .contextual-copy-feedback {
+    font-family: inherit;
     position: absolute;
     background-color: rgba(0, 0, 0, 0.75);
     color: #fff;
@@ -1221,18 +1259,16 @@ html {
     opacity: 1;
     transform: translate(-50%, 0); 
 }
-
-/* NEW: Gaya untuk kotak saran ide */
 .idea-suggestion-box {
-    background-color: rgba(86, 116, 255, 0.35); /* Warna background baru */
+    background-color: rgba(86, 116, 255, 0.35);
     border-radius: 10px;
     padding: 15px;
     margin-top: 20px;
     display: flex;
-    flex-wrap: wrap; /* Izinkan wrap untuk elemen di dalamnya */
+    flex-wrap: wrap;
     align-items: center;
-    gap: 10px; /* Jarak antar elemen dalam kotak */
-    font-family: 'Lora', serif; /* Font yang lebih fleksibel */
+    gap: 10px;
+    font-family: 'Lora', serif;
     color: var(--text-color);
     box-shadow: var(--box-shadow-light);
 }
@@ -1241,22 +1277,22 @@ html {
     margin: 0;
     font-size: 1.1em;
     font-weight: bold;
-    color: var(--primary-color); /* Warna teks untuk label */
-    flex-shrink: 0; /* Jangan menyusut */
+    color: var(--primary-color);
+    flex-shrink: 0;
 }
 
 .idea-suggestion-text {
     font-size: 1.1em;
     font-style: italic;
     color: #555;
-    flex-grow: 1; /* Memungkinkan teks ide mengisi ruang */
-    white-space: nowrap; /* Pastikan teks ide tidak pecah baris */
-    overflow: hidden; /* Sembunyikan overflow jika terlalu panjang */
-    text-overflow: ellipsis; /* Tampilkan elipsis jika tersembunyi */
+    flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .clear-idea-suggestion-btn {
-    background-color: rgba(0, 0, 0, 0.6); /* Warna background tombol hapus */
+    background-color: rgba(0, 0, 0, 0.6);
     color: white;
     border: none;
     border-radius: 20px;
@@ -1267,7 +1303,7 @@ html {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    flex-shrink: 0; /* Jangan menyusut */
+    flex-shrink: 0;
 }
 
 .clear-idea-suggestion-btn:hover {
@@ -1278,7 +1314,6 @@ html {
 .clear-idea-suggestion-btn i {
     font-size: 0.9em;
 }
-
 
 /* Responsive adjustments for Thesaurus */
 @media (max-width: 768px) {
@@ -1315,16 +1350,15 @@ html {
         font-size: 0.75em;
         padding: 3px 6px;
     }
-    /* Responsive untuk kotak saran ide */
     .idea-suggestion-box {
-        flex-direction: column; /* Tata letak vertikal di mobile */
+        flex-direction: column;
         align-items: flex-start;
     }
     .idea-suggestion-box p, .idea-suggestion-text, .clear-idea-suggestion-btn {
-        width: 100%; /* Lebar penuh */
-        text-align: center; /* Teks rata tengah */
-        white-space: normal; /* Biarkan teks membungkus */
-        overflow: visible; /* Biarkan overflow terlihat */
-        text-overflow: clip; /* Jangan pakai elipsis */
+        width: 100%;
+        text-align: center;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
     }
 }

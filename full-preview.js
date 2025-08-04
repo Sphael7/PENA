@@ -1,6 +1,6 @@
 // full-preview.js
-// IMPORT: Mengimpor thesaurusDataMap dari dictionary.js
-import { thesaurusDataMap } from './dictionary.js';
+// IMPORT: Mengimpor thesaurusDataMap dan thesaurusLookupMap dari dictionary.js
+import { thesaurusDataMap, thesaurusLookupMap } from './dictionary.js';
 
 // Membungkus seluruh kode dalam DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -98,7 +98,7 @@ Rindu ini tetap memanggilmu.`,
             title: 'Hujan di Kota',
             author: 'Budi Santoso',
             content: `Hujan turun membasahi jalan,
-Membawa kenangan yang tertinggal.
+MemBawa kenangan yang tertinggal.
 Di balik jendela, kutuliskan kata,
 Tentang cerita yang takkan sirna.
 
@@ -162,10 +162,28 @@ Di ujung malam, di sanubariku.`,
         return combinedMap;
     })();
 
-    // Tetapkan thesaurusDataMap yang sudah digabungkan ke window agar bisa diakses secara global
-    // (berguna jika modul lain di luar `type="module"` memerlukannya)
+    // Gabungkan data lookup map bawaan dengan data kustom pengguna
+    const combinedThesaurusLookupMap = (() => {
+        const userEntries = loadUserThesaurusData();
+        let combinedMap = { ...thesaurusLookupMap }; // Mulai dengan data dari dictionary.js
+
+        userEntries.forEach(entry => {
+            const mainWord = entry.word.toLowerCase();
+            const allTerms = [mainWord, ...entry.sinonim, ...entry.antonim];
+
+            allTerms.forEach(term => {
+                const lowerCaseTerm = term.toLowerCase();
+                combinedMap[lowerCaseTerm] = mainWord; // Timpa atau tambahkan entri kustom
+            });
+        });
+        return combinedMap;
+    })();
+
+
+    // Tetapkan thesaurusDataMap dan thesaurusLookupMap yang sudah digabungkan ke window agar bisa diakses secara global
     window.thesaurusDataMap = combinedThesaurusDataMap;
-    console.log("full-preview.js: window.thesaurusDataMap is now available and includes custom data.");
+    window.thesaurusLookupMap = combinedThesaurusLookupMap;
+    console.log("full-preview.js: window.thesaurusDataMap and window.thesaurusLookupMap are now available and includes custom data.");
 
 
     // BUG FIX: Ensure unique IDs for all poems, similar to script.js logic
@@ -203,8 +221,7 @@ Di ujung malam, di sanubariku.`,
             }
 
             // Regex untuk memecah teks berdasarkan spasi atau tanda baca, tapi mempertahankan tanda baca
-            // Menangkap kata (\b\w+\b), tanda baca tunggal ([.,!?;:()"]), atau spasi (\s+)
-            // Updated regex to handle more punctuation and contractions correctly
+            // Menangkap kata (\b[\w'-]+\b|[.,!?;:()"]), atau spasi (\s+)
             const wordsAndPunctuation = paragraph.match(/(\b[\w'-]+\b|[.,!?;:()"'\-—–—\u2013-\u2015]|\s+)/g);
             
             if (!wordsAndPunctuation) {
@@ -231,13 +248,23 @@ Di ujung malam, di sanubariku.`,
 
     // Fungsi untuk menampilkan tooltip
     let tooltipHideTimeout; // Untuk menunda penyembunyian tooltip
-    function showTooltip(wordElement, data) {
+    function showTooltip(wordElement, data, mainWord, clickedWord) {
         clearTimeout(tooltipHideTimeout); // Batalkan jika ada timeout sebelumnya
 
-        tooltipWord.textContent = wordElement.textContent; // Kata yang diklik
+        // Perbaikan: Menampilkan kata yang diklik sebagai judul tooltip
+        tooltipWord.textContent = clickedWord;
         
         // Memastikan sinonim/antonim ditampilkan sebagai "Tidak ada" jika kosong
-        tooltipSynonym.innerHTML = `Sinonim: ${data.sinonim && data.sinonim.length > 0 ? data.sinonim.join(', ') : '<span class="not-found">Tidak ada</span>'}`;
+        // Perbaikan: Buat daftar sinonim baru yang menyertakan kata utama asli
+        let synonymsToShow = [...data.sinonim];
+        // Tambahkan kata utama asli ke daftar sinonim jika belum ada
+        if (mainWord.toLowerCase() !== clickedWord.toLowerCase() && !synonymsToShow.map(s => s.toLowerCase()).includes(mainWord.toLowerCase())) {
+            synonymsToShow.unshift(mainWord);
+        }
+        // Hapus kata yang diklik dari daftar sinonim
+        synonymsToShow = synonymsToShow.filter(s => s.toLowerCase() !== clickedWord.toLowerCase());
+        
+        tooltipSynonym.innerHTML = `Sinonim: ${synonymsToShow.length > 0 ? synonymsToShow.join(', ') : '<span class="not-found">Tidak ada</span>'}`;
         tooltipAntonym.innerHTML = `Antonim: ${data.antonim && data.antonim.length > 0 ? data.antonim.join(', ') : '<span class="not-found">Tidak ada</span>'}`;
         
         // Posisikan tooltip
@@ -300,6 +327,10 @@ Di ujung malam, di sanubariku.`,
                 titleElement.textContent = poem.title;
                 authorElement.textContent = `- ${poem.author}`;
                 
+                // Menerapkan tema puisi ke body
+                document.body.classList.remove('yellow', 'blue', 'red', 'white');
+                document.body.classList.add(poem.theme || 'white');
+
                 // Tokenisasi konten puisi untuk fitur Click for Know
                 contentElement.innerHTML = tokenizePoemContent(poem.content);
 
@@ -311,19 +342,21 @@ Di ujung malam, di sanubariku.`,
                         // Hapus tanda baca dari awal/akhir kata, jika ada, untuk pencarian yang lebih akurat
                         const cleanedWord = rawWord.replace(/^[.,!?;:()"']+|[.,!?;:()"']+$|[^\w\s-]/g, '').toLowerCase(); 
 
-                        // Gunakan combinedThesaurusDataMap yang sudah diinisialisasi
-                        if (combinedThesaurusDataMap) {
-                            const entry = combinedThesaurusDataMap[cleanedWord];
+                        // Gunakan thesaurusLookupMap untuk menemukan kata utama
+                        const mainWord = combinedThesaurusLookupMap[cleanedWord];
+
+                        if (mainWord) {
+                            const entry = combinedThesaurusDataMap[mainWord];
                             if (entry) {
-                                console.log(`Found thesaurus entry for "${cleanedWord}":`, entry);
-                                showTooltip(wordElement, entry);
+                                console.log(`Found thesaurus entry for "${cleanedWord}" via main word "${mainWord}":`, entry);
+                                showTooltip(wordElement, entry, mainWord, cleanedWord); // Kirim kata utama dan kata yang diklik
                             } else {
-                                console.log(`No thesaurus entry found for "${cleanedWord}". Showing empty tooltip.`);
-                                showTooltip(wordElement, { sinonim: [], antonim: [] }); // Tampilkan tooltip dengan pesan "Tidak ada"
+                                console.log(`No thesaurus entry found for main word "${mainWord}". Showing empty tooltip.`);
+                                showTooltip(wordElement, { sinonim: [], antonim: [] }, cleanedWord, cleanedWord); // Fallback
                             }
                         } else {
-                            console.error("Thesaurus data map (combinedThesaurusDataMap) is not available.");
-                            showTooltip(wordElement, { sinonim: [], antonim: [] }); // Fallback
+                            console.log(`No thesaurus entry or lookup found for "${cleanedWord}". Showing empty tooltip.`);
+                            showTooltip(wordElement, { sinonim: [], antonim: [] }, cleanedWord, cleanedWord); // Fallback
                         }
                     });
 

@@ -8,7 +8,23 @@
     border-radius: 20px;
     box-shadow: var(--box-shadow-light);
     min-height: 70vh;
+    transition: background 0.5s ease;
 }
+
+/* Tambahkan gaya tema untuk konten detail puisi */
+.hall-of-fame-content.themed-content.yellow {
+    background: linear-gradient(to bottom, var(--theme-card-orange), #f9f5ea);
+}
+.hall-of-fame-content.themed-content.blue {
+    background: linear-gradient(to bottom, var(--theme-card-blue), #f9f5ea);
+}
+.hall-of-fame-content.themed-content.red {
+    background: linear-gradient(to bottom, var(--theme-card-pink), #f9f5ea);
+}
+.hall-of-fame-content.themed-content.white {
+    background: linear-gradient(to bottom, var(--background-color), #f9f5ea);
+}
+
 
 .poem-gallery-grid {
     display: grid;
@@ -22,12 +38,27 @@
     box-shadow: var(--box-shadow-light);
     padding: 25px;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.5s ease;
     min-height: 220px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
+
+/* Tambahkan gaya tema untuk kartu puisi */
+.fame-poem-card.yellow {
+    background: linear-gradient(to bottom, var(--theme-card-orange), #FFFFFF);
+}
+.fame-poem-card.blue {
+    background: linear-gradient(to bottom, var(--theme-card-blue), #FFFFFF);
+}
+.fame-poem-card.red {
+    background: linear-gradient(to bottom, var(--theme-card-pink), #FFFFFF);
+}
+.fame-poem-card.white {
+    background: #f9f9f9;
+}
+
 
 .fame-poem-card:hover {
     transform: translateY(-5px);

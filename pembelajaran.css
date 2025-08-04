@@ -230,6 +230,20 @@
     opacity: 0.7;
     cursor: not-allowed;
 }
+
+/* --- Gaya baru untuk umpan balik kuis --- */
+.mini-quiz .options button.correct-answer {
+    background-color: #4CAF50; /* Hijau */
+    box-shadow: 0 0 5px #4CAF50;
+    transform: scale(1.05);
+}
+
+.mini-quiz .options button.incorrect-answer {
+    background-color: #f44336; /* Merah */
+    box-shadow: 0 0 5px #f44336;
+    transform: scale(1.05);
+}
+
 .mini-quiz .feedback {
     font-family: inherit; /* Akan mengikuti font global */
     margin-top: 15px;

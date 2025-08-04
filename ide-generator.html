@@ -66,10 +66,22 @@
         </div>
 
         <div id="slot-machine-zone" class="inspiration-zone">
-            <button id="regenerate-slot-btn" class="regenerate-zone-btn">
-                <i class="fas fa-sync-alt"></i> Putar Inspirasi
+            <button id="tap-slot-btn" class="regenerate-zone-btn">
+                <i class="fas fa-magic"></i> Tap untuk Inspirasi
             </button>
-            <!-- UI Slot Kata akan dimuat di sini oleh JavaScript -->
+            <div class="slot-machine-container">
+                <div class="slot-column" id="slot-column-1"></div>
+                <div class="slot-column" id="slot-column-2"></div>
+                <div class="slot-column" id="slot-column-3"></div>
+            </div>
+            <div class="slot-actions">
+                <button class="idea-action-btn favorite-btn" id="save-slot-idea-btn" disabled>
+                    <i class="fas fa-heart"></i> Simpan Inspirasi
+                </button>
+                <button class="idea-action-btn use-for-challenge-btn-slot" id="use-slot-idea-btn" disabled>
+                    <i class="fas fa-pen-nib"></i> Gunakan Kombinasi Ini
+                </button>
+            </div>
         </div>
     </main>
 

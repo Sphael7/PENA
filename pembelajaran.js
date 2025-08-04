@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
             subtitle: 'Bahas bareng yuk, tanpa ribet!',
             content: `
                 <div class="learning-card">
-                    <h3>Puisi Itu Apa, Sih? 🤔</h3>
+                    <h3>Puisi Itu Apa, Sih? 🎉</h3>
                     <p>Puisi adalah cara menyampaikan perasaan, pikiran, atau pengalaman lewat kata-kata indah yang punya ritme dan makna mendalam. Gak harus selalu ribet, tapi harus ngena.</p>
                     <div class="highlight-box">
                         <i class="fas fa-lightbulb"></i>
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 <div class="learning-card">
-                    <h3>Kenapa Puisi Itu Penting? 💡</h3>
+                    <h3>Kenapa Puisi Itu Penting? ✨</h3>
                     <p>Puisi bantu kita lihat dunia dari sudut pandang yang berbeda, melatih kepekaan rasa, dan memperkaya kosa kata. Plus, seru banget lho bisa bikin kata-kata menari di atas kertas!</p>
                     <div class="poem-example-box">
                         <h4>Contoh Puisi Sederhana:</h4>
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
             subtitle: 'Bangunan Kata, Bait, dan Rasa',
             content: `
                 <div class="learning-card">
-                    <h3>Bangunan Kata, Bait, dan Rasa 🧱</h3>
+                    <h3>Bangunan Kata, Bait, dan Rasa 🏗️</h3>
                     <p>Puisi itu kayak bangunan, punya bagian-bagiannya. Ada yang namanya bait, baris, dan rima. Ini yang bikin puisi jadi punya irama dan enak didengar (atau dibaca).</p>
                     <h4>Elemen Penting:</h4>
                     <ul>
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
             subtitle: 'Dari Pantun sampai Haiku',
             content: `
                 <div class="learning-card">
-                    <h3>Macam-macam Puisi 🖋️</h3>
+                    <h3>Macam-macam Puisi 📖✨</h3>
                     <p>Puisi punya banyak jenis, lho! Ada yang terikat aturan, ada juga yang bebas banget. Kenali beberapa di antaranya:</p>
                     <ul>
                         <li><strong>Pantun:</strong> Puisi lama 4 baris, rima a-b-a-b, dua baris sampiran, dua baris isi.</li>
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </ul>
                 </div>
                 <div class="learning-card">
-                    <h3>Kuis Mini: Tebak Jenis Puisi! 🎓</h3>
+                    <h3>Kuis Mini: Tebak Jenis Puisi! 📝</h3>
                     <div class="mini-quiz" data-quiz-id="jenis-puisi-1">
                         <p class="question">"Dua tiga kucing berlari, <br> Mana sama si kucing belang? <br> Dua tiga boleh dicari, <br> Mana sama abang tak pulang?"</p>
                         <div class="options">
@@ -115,19 +115,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!quizContainer) return;
                     const buttons = quizContainer.querySelectorAll(this.questionSelector);
                     const feedback = quizContainer.querySelector(this.feedbackSelector);
-                    const correctAnswer = this.correctAnswer; // Ambil jawaban yang benar dari konteks `this`
+                    const correctAnswer = this.correctAnswer;
 
+                    // Hapus semua event listener lama
                     buttons.forEach(button => {
-                        button.removeEventListener('click', quizClickHandler); // Hapus listener lama
-                        // Tambahkan listener baru, pastikan `correctAnswer` dan `feedback` diakses dengan benar
-                        button.addEventListener('click', function(e) { // Gunakan function biasa untuk akses `this` tombol
-                            buttons.forEach(btn => btn.disabled = true); 
-                            if (e.target.dataset.answer === correctAnswer) { // Gunakan `correctAnswer` dari closure
+                        const newButton = button.cloneNode(true);
+                        button.parentNode.replaceChild(newButton, button);
+                    });
+
+                    // Ambil kembali tombol-tombol yang baru
+                    const newButtons = quizContainer.querySelectorAll(this.questionSelector);
+
+                    newButtons.forEach(button => {
+                        button.addEventListener('click', function(e) {
+                            newButtons.forEach(btn => {
+                                btn.disabled = true;
+                                if (btn.dataset.answer === correctAnswer) {
+                                    btn.classList.add('correct-answer');
+                                } else {
+                                    btn.classList.add('incorrect-answer');
+                                }
+                            });
+
+                            if (e.target.dataset.answer === correctAnswer) {
                                 feedback.textContent = 'Benar! 🎉';
                                 feedback.style.color = 'green';
                             } else {
                                 feedback.textContent = `Salah. Jawaban yang benar adalah "${correctAnswer}".`;
                                 feedback.style.color = 'red';
+                                e.target.classList.add('incorrect-answer'); // Tambahkan kelas untuk tombol yang salah diklik
                             }
                         });
                     });

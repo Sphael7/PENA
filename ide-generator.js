@@ -9,9 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const zoneClassic = document.getElementById('classic-inspiration-zone');
     const zoneSlot = document.getElementById('slot-machine-zone');
 
-    // Menggunakan variabel global untuk tombol-tombol utama
     const regenerateClassicBtn = document.getElementById('regenerate-classic-btn');
-    const regenerateSlotBtn = document.getElementById('regenerate-slot-btn'); 
 
     const classicGrid = document.getElementById('classic-idea-grid');
 
@@ -81,13 +79,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Fungsi untuk Mengelola Status Tombol Slot ---
     function setSlotButtonStates(disabled) {
+        const tapBtn = document.getElementById('tap-slot-btn');
         const saveBtn = document.getElementById('save-slot-idea-btn');
         const useBtn = document.getElementById('use-slot-idea-btn');
 
-        if (regenerateSlotBtn) regenerateSlotBtn.disabled = disabled;
+        if (tapBtn) tapBtn.disabled = disabled;
         if (saveBtn) saveBtn.disabled = disabled;
         if (useBtn) useBtn.disabled = disabled;
-        console.log(`Status tombol Slot Kata disetel: regenerate=${!disabled}, save=${!disabled}, use=${!disabled}`);
+
+        if (disabled) {
+            if (tapBtn) tapBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memutar...';
+        } else {
+            if (tapBtn) tapBtn.innerHTML = '<i class="fas fa-magic"></i> Tap untuk Inspirasi';
+        }
     }
 
     // --- Logika Tab Navigasi ---
@@ -98,15 +102,14 @@ document.addEventListener('DOMContentLoaded', () => {
             zoneSlot.classList.remove('active');
             tabClassic.classList.add('active');
             tabSlot.classList.remove('active');
-            renderClassicIdeas(); // Render ulang kartu setiap kali zona aktif
+            renderClassicIdeas();
         } else if (zoneId === 'slot') {
             zoneClassic.classList.remove('active');
             zoneSlot.classList.add('active');
             tabClassic.classList.remove('active');
             tabSlot.classList.add('active');
-            // Untuk memastikan tombol slot tidak disabled saat pertama kali pindah tab
-            setSlotButtonStates(false); 
-            // spinSlots(); // Bisa diputar otomatis saat masuk zona slot, tapi user minta saat klik tombol saja
+            initializeSlotKataUI();
+            spinSlots();
         }
     }
 
@@ -132,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         } else if (type === 'image') {
             const imageObj = getRandomElement(classicImageIdeas);
-            ideaData.value = imageObj.url; // Simpan URL gambar sebagai value
+            ideaData.value = imageObj.url;
             contentHtml = `
                 <div class="idea-image-wrapper-classic">
                     <img src="${imageObj.url}" alt="Ide Gambar" class="idea-image-classic">
@@ -168,8 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
         card.querySelector('.use-for-challenge-btn').addEventListener('click', (e) => {
             const ideaValue = e.currentTarget.dataset.ideaValue;
             console.log("Tombol Gunakan (Kartu Klasik) diklik. Mengirim ide:", ideaValue);
-            // Redirect to write page, passing the idea as a URL parameter
-            // Pastikan animatePageTransition ada di common.js dan berfungsi
             if (typeof animatePageTransition === 'function') {
                 animatePageTransition(`write.html?idea=${encodeURIComponent(ideaValue)}`);
             } else {
@@ -184,12 +185,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderClassicIdeas() {
         console.log("Rendering ulang kartu ide klasik...");
         classicGrid.innerHTML = '';
-        const types = ['word', 'theme', 'quote', 'image']; // Jenis kartu yang akan ditampilkan
+        const types = ['word', 'theme', 'quote', 'image'];
         types.forEach(type => {
             classicGrid.appendChild(generateClassicIdeaCard(type));
         });
         if (regenerateClassicBtn) {
-            regenerateClassicBtn.disabled = false; // Pastikan tombol aktif
+            regenerateClassicBtn.disabled = false;
         }
         console.log("Kartu ide klasik selesai dirender.");
     }
@@ -197,27 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Logika Zona Slot Kata ---
     function initializeSlotKataUI() {
         console.log("Menginisialisasi UI Slot Kata...");
-        zoneSlot.innerHTML = `
-            <div class="slot-machine-container">
-                <div class="slot-column" id="slot-column-1"></div>
-                <div class="slot-column" id="slot-column-2"></div>
-                <div class="slot-column" id="slot-column-3"></div>
-            </div>
-            <div class="slot-actions">
-                <button class="idea-action-btn favorite-btn" id="save-slot-idea-btn">
-                    <i class="fas fa-heart"></i> Simpan Inspirasi
-                </button>
-                <button class="idea-action-btn use-for-challenge-btn-slot" id="use-slot-idea-btn">
-                    <i class="fas fa-pen-nib"></i> Gunakan Kombinasi Ini
-                </button>
-            </div>
-        `;
-        // Pastikan event listeners terpasang setelah elemen dibuat
         attachSlotEventListeners();
-        // Setel status tombol ke disabled selama putaran awal
-        setSlotButtonStates(true); 
-        spinSlots(); // Mulai putaran awal
-        console.log("UI Slot Kata selesai diinisialisasi dan memulai putaran awal.");
     }
 
     function spinSlots() {
@@ -225,54 +206,71 @@ document.addEventListener('DOMContentLoaded', () => {
         const column1 = document.getElementById('slot-column-1');
         const column2 = document.getElementById('slot-column-2');
         const column3 = document.getElementById('slot-column-3');
+        const totalDummyItems = 100;
 
-        // Nonaktifkan tombol di awal putaran
         setSlotButtonStates(true);
+        
+        // Perbaikan: Hapus konten lama di setiap kolom sebelum putaran baru
+        column1.innerHTML = '';
+        column2.innerHTML = '';
+        column3.innerHTML = '';
 
-        // Clear previous content and add spinning class
-        [column1, column2, column3].forEach(col => {
-            col.innerHTML = '';
-            col.classList.add('spinning');
-            // Add multiple dummy items for visual spinning effect
-            for (let i = 0; i < 20; i++) {
+        const createSlotItems = (column, data) => {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('slot-items-wrapper');
+            for (let i = 0; i < totalDummyItems; i++) {
                 const item = document.createElement('div');
                 item.classList.add('slot-item');
-                let dummyText;
-                if (col.id === 'slot-column-1') dummyText = getRandomElement(kataBenda); 
-                else if (col.id === 'slot-column-2') dummyText = getRandomElement(kataSifat); 
-                else dummyText = getRandomElement(suasana); 
-                item.textContent = dummyText;
-                col.appendChild(item);
+                item.textContent = data[i % data.length];
+                wrapper.appendChild(item);
             }
-        });
+            column.appendChild(wrapper);
+            column.classList.add('spinning');
+        };
 
+        createSlotItems(column1, kataBenda);
+        createSlotItems(column2, kataSifat);
+        createSlotItems(column3, suasana);
+        
         const result1 = getRandomElement(kataBenda);
         const result2 = getRandomElement(kataSifat);
         const result3 = getRandomElement(suasana);
+        
+        const column1Wrapper = column1.querySelector('.slot-items-wrapper');
+        const column2Wrapper = column2.querySelector('.slot-items-wrapper');
+        const column3Wrapper = column3.querySelector('.slot-items-wrapper');
+        
+        // Perbaikan: Sesuaikan timing animasi untuk membuat putaran lebih realistis
+        column1Wrapper.style.animation = 'slotSpin 3s linear forwards';
+        column2Wrapper.style.animation = 'slotSpin 3.5s linear forwards';
+        column3Wrapper.style.animation = 'slotSpin 4s linear forwards';
+        
+        // Perbaikan: Gunakan timing yang lebih baik untuk menghentikan slot
+        setTimeout(() => stopSlot(column1, result1), 3000);
+        setTimeout(() => stopSlot(column2, result2), 3500);
+        setTimeout(() => stopSlot(column3, result3), 4000);
 
-        // Stop columns sequentially with delays
-        setTimeout(() => stopSlot(column1, result1), 500);
-        setTimeout(() => stopSlot(column2, result2), 1000);
-        setTimeout(() => stopSlot(column3, result3), 1500, () => {
-            // Setelah semua slot berhenti, aktifkan tombol dan set ide saat ini
-            setSlotButtonStates(false); // Aktifkan tombol
-            
+        setTimeout(() => {
+            column1.classList.remove('spinning');
+            column2.classList.remove('spinning');
+            column3.classList.remove('spinning');
             currentSlotIdea = {
                 type: "Slot Kata",
                 value: `${result1} - ${result2} - ${result3}`,
-                words: [result1, result2, result3] // Simpan kata-kata individual juga
+                words: [result1, result2, result3]
             };
-            updateSaveButtonStateSlot(); // Perbarui status favorit untuk slot
-            // Set data-attribute untuk tombol 'Gunakan Kombinasi Ini' setelah currentSlotIdea disetel
-            const useBtn = document.getElementById('use-slot-idea-btn');
-            if (useBtn) useBtn.dataset.ideaValue = currentSlotIdea.value; 
+            setSlotButtonStates(false);
+            updateSaveButtonStateSlot();
             console.log("Putaran slot selesai. Hasil:", currentSlotIdea.value);
-        });
+        }, 4500); // Sesuaikan timeout akhir
     }
 
     function stopSlot(column, finalResult) {
-        column.classList.remove('spinning');
-        column.innerHTML = ''; // Clear dummy items
+        // Perbaikan: Hapus elemen wrapper lama sebelum menambahkan hasil akhir
+        const oldWrapper = column.querySelector('.slot-items-wrapper');
+        if (oldWrapper) {
+            column.removeChild(oldWrapper);
+        }
         const finalItem = document.createElement('div');
         finalItem.classList.add('slot-item', 'final-result');
         finalItem.textContent = finalResult;
@@ -281,16 +279,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function attachSlotEventListeners() {
-        // Event listener untuk tombol simpan inspirasi slot
+        const tapBtn = document.getElementById('tap-slot-btn');
         const saveBtn = document.getElementById('save-slot-idea-btn');
         const useBtn = document.getElementById('use-slot-idea-btn');
 
+        if (tapBtn) {
+            tapBtn.removeEventListener('click', spinSlots);
+            tapBtn.addEventListener('click', spinSlots);
+        }
+
         if (saveBtn) {
-            saveBtn.removeEventListener('click', handleSaveSlotIdeaClick); // Hapus listener lama jika ada
+            saveBtn.removeEventListener('click', handleSaveSlotIdeaClick);
             saveBtn.addEventListener('click', handleSaveSlotIdeaClick);
         }
         if (useBtn) {
-            useBtn.removeEventListener('click', handleUseSlotIdeaClick); // Hapus listener lama jika ada
+            useBtn.removeEventListener('click', handleUseSlotIdeaClick);
             useBtn.addEventListener('click', handleUseSlotIdeaClick);
         }
         console.log("Event listeners untuk tombol Slot Kata terpasang.");
@@ -306,10 +309,14 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSaveButtonStateSlot();
     }
 
-    function handleUseSlotIdeaClick(e) {
-        const ideaValue = e.currentTarget.dataset.ideaValue;
-        console.log("Tombol Gunakan Kombinasi Ini (Slot Kata) diklik. Mengirim ide:", ideaValue);
-        // Pastikan animatePageTransition ada di common.js dan berfungsi
+    function handleUseSlotIdeaClick() {
+        console.log("Tombol Gunakan Kombinasi Ini (Slot Kata) diklik. Mengirim ide:", currentSlotIdea.value);
+        if (!currentSlotIdea || !currentSlotIdea.value) {
+            console.warn("Tidak ada ide slot saat ini untuk digunakan.");
+            return;
+        }
+        
+        const ideaValue = currentSlotIdea.value;
         if (typeof animatePageTransition === 'function') {
             animatePageTransition(`write.html?idea=${encodeURIComponent(ideaValue)}`);
         } else {
@@ -317,7 +324,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = `write.html?idea=${encodeURIComponent(ideaValue)}`;
         }
     }
-
 
     function updateSaveButtonStateSlot() {
         const saveBtn = document.getElementById('save-slot-idea-btn');
@@ -333,11 +339,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isFavorited) {
             saveBtn.classList.add('active');
             saveBtn.innerHTML = '<i class="fas fa-heart"></i> Hapus Inspirasi';
-            console.log("Status tombol simpan slot: aktif (favorit).");
         } else {
             saveBtn.classList.remove('active');
             saveBtn.innerHTML = '<i class="fas fa-heart"></i> Simpan Inspirasi';
-            console.log("Status tombol simpan slot: tidak aktif (bukan favorit).");
         }
     }
 
@@ -346,20 +350,10 @@ document.addEventListener('DOMContentLoaded', () => {
     tabClassic.addEventListener('click', () => showZone('classic'));
     tabSlot.addEventListener('click', () => showZone('slot'));
 
-    // Event listener untuk tombol Regenerasi di Zona Klasik
     if (regenerateClassicBtn) {
         regenerateClassicBtn.addEventListener('click', renderClassicIdeas);
         console.log("Event listener untuk regenerateClassicBtn terpasang.");
     }
-
-    // Event listener untuk tombol Regenerasi di Zona Slot
-    if (regenerateSlotBtn) {
-        regenerateSlotBtn.addEventListener('click', spinSlots);
-        console.log("Event listener untuk regenerateSlotBtn terpasang.");
-    }
-
-
-    // Tampilkan zona klasik secara default saat pertama kali dimuat
+    
     showZone('classic');
-    initializeSlotKataUI(); // Inisialisasi UI Slot Kata juga agar siap saat tab diaktifkan
 });

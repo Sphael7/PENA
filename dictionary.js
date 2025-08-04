@@ -1,4 +1,5 @@
 // dictionary.js - Centralized Thesaurus Data
+// Fix: Mengimplementasikan caching dengan localStorage untuk meningkatkan performa.
 
 /**
  * Raw thesaurus data. Each line represents a main word with its synonyms and antonyms.
@@ -198,7 +199,7 @@ Dunia: alam, jagat, bumi, eksistensi, realita, semesta - akhirat, surga, nirwana
 Fana: sementara, tidak kekal, rapuh, sesaat, cepat lenyap, bisa mati - abadi, kekal, lestari, selamanya, tak hancur
 Abadi: kekal, lestari, selamanya, terus-menerus, tidak berubah, langgeng - fana, hancur, musnah, berakhir, punah
 Kisah: cerita, dongeng, narasi, riwayat, legenda, hikayat, peristiwa - kenyataan, fakta, realita, dunia nyata
-Terukir: tercatat, terukirkan, tergambar, tertoreh, terekam, terpahat - terhapus, terabaikan, terhapuskan, lenyap, dilupakan
+Terukir: tercatat, terukirkan, tergambar, tertoreh, terekam, terpahat - terhapus, luntur, menghilang, tercabut
 Selamanya: abadi, selama-lamanya, kekal, tak berakhir, terus-menerus, tak berujung - sementara, sesaat, fana, sebentar, singkat
 Heningnya: sepinya, senyap, tenang, sunyi, diam, membisu, lengang - ramai, bising, gaduh, ribut, hiruk-pikuk
 Bisiknya: lirih, pelan, suara kecil, gumaman, desir, desauan - teriakan, jeritan, lantang, nyaring, keras
@@ -210,6 +211,215 @@ Kenangan: ingatan, memori, nostalgia, peristiwa, pengalaman, masa lalu - kelupaa
 Terpatri: terpahat, terukir, melekat, tertanam, tergurat, tersemat - terhapus, luntur, menghilang, tercabut
 Hati: nurani, kalbu, jiwa, sanubari, batin, relung - kebekuan, ketegaan, kekosongan batin, pikiran (kontras dalam konteks)
 Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tumbuh, berkembang, bernyawa
+Awan: Mega, Mendung, Kabut, Gumpalan, Awan tebal, Langit kelabu - Langit cerah, Langit biru, Cerah, Bening
+Batu: Karang, Kerikil, Padas, Benda keras, Mineral padat, Gugusan batu - Tanah, Pasir, Air, Udara, Lumpur
+Air: Tirta, Banyu, Carian, Hidrogen dioksida, Hujan, Embun - Tanah, Kering, Udara, Api, Debu
+Angin: Bayu, Hembusan, Pusaran, Semilir, Badai, Topan, Udara bergerak - Diam, Tenang, Hampa, Panas, Vakum
+Api: Bara, Jilatan, Kobaran, Pembakaran, Panas, Sulutan - Dingin, Air, Beku, Padam, Mati
+Pohon: Kayu, Ranting, Daun, Tumbuhan besar, Vegetasi, Belukar - Tanah, Rumput, Semak, Udara, Batu
+Bunga: Kuntum, Kelopak, Sari, Kembang, Mekar, Aroma - Layu, Kering, Rontok, Gugur, Busuk
+Rumah: Kediaman, Hunian, Papan, Tempat tinggal, Sarang, Bangunan - Jalan, Luar, Tanah, Hutan, Lapangan
+Pintu: Gerbang, Pintu, Akses masuk, Jalan keluar, Pintu kayu, Pembatas - Tembok, Dinding, Jendela, Ruangan, Kunci
+Kaca: Cermin, Jendela, Kaca, Transparan, Kaca bening, Penyekat - Kayu, Besi, Dinding, Tembok, Batu
+Bulan: Purnama, Rembulan, Satelit alami, Cakrawala malam, Bulan sabit - Matahari, Bintang, Siang, Cerah, Terang
+Bintang: Asteroid, Komet, Meteor, Benda langit, Galaksi, Gugus - Bulan, Matahari, Awan, Langit, Bumi
+Baju: Pakaian, Busana, Kain, Seragam, Kostum, Mantel - Telanjang, Bugil, Kulit, Tubuh, Raga
+Kaki: Telapak, Tumit, Jari kaki, Gerakan, Berdiri, Tumpuan - Tangan, Lengan, Punggung, Bahu, Dada
+Mata: Indera penglihatan, Pandangan, Penglihatan, Retina, Lensa mata - Buta, Gelap, Tuli, Bisnis, Pendengaran
+Hidung: Indera penciuman, Penciuman, Nafas, Lubang hidung, Aliran udara - Mulut, Telinga, Mata, Kulit, Lidah
+Tangan: Jemari, Lengan, Genggaman, Aksi, Bantuan, Sisi tangan - Kaki, Lutut, Bahu, Punggung, Dada
+Otak: Pikiran, Akal, Cerdas, Memori, Ingatan, Kecerdasan - Bodoh, Dungu, Tolol, Bego, Pikun
+Buku: Bacaan, Tulisan, Halaman, Cerita, Ilmu, Naskah - Tulisan, Dinding, Suara, Nyanyian, Gambar
+Pena: Pulpen, Tinta, Alat tulis, Pena tulis, Pena gambar, Kaligrafi - Penghapus, Kertas, Spidol, Pensil, Tinta
+Meja: Meja kerja, Meja makan, Furnitur, Barang, Bangku, Kursi - Lantai, Karpet, Dinding, Jendela, Pintu
+Kursi: Bangku, Duduk, Tempat duduk, Dudukan, Kursi roda, Sisi - Meja, Lantai, Karpet, Dinding, Jendela
+Kucing: Binatang, Hewan peliharaan, Binatang buas, Kucing rumahan, kucing liar - Anjing, Burung, Ikan, Tikus, Ular
+Anjing: Peliharaan, Satwa, Hewan, Binatang, Anjing rumahan, anjing liar - Kucing, Burung, Ikan, Tikus, Ular
+Ikan: Binatang air, Ikan, Laut, Air, Air tawar, Hidup air - Binatang darat, Burung, Kucing, Anjing, Ular
+Burung: Unggas, Ayam, Burung terbang, Binatang udara, Hewan peliharaan - Ikan, Kucing, Anjing, Sapi, Kambing
+Sapi: Hewan ternak, Lembu, Binatang peliharaan, Ternak, Mamalia, Daging - Kucing, Anjing, Ayam, Ikan, Burung
+Ayam: Unggas, Ayam potong, Ayam broiler, Ternak, Binatang, Burung - Kucing, Anjing, Sapi, Ikan, Tikus
+Tikus: Hewan pengerat, Hama, Tikus, Binatang pengerat, Binatang kecil - Kucing, Anjing, Burung, Sapi, Ayam
+Ular: Reptil, Binatang melata, Ular, Binatang berbisa, Ular sawah, Ular air - Burung, Ayam, Sapi, Ikan, Anjing
+Dampak: Pengaruh, akibat, hasil, konsekuensi - Sebab, asal, pemicu, sumber
+Solusi: Jalan keluar, pemecahan, jawaban, penyelesaian - Masalah, kendala, hambatan, rintangan
+Kreatif: Inovatif, orisinal, inventif, imajinatif - Biasa, konvensional, monoton, kaku
+Fleksibel: Lentur, elastis, luwes, adaptif - Kaku, tegang, tetap, permanen
+Dinamis: Aktif, energik, bergerak, progresif - Statis, pasif, diam, tetap
+Optimal: Terbaik, maksimal, ideal, sempurna - Minimal, terburuk, kurang, tidak layak
+Sinergi: Kerjasama, kolaborasi, gabungan, paduan - Perselisihan, konflik, perpecahan, pertentangan
+Inspirasi: Ilham, ide, gagasan, bisikan - Kehampaan, kejemuan, kebosanan, kemandekan
+Visi: Tujuan, impian, pandangan, cita-cita - Kebutaan, ketidakmampuan, kepasrahan, tanpa arah
+Dedikasi: Pengabdian, loyalitas, kesetiaan, curahan hati - Pengkhianatan, ketidaksetiaan, kepura-puraan, acuh tak acuh
+Kompeten: Mampu, cakap, terampil, berkualitas - Tidak mampu, tidak cakap, tidak terampil, kurang
+Inovasi: Pembaharuan, terobosan, gagasan baru, kreativitas - Stagnasi, kemandekan, tradisional, kebiasaan lama
+Resiliensi: Ketahanan, daya lenting, kemampuan pulih, ketabahan - Kelemahan, kerentanan, kerapuhan, keputusasaan
+Harmonis: Selaras, serasi, rukun, damai - Disharmoni, konflik, bertentangan, tidak rukun
+Konsisten: Stabil, teguh, tetap, berkesinambungan - Tidak konsisten, berubah-ubah, plin-plan, tidak tetap
+Fokus: Pusat, sentral, konsentrasi, perhatian - Tersebar, buyar, tidak terpusat, cerai-berai
+Ambisi: Cita-cita, aspirasi, hasrat, tujuan - Kerelaan, kepasrahan, ketidakpedulian, apatis
+Efisien: Berdaya guna, hemat, efektif, terarah - Boros, mubazir, tidak efisien, sia-sia
+Signifikan: Penting, bermakna, berarti, esensial - Tidak penting, sepele, remeh, tidak berarti
+Proaktif: Bertindak lebih dulu, inisiatif, mengambil langkah - Reaktif, menunggu, pasif, diam
+Optimis: Berharap, yakin, positif, penuh harap - Pesimis, putus asa, negatif, tanpa harapan
+Intuitif: Naluri, insting, perasaan, firasat - Logis, rasional, terencana, terukur
+Kolosal: Sangat besar, raksasa, megah, masif - Kecil, mungil, mini, kerdil
+Akuntabel: Bertanggung jawab, dapat dipercaya, transparan, jujur - Tidak bertanggung jawab, tidak jujur, curang, tertutup
+Deduktif: Umum ke khusus, logis, rasional, terperinci - Induktif, khusus ke umum, spekulatif, abstrak
+Induktif: Khusus ke umum, spekulatif, abstrak, terbuka - Deduktif, umum ke khusus, logis, terperinci
+Konvensional: Tradisional, biasa, umum, lumrah - Modern, baru, inovatif, tidak biasa
+Esensi: Inti, hakikat, substansi, pokok - Tambahan, pelengkap, sisipan, aksesoris
+Progresif: Maju, berkembang, meningkat, modern - Mundur, regresif, stagnan, terbelakang
+Sinergis: Saling mendukung, kooperatif, gabungan, terpadu - Bertentangan, berlawanan, terpisah, mandiri
+Eksplisit: Jelas, gamblang, tersurat, lugas - Implisit, tersirat, samar, tidak jelas
+Implisit: Tersirat, samar, tersembunyi, tidak langsung - Eksplisit, jelas, gamblang, lugas
+Valid: Sah, benar, akurat, sahih - Invalid, tidak sah, salah, tidak akurat
+Autentik: Asli, tulen, orisinal, sejati - Palsu, tiruan, imitasi, bajakan
+Koheren: Padu, terpadu, logis, konsisten - Tidak koheren, berantakan, tidak logis, kacau
+Interaktif: Timbal balik, responsif, partisipatif, dialogis - Pasif, satu arah, non-interaktif, monologis
+Ekspansif: Meluas, berkembang, menyebar, luas - Kontraktif, menyusut, terbatas, sempit
+Apatis: Acuh tak acuh, tidak peduli, cuek, masa bodoh - Peduli, perhatian, antusias, semangat
+Paradoks: Kontradiktif, berlawanan, aneh, ganjil - Normal, biasa, logis, konsisten
+Toleran: Tenggang rasa, menghormati, menerima, sabar - Intoleran, fanatik, kaku, tidak menerima
+Simultan: Serentak, bersamaan, serempak, berbarengan - Bertahap, berurutan, tidak bersamaan, terpisah
+Klarifikasi: Penjelasan, pencerahan, perincian, penguraian - Kerancuan, ketidakjelasan, kebingungan, penutupan
+Persuasif: Meyakinkan, membujuk, merayu, menggugah - Menolak, menentang, menampik, tidak menarik
+Substansi: Isi, esensi, materi, inti - Bentuk, rupa, tampilan, kulit luar
+Intens: Kuat, hebat, mendalam, gencar - Lemah, dangkal, biasa, tidak gencar
+Konstruktif: Membangun, positif, memperbaiki, membina - Destruktif, merusak, negatif, menghancurkan
+Destruktif: Merusak, menghancurkan, negatif, membinasakan - Konstruktif, membangun, positif, memperbaiki
+Inherent: Melekat, hakiki, asasi, bawaan - Eksternal, tambahan, sementara, tidak melekat
+Komprehensif: Menyeluruh, lengkap, terperinci, luas - Terbatas, parsial, tidak lengkap, sempit
+Eksentrik: Aneh, ganjil, unik, nyentrik - Normal, biasa, umum, lumrah
+Empati: Simpati, belas kasihan, kepedulian, kepekaan - Apatis, tidak peduli, masa bodoh, acuh tak acuh
+Kolaboratif: Kerja sama, terpadu, gotong royong, terintegrasi - Mandiri, individual, terpisah, tidak bekerja sama
+Kontemplasi: Perenungan, meditasi, pemikiran, refleksi - Tindakan, gerakan, pelaksanaan, aksi
+Resiprokal: Timbal balik, saling, bergantian, berbalas - Searah, satu sisi, sepihak, unilateral
+Integrasi: Penyatuan, penggabungan, penyelarasan, perpaduan - Disintegrasi, perpecahan, pemisahan, konflik
+Paradigma: Pola pikir, kerangka berpikir, model, contoh - Kekacauan, anomali, tidak teratur, tanpa pola
+Kompleks: Rumit, sulit, berbelit-belit, majemuk - Sederhana, mudah, simpel, polos
+Konsekuen: Konsisten, taat asas, bertanggung jawab, teguh - Inkonsisten, plin-plan, tidak bertanggung jawab, berubah-ubah
+Transparan: Terbuka, jelas, nyata, tembus pandang - Tertutup, rahasia, tersembunyi, buram
+Narasi: Cerita, kisah, riwayat, tuturan - Fakta, kenyataan, data, informasi
+Dukungan: Sokongan, bantuan, dorongan, topangan - Hambatan, rintangan, perlawanan, penolakan
+Kecewa: Murung, sedih, pilu, hampa - Senang, gembira, puas, bahagia
+Sukarela: Ikhlas, rela, tulus, tanpa paksaan - Terpaksa, dipaksa, tertekan, wajib
+Canggih: Mutakhir, modern, rumit, kompleks - Kuno, sederhana, konvensional, usang
+Inisiatif: Prakarsa, langkah awal, gagasan, terobosan - Kelambanan, apatis, pasif, menunggu
+Eksklusif: Terbatas, istimewa, khusus, unik - Umum, biasa, terbuka, universal
+Sistematis: Teratur, terstruktur, metodis, rapi - Acak, sembarangan, tidak teratur, berantakan
+Kooperatif: Kerjasama, kolaborasi, gotong royong, bersatu - Individualis, egois, terpisah, mandiri
+Fundamental: Dasar, mendasar, pokok, esensial - Tambahan, pelengkap, sekunder, tidak penting
+Global: Universal, mendunia, internasional, luas - Lokal, domestik, regional, terbatas
+Intervensi: Campur tangan, interupsi, ikut campur, percampuran - Non-intervensi, pengabaian, pembiaran, tidak terlibat
+Konflik: Pertentangan, perselisihan, perkelahian, gesekan - Harmoni, perdamaian, kerukunan, keselarasan
+Negosiasi: Perundingan, musyawarah, perembukan, diskusi - Penolakan, pemaksaan, ketidaksepakatan, konflik
+Otentik: Asli, tulen, sahih, sejati - Palsu, tiruan, imitasi, rekayasa
+Prevalensi: Kelaziman, frekuensi, dominasi, keberadaan - Kelangkaan, jarang, minim, ketidakberadaan
+Taktis: Strategis, cerdik, terencana, hati-hati - Sembrono, spontan, ceroboh, tanpa rencana
+Transformasi: Perubahan, peralihan, metamorfosis, konversi - Stagnasi, kemandekan, tidak berubah, tetap
+Utilitarian: Fungsional, pragmatis, praktis, berguna - Estetis, idealis, teoritis, tidak berguna
+Progresif: Maju, berkembang, modern, inovatif - Mundur, regresif, statis, kuno
+Inklusif: Merangkul, menyeluruh, terbuka, mencakup semua - Eksklusif, terbatas, memisahkan, tidak terbuka
+Konsensus: Kesepakatan, mufakat, persetujuan, kompromi - Pertentangan, perselisihan, ketidaksepakatan, oposisi
+Mitigasi: Pengurangan, peredaan, pelemahan, penanggulangan - Peningkatan, perburukan, penguatan, pembiaran
+Spekulatif: Subjektif, hipotesis, dugaan, perkiraan - Fakta, objektif, nyata, terukur
+Kolonial: Penjajahan, imperialis, dominasi, pendudukan - Merdeka, independen, mandiri, berdaulat
+Kultural: Budaya, adat istiadat, tradisi, kebiasaan - Alamiah, genetik, biologis, bawaan
+Moral: Etika, akhlak, budi pekerti, susila - Amoral, tidak bermoral, bejat, asusila
+Sekuler: Duniawi, non-religius, netral, tidak beragama - Religius, agamis, spiritual, ilahi
+Revolusi: Perubahan besar, kudeta, pemberontakan, transformasi - Evolusi, perkembangan, kemajuan bertahap, konservasi
+Evolusi: Perkembangan bertahap, kemajuan, pertumbuhan, proses - Revolusi, perubahan drastis, stagnasi, kemandekan
+Konstitusi: Undang-undang dasar, peraturan, hukum, tata negara - Anarki, kekacauan, ketidakaturan, tanpa aturan
+Birokrasi: Tata laksana, administrasi, biro, sistem - Fleksibilitas, efisiensi, keluwesan, ketidakformalan
+Demokrasi: Kedaulatan rakyat, pemerintahan rakyat, perwakilan, kebebasan - Totalitarianisme, otokrasi, kediktatoran, tirani
+Totaliter: Otoriter, absolut, diktator, tirani - Demokratis, liberal, bebas, berdaulat
+Kapitalisme: Ekonomi pasar, liberalisme, persaingan bebas, individualisme - Sosialisme, komunisme, kolektivisme, ketergantungan negara
+Sosialisme: Kolektivisme, komunisme, kesejahteraan sosial, kebersamaan - Kapitalisme, individualisme, liberalisme, pasar bebas
+Monopoli: Dominasi tunggal, penguasaan, hegemoni, hak eksklusif - Persaingan, kompetisi, pasar terbuka, pluralisme
+Oposisi: Perlawanan, pertentangan, oposan, kontra - Dukungan, koalisi, persetujuan, pro
+Netral: Tidak memihak, seimbang, objektif, tidak terlibat - Berpihak, subjektif, memihak, partisan
+Partisan: Berpihak, memihak, sepihak, berat sebelah - Netral, objektif, adil, tidak memihak
+Ekspatriat: Orang asing, imigran, pendatang, migran - Warga negara, penduduk asli, pribumi, lokal
+Diakronis: Berdasarkan waktu, kronologis, historis, berurutan - Sinkronis, sezaman, kontemporer, bersamaan
+Sinkronis: Sezaman, kontemporer, bersamaan, simultan - Diakronis, historis, berurutan, kronologis
+Intrinsik: Hakiki, bawaan, melekat, esensial - Ekstrinsik, tambahan, eksternal, dari luar
+Ekstrinsik: Tambahan, dari luar, eksternal, bukan bawaan - Intrinsik, bawaan, melekat, hakiki
+Konkret: Nyata, berwujud, spesifik, terperinci - Abstrak, imajiner, tidak berwujud, umum
+Abstrak: Tidak berwujud, imajiner, konseptual, umum - Konkret, nyata, berwujud, spesifik
+Konsepsi: Konsep, gagasan, ide, pemahaman - Realita, kenyataan, fakta, implementasi
+Refleksi: Perenungan, introspeksi, cerminan, pemikiran - Kelalaian, tindakan, pengabaian, tanpa pikir
+Skeptis: Ragu, curiga, tidak yakin, sinis - Percaya, yakin, optimis, naif
+Dogma: Ajaran, doktrin, keyakinan, prinsip - Skeptisisme, keraguan, rasionalisme, pemikiran bebas
+Rasional: Logis, masuk akal, beralasan, akal sehat - Irasional, tidak logis, tidak masuk akal, emosional
+Empiris: Berdasarkan pengalaman, eksperimental, faktual, observasional - Teoritis, spekulatif, abstrak, konseptual
+Teoritis: Konseptual, abstrak, spekulatif, hipotesis - Empiris, praktis, eksperimental, faktual
+Pragmatis: Praktis, realistis, fungsional, terapan - Idealis, teoritis, utopis, imajinatif
+Idealistis: Utopis, imajinatif, ideal, perfeksionis - Pragmatis, realistis, praktis, fungsional
+Kompleksitas: Kerumitan, kesulitan, keruwetan, kompleks - Kesederhanaan, kemudahan, kepolosan, simpel
+Sederhana: Gampang, mudah, polos, lugas - Kompleks, rumit, sulit, berbelit-belit
+Obyektif: Adil, netral, berimbang, tidak memihak - Subjektif, bias, memihak, emosional
+Subyektif: Bias, memihak, emosional, personal - Objektif, netral, adil, berimbang
+Kuantitatif: Berjumlah, terukur, statistik, numerik - Kualitatif, deskriptif, naratif, non-numerik
+Kualitatif: Deskriptif, naratif, non-numerik, informatif - Kuantitatif, terukur, statistik, numerik
+Fundamental: Mendasar, pokok, esensial, inti - Tambahan, pelengkap, sekunder, periferal
+Periferal: Tambahan, luar, pinggiran, sekunder - Fundamental, inti, pokok, esensial
+Struktural: Terstruktur, terorganisir, hierarkis, sistematis - Non-struktural, informal, tidak terstruktur, acak
+Hierarki: Peringkat, tingkatan, jenjang, urutan - Demokrasi, kesetaraan, tanpa jenjang, non-hierarki
+Otonomi: Mandiri, swasembada, independen, kebebasan - Ketergantungan, subordinasi, penjajahan, dominasi
+Subordinasi: Ketergantungan, bawahan, tunduk, di bawah perintah - Otonomi, independensi, kebebasan, dominasi
+Legitimasi: Sah, valid, legalitas, pengesahan - Ilegal, tidak sah, tidak diakui, palsu
+Ilegal: Tidak sah, melanggar hukum, haram, tidak legal - Legal, sah, resmi, halal
+Prosedural: Tata cara, proses, urutan, mekanisme - Substansial, materi, isi, esensi
+Substansial: Penting, mendasar, signifikan, inti - Prosedural, formalitas, tata cara, kulit luar
+Kohesif: Terpadu, menyatu, erat, solid - Rapuh, terpisah, cerai-berai, tidak solid
+Fragmentasi: Perpecahan, pemisahan, terbagi-bagi, cerai-berai - Integrasi, penyatuan, kohesi, kesatuan
+Heterogen: Berbeda-beda, beragam, majemuk, multikultural - Homogen, seragam, sama, tunggal
+Homogen: Seragam, sama, tunggal, sejenis - Heterogen, beragam, majemuk, multikultural
+Sintesis: Gabungan, perpaduan, kombinasi, campuran - Analisis, pemisahan, penguraian, diferensiasi
+Analisis: Penguraian, pemisahan, telaah, studi - Sintesis, perpaduan, gabungan, kombinasi
+Sinergi: Kerjasama, kolaborasi, paduan, harmoni - Konflik, perpecahan, antagonisme, perselisihan
+Antagonis: Berlawanan, bermusuhan, oposisi, kontra - Protagonis, pendukung, teman, pro
+Siklus: Daur, putaran, periodik, berulang - Linear, lurus, satu arah, tidak berulang
+Linear: Lurus, satu arah, searah, tidak berulang - Siklus, daur, putaran, periodik
+Eksplisit: Jelas, gamblang, tersurat, lugas - Implisit, tersirat, tersembunyi, samar
+Implisit: Tersirat, samar, tersembunyi, tidak langsung - Eksplisit, jelas, lugas, gamblang
+Ekstensif: Luas, menyeluruh, lebar, terperinci - Intensif, terbatas, sempit, terpusat
+Intensif: Terpusat, mendalam, fokus, sungguh-sungguh - Ekstensif, luas, menyeluruh, tersebar
+Praktek: Implementasi, pelaksanaan, aplikasi, tindakan - Teori, konsep, gagasan, ide
+Teori: Konsep, gagasan, ide, hipotesis - Praktek, implementasi, pelaksanaan, aplikasi
+Konsekuen: Konsisten, logis, bertanggung jawab, teguh - Inkonsisten, plin-plan, tidak bertanggung jawab, berubah-ubah
+Koheren: Terpadu, logis, konsisten, berkesinambungan - Tidak koheren, kacau, tidak logis, berantakan
+Akumulasi: Penumpukan, pengumpulan, penimbunan, koleksi - Pengurangan, pengurangan, penyebaran, penghilangan
+Divergen: Berbeda, menyebar, memisah, tidak sama - Konvergen, menyatu, berkumpul, sama
+Konvergen: Menyatu, berkumpul, sama, mendekati - Divergen, menyebar, memisah, berbeda
+Komplementer: Saling melengkapi, saling mengisi, menunjang, penunjang - Saling bertentangan, saling meniadakan, kontradiktif, berlawanan
+Kontradiktif: Berlawanan, bertentangan, paradoks, tidak konsisten - Konsisten, koheren, sesuai, harmonis
+Inovatif: Terobosan, pembaharuan, kreatif, inventif - Konvensional, tradisional, biasa, monoton
+Sinergis: Saling mendukung, kolaboratif, terpadu, kooperatif - Mandiri, individual, terpisah, tidak berhubungan
+Akselerasi: Percepatan, peningkatan kecepatan, laju, dorongan - Deselerasi, perlambatan, penurunan kecepatan, rem
+Deselerasi: Perlambatan, penurunan kecepatan, pengereman, pengurangan - Akselerasi, percepatan, peningkatan kecepatan, dorongan
+Spesifik: Khusus, terperinci, detail, tertentu - Umum, universal, global, tidak terperinci
+Esensi: Inti, hakikat, substansi, pokok - Aksesoris, tambahan, pelengkap, tidak penting
+Akomodatif: Fleksibel, luwes, adaptif, toleran - Kaku, tidak fleksibel, tidak toleran, keras kepala
+Subordinat: Bawahan, di bawah, tergantung, diatur - Atasan, pemimpin, independen, otonom
+Karakteristik: Ciri, sifat, atribut, tanda - Tidak ada, tanpa ciri, tidak khas, anonim
+Normatif: Standar, baku, aturan, kaidah - Deskriptif, faktual, bebas, non-standar
+Sistemik: Menyeluruh, sistematis, terintegrasi, struktural - Parsial, sebagian, terpisah, tidak menyeluruh
+Integrasi: Penyatuan, perpaduan, penggabungan, penyelarasan - Disintegrasi, perpecahan, pemisahan, penceraian
+Konsisten: Stabil, tetap, teguh, ajek - Inkonsisten, berubah-ubah, plin-plan, tidak stabil
+Afirmatif: Menyetujui, mengiyakan, positif, mengukuhkan - Negatif, menolak, membantah, menyangkal
+Negatif: Menolak, membantah, pesimis, pasif - Positif, afirmatif, optimis, aktif
+Potensial: Mungkin, berpeluang, berpotensi, prospektif - Tidak berpotensi, mustahil, tidak mungkin, stagnan
+Prospektif: Berpeluang, berpotensi, menjanjikan, potensial - Retrospektif, masa lalu, suram, tidak menjanjikan
+Retrospektif: Masa lalu, menengok ke belakang, historis, kilas balik - Prospektif, masa depan, menjanjikan, potensial
+Definisi: Pengertian, batasan, penjelasan, makna - Ketidakjelasan, ambiguitas, ketidakpastian, misteri
+Interpretasi: Penafsiran, penjelasan, pemahaman, terjemahan - Kesalahpahaman, ketidakpahaman, penolakan, penafsiran literal
+Toleransi: Tenggang rasa, menghormati, menerima, kesabaran - Intoleransi, fanatisme, diskriminasi, ketidaksetujuan
+Independen: Mandiri, bebas, berdaulat, otonom - Bergantung, terikat, terjajah, terdominasi
+Efisien: Berdaya guna, efektif, hemat, terarah - Boros, mubazir, tidak efektif, sia-sia
+Esoterik: Rahasia, tersembunyi, mistik, khusus - Eksoterik, umum, terbuka, mudah dipahami
+Eksoterik: Umum, terbuka, mudah dipahami, universal - Esoterik, rahasia, tersembunyi, mistik
 `;
 
 /**
@@ -219,7 +429,7 @@ Mati: wafat, gugur, berhenti, sirna, padam, lenyap, berakhir - hidup, abadi, tum
  * and values are objects containing synonym and antonym arrays.
  */
 export function parseThesaurusData(rawData) {
-    const parsedMap = {}; // Will return an object/map
+    const parsedMap = {};
     const lines = rawData.split('\n').filter(line => line.trim() !== '');
 
     lines.forEach(line => {
@@ -236,7 +446,6 @@ export function parseThesaurusData(rawData) {
         let synonymsPart = subParts[0] ? subParts[0].trim() : '';
         let antonymsPart = subParts[1] ? subParts[1].trim() : '';
 
-        // Handle "tidak relevan" or similar explicit exclusions by making them empty arrays
         if (synonymsPart.includes('(tidak relevan')) {
             synonymsPart = '';
         }
@@ -244,7 +453,7 @@ export function parseThesaurusData(rawData) {
             antonymsPart = '';
         }
 
-        parsedMap[wordPart.toLowerCase()] = { // Store in lowercase for lookup
+        parsedMap[wordPart.toLowerCase()] = {
             sinonim: synonymsPart ? synonymsPart.split(',').map(s => s.trim()) : [],
             antonim: antonymsPart ? antonymsPart.split(',').map(s => s.trim()) : []
         };
@@ -252,5 +461,79 @@ export function parseThesaurusData(rawData) {
     return parsedMap;
 }
 
-// Export the parsed thesaurus data map
-export const thesaurusDataMap = parseThesaurusData(rawThesaurusData);
+// --- LOGIKA BARU UNTUK CACHING DENGAN LOCALSTORAGE ---
+// Versi data, pastikan diperbarui setiap kali Anda menambahkan kata baru.
+const THESAURUS_DATA_VERSION = 7; // Versi saat ini diperbarui
+
+/**
+ * Mendapatkan data thesaurus dari cache atau mengurainya dari data mentah.
+ * Proses penguraian data mentah hanya dilakukan sekali.
+ * @returns {Object.<string, any>} Objek yang berisi map data thesaurus dan lookup map.
+ */
+function getThesaurusDataAndLookupMap() {
+    const cacheKey = 'thesaurusData_v' + THESAURUS_DATA_VERSION;
+    const cachedData = localStorage.getItem(cacheKey);
+    const cachedVersion = localStorage.getItem('thesaurusDataVersion');
+
+    // Cek jika ada data tersimpan dan versinya sama
+    if (cachedData && cachedVersion == THESAURUS_DATA_VERSION) {
+        console.log("dictionary.js: Loading thesaurus data and lookup map from cache.");
+        return JSON.parse(cachedData);
+    } else {
+        console.log("dictionary.js: Parsing raw data, building lookup map, and saving to cache.");
+        // Data belum ada atau versi tidak cocok, lakukan parsing
+        const thesaurusMap = parseThesaurusData(rawThesaurusData);
+        const lookupMap = buildThesaurusLookupMap(thesaurusMap);
+        
+        const dataToCache = {
+            thesaurusMap: thesaurusMap,
+            lookupMap: lookupMap
+        };
+
+        // Simpan data dan versi ke localStorage
+        try {
+            localStorage.setItem(cacheKey, JSON.stringify(dataToCache));
+            localStorage.setItem('thesaurusDataVersion', THESAURUS_DATA_VERSION);
+        } catch (e) {
+            console.error("Failed to save thesaurus data to localStorage:", e);
+        }
+        return dataToCache;
+    }
+}
+
+/**
+ * Membangun peta pencarian terbalik (reverse lookup map) dari data thesaurus.
+ * Logika ini sekarang memprioritaskan kata-kata yang merupakan sinonim.
+ * @param {Object.<string, {sinonim: string[], antonim: string[]}>} thesaurusMap - Peta data thesaurus utama.
+ * @returns {Object.<string, string>} Peta di mana kunci adalah sinonim/antonim/kata utama dan nilai adalah kata utama.
+ */
+function buildThesaurusLookupMap(thesaurusMap) {
+    const lookupMap = {};
+
+    Object.keys(thesaurusMap).forEach(mainWord => {
+        const entry = thesaurusMap[mainWord];
+        
+        // Prioritas 1: Kata utama
+        lookupMap[mainWord.toLowerCase()] = mainWord;
+
+        // Prioritas 2: Sinonim
+        entry.sinonim.forEach(synonym => {
+            const lowerCaseSynonym = synonym.toLowerCase();
+            lookupMap[lowerCaseSynonym] = mainWord;
+        });
+
+        // Prioritas 3: Antonim
+        entry.antonim.forEach(antonym => {
+            const lowerCaseAntonym = antonym.toLowerCase();
+            if (!lookupMap[lowerCaseAntonym]) {
+                lookupMap[lowerCaseAntonym] = mainWord;
+            }
+        });
+    });
+
+    return lookupMap;
+}
+
+const { thesaurusMap, lookupMap } = getThesaurusDataAndLookupMap();
+export const thesaurusDataMap = thesaurusMap;
+export const thesaurusLookupMap = lookupMap;
