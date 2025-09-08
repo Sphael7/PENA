@@ -34,7 +34,7 @@
     --thesaurus-active-bg: rgba(var(--primary-color-rgb-values), 0.05); /* Latar belakang lembut untuk item aktif Thesaurus */
 
     /* Warna Tema Kartu Puisi Baru */
-    --theme-card-blue: rgb(212, 228, 242); /* Biru muda untuk tema biru */
+    --theme-card-blue: rgb(212, 228, 242);
     --theme-card-orange: rgb(248, 221, 184); /* Oranye untuk tema kuning */
     --theme-card-orange-rgb-values: 248, 221, 184; /* Nilai RGB terpisah */
     --theme-card-pink: rgb(242, 209, 216); /* Pink untuk tema merah */
@@ -1210,7 +1210,7 @@ html {
     background-color: var(--primary-color);
 }
 .add-inline-term-btn i {
-    font-size: 1.1em;
+    font-size: 0.9em;
 }
 
 
@@ -1370,18 +1370,19 @@ html {
     
     /* Perbaikan mobile tambahan untuk header */
     .app-header {
+        position: relative; /* Ganti sticky menjadi relative */
         flex-direction: row; /* Kembali ke tata letak baris */
         flex-wrap: wrap; /* Izinkan elemen untuk wrap ke baris baru */
         justify-content: space-between;
         align-items: center;
         padding: 10px 3%;
-        position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         z-index: 1000;
         height: auto;
         min-height: 50px;
+        box-shadow: none; /* Hapus bayangan agar tidak terlihat menempel */
     }
 
     .header-left, .header-right {
@@ -1463,7 +1464,7 @@ html {
     main.hall-of-fame-content,
     main.write-page-content,
     main.full-preview-content {
-        padding-top: 110px; /* Beri padding yang cukup untuk header fixed */
+        padding-top: 20px; /* Kurangi padding, karena header tidak menempel */
     }
 
     .poem-grid {
@@ -1508,6 +1509,6 @@ html {
     main.hall-of-fame-content,
     main.write-page-content,
     main.full-preview-content {
-        padding-top: 90px;
+        padding-top: 20px; /* Pertahankan padding yang sama */
     }
 }
