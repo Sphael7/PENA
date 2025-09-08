@@ -1478,6 +1478,19 @@ html {
     .poem-card h2 {
         font-size: 1.5em;
     }
+    /* Perbaikan untuk halaman 'Tulis' di mobile */
+    .write-form-container {
+        flex-direction: column; /* Ubah tata letak menjadi vertikal */
+        padding: 20px; /* Kurangi padding untuk mobile */
+        gap: 20px; /* Atur jarak antar elemen */
+    }
+    .form-left, .form-right {
+        flex: none; /* Hapus flex-grow di mobile */
+        width: 100%; /* Ambil lebar penuh */
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 }
 
 @media (max-width: 480px) {
