@@ -138,26 +138,23 @@ document.addEventListener('DOMContentLoaded', () => {
     let poemsData = [];
 
     // Function to combine initial and stored poems, assigning unique IDs
-    function getAndCombinePoems() {
+    function getAndCombinedPoems() {
+        // PERUBAHAN: Sekarang mengambil puisi pengguna dan puisi bawaan
         const storedPoems = JSON.parse(localStorage.getItem('poems')) || [];
-        const combinedPoemsMap = new Map(); // Using Map to avoid duplication based on title, primarily
+        const combinedPoemsMap = new Map();
 
-        // Add initialPoems first with unique IDs
+        // Tambahkan puisi bawaan terlebih dahulu
         initialPoems.forEach((poem, index) => {
-            // Assign a unique ID that reflects its origin
             const id = `initial-${index}`;
-            combinedPoemsMap.set(id, { ...poem, theme: poem.theme || 'white', id: id });
+            combinedPoemsMap.set(id, { ...poem, theme: poem.theme || 'white', id: id, isInitial: true });
         });
 
-        // Add storedPoems. If a stored poem has the same title as an initial poem,
-        // it will overwrite the initial poem in the map, effectively acting as an "edited" version.
-        // We ensure stored poems also have a unique ID that won't clash with initial ones.
+        // Tambahkan puisi yang dibuat pengguna, ini akan menimpa puisi bawaan jika ada judul yang sama
         storedPoems.forEach((poem, index) => {
-            const id = `stored-${index}`;
-            combinedPoemsMap.set(id, { ...poem, theme: poem.theme || 'white', id: id });
+            const id = poem.id || `stored-${index}`;
+            combinedPoemsMap.set(id, { ...poem, theme: poem.theme || 'white', id: id, isInitial: false });
         });
 
-        // Convert map values back to an array
         poemsData = Array.from(combinedPoemsMap.values());
     }
 
@@ -166,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Ensure poemsData is populated
         if (poemsData.length === 0) {
-            getAndCombinePoems(); // Call again if not populated, just in case
+            getAndCombinedPoems(); // Call again if not populated, just in case
             if (poemsData.length === 0) { // Check again after calling
                 emptyState.style.display = 'flex';
                 poemGrid.style.display = 'none';
@@ -307,6 +304,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    getAndCombinePoems(); // Call on DOMContentLoaded
+    getAndCombinedPoems(); // Call on DOMContentLoaded
     renderPoems();
 });

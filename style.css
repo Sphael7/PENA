@@ -1131,8 +1131,13 @@ html {
     cursor: pointer;
     transition: color 0.1s ease;
 }
-.word-tag .tag-actions .fa-edit:hover { color: #2196F3; }
-.word-tag .tag-actions .fa-trash-alt:hover { color: #F44336; }
+.word-tag .tag-actions .fa-edit:hover {
+    color: #2196F3;
+}
+
+.custom-actions .fa-trash-alt:hover {
+    color: #F44336;
+}
 
 
 .inline-add-container,

@@ -32,10 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="poem-example-box">
                         <h4>Contoh Puisi Sederhana:</h4>
                         <p class="poem-text">
-                            Bunga di taman,<br>
-                            Mekar berseri,<br>
-                            Indah dipandang,<br>
-                            Hati berseri.
+Bunga di taman,
+Mekar berseri,
+Indah dipandang,
+Hati berseri.
                         </p>
                     </div>
                 </div>

@@ -108,9 +108,6 @@
     padding-left: 20px;
     margin-bottom: 1em;
 }
-.learning-card ul li {
-    font-family: inherit; /* Akan mengikuti font global */
-}
 .learning-card ul li:before {
     content: '\2022'; 
     color: var(--secondary-color);
@@ -147,7 +144,7 @@
     padding: 15px;
     margin: 20px auto;
     max-width: 300px;
-    text-align: center;
+    text-align: left; /* PERUBAHAN: Ganti rata tengah menjadi rata kiri */
 }
 .poem-example-box h4 {
     font-family: inherit; /* Akan mengikuti font global */

@@ -138,27 +138,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to combine initial and stored poems, assigning unique IDs
     function getCombinedPoemsForMyPoem() {
+        // PERUBAHAN: Hanya ambil puisi yang dibuat oleh pengguna
         const stored = JSON.parse(localStorage.getItem('poems')) || [];
-        const combinedMap = new Map();
-
-        // Add initial poems with initial-X IDs
-        initialPoems.forEach((poem, index) => {
-            const id = `initial-${index}`;
-            combinedMap.set(id, { ...poem, id: id, isInitial: true });
+        // PERUBAHAN: Beri ID unik untuk puisi yang dibuat pengguna
+        return stored.map((poem, index) => {
+            const id = poem.id || `stored-${index}`;
+            return { ...poem, id: id, isInitial: false };
         });
-
-        // Add user-created poems with stored-X IDs.
-        // For simplicity, we assume 'poems' localStorage only contains user-created ones
-        // or that if an initial poem was edited and saved, it gets a 'stored-' ID.
-        stored.forEach((poem, index) => {
-            const id = `stored-${index}`;
-            combinedMap.set(id, { ...poem, id: id, isInitial: false });
-        });
-
-        return Array.from(combinedMap.values());
     }
 
-    // Perbarui userPoems agar selalu menjadi gabungan dari keduanya dengan ID unik
+    // Perbarui userPoems agar hanya berisi puisi buatan pengguna
     let allDisplayablePoems = getCombinedPoemsForMyPoem();
 
 
@@ -183,7 +172,8 @@ document.addEventListener('DOMContentLoaded', () => {
         userPoems = JSON.parse(localStorage.getItem('poems')) || [];
         favoriteIdeas = JSON.parse(localStorage.getItem('favoriteIdeas')) || []; 
         poemFavorites = JSON.parse(localStorage.getItem('favorites')) || []; // Reload poem favorites
-        allDisplayablePoems = getCombinedPoemsForMyPoem(); // Reload combined poems with correct IDs
+        // PERUBAHAN: Gunakan allDisplayablePoems yang hanya berisi puisi pengguna
+        allDisplayablePoems = getCombinedPoemsForMyPoem();
 
         let filteredPoems = [...allDisplayablePoems]; // Buat salinan agar tidak mengubah array asli
 
