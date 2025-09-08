@@ -1227,8 +1227,6 @@ html {
     right: 5px;
     transform: translateY(-50%); 
     z-index: 5; 
-    min-width: 30px; 
-    min-height: 30px;
 }
 .detail-content:hover .copy-button {
     opacity: 1; 
@@ -1364,21 +1362,35 @@ html {
     
     /* Perbaikan mobile tambahan untuk header */
     .app-header {
-        flex-direction: column;
+        flex-direction: row; /* Kembali ke tata letak baris */
+        flex-wrap: wrap; /* Izinkan elemen untuk wrap ke baris baru */
+        justify-content: space-between;
         align-items: center;
         padding: 10px 3%;
-        text-align: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        height: auto;
+        min-height: 50px;
     }
 
     .header-left, .header-right {
-        width: 100%;
-        justify-content: space-between;
-        margin-bottom: 10px;
+        flex-basis: auto;
+        flex-grow: 0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        align-items: center;
     }
 
     .header-center {
-        width: 100%;
-        margin: 0;
+        flex-grow: 1;
+        text-align: center;
+        justify-content: center;
+        width: 100%; /* Agar bisa mengambil lebar penuh */
+        margin-top: 5px;
     }
 
     .header-center h1,
@@ -1386,37 +1398,66 @@ html {
     .header-center .learning-page-title,
     .header-center .ide-generator-title,
     .app-header h1#poem-title-full {
-        font-size: 2.5em; /* Ukuran font lebih kecil di mobile */
-        margin-bottom: 5px;
+        font-size: 1.5em; /* Ukuran font yang lebih kecil dan konsisten */
+        margin: 0;
+        line-height: 1;
     }
 
-    .header-center .subtitle {
-        font-size: 0.9em;
-        margin-bottom: 10px;
+    .header-center .subtitle,
+    .app-header p#poem-author-full {
+        display: none; /* Sembunyikan subtitle di header mobile */
     }
 
     .search-container {
         width: 100%;
         max-width: none;
         flex-wrap: nowrap;
+        margin-top: 5px; /* Jarak antara judul dan search bar */
     }
-
     .search-input {
         width: 100%;
     }
-
     .custom-select {
         min-width: 90px;
     }
 
-    .back-button-mobile {
-        display: block; /* Tombol kembali hanya terlihat di mobile */
+    .header-left {
+        order: 1;
+    }
+    .header-center {
+        order: 2;
+        padding: 0 10px; /* Tambahkan padding agar judul tidak menempel ke tombol */
+    }
+    .header-right {
+        order: 3;
+    }
+    .header-left .logo a {
+        display: none;
+    }
+    .header-right a.icon-button {
+        display: none; /* Sembunyikan ikon di kanan */
+    }
+    .app-header .logo img {
+        height: 40px; /* Logo di kiri */
+    }
+    .app-header #main-header-title-image {
+        max-height: 40px; /* Ukuran yang lebih ringkas */
+        width: auto;
+        margin: 0 auto;
     }
 
-    .header-left .logo {
-        margin-left: 0;
+    /* Padding untuk konten agar tidak tertutup header fixed */
+    main.content,
+    main.my-poem-content,
+    main.thesaurus-content,
+    main.learning-content,
+    main.idea-generator-content,
+    main.hall-of-fame-content,
+    main.write-page-content,
+    main.full-preview-content {
+        padding-top: 110px; /* Beri padding yang cukup untuk header fixed */
     }
-    /* Perbaikan: Kartu Puisi menjadi satu kolom di mobile */
+
     .poem-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -1429,71 +1470,8 @@ html {
         font-size: 1.5em;
     }
 }
-/* Perbaikan untuk tampilan desktop: tombol kembali disembunyikan */
-.back-button-mobile {
-    display: none;
-}
+
 @media (max-width: 480px) {
-    .app-header h1 {
-        font-size: 1.8em; /* Ukuran font super kecil untuk layar sangat sempit */
-        text-align: center;
-    }
-    .write-form-container {
-        flex-direction: column;
-        padding: 20px;
-        gap: 20px;
-    }
-    .form-left, .form-right {
-        width: 100%;
-    }
-    .publish-action {
-        right: 20px;
-        bottom: 20px;
-    }
-    .header-left, .header-right {
-        width: 100%;
-        justify-content: space-between;
-    }
-    .header-right {
-        display: none;
-    }
-    /* Tambahan untuk layar yang lebih sempit */
-    .search-container {
-        flex-direction: column;
-        border-radius: 30px;
-        width: auto;
-    }
-    .search-input {
-        border-radius: 30px;
-    }
-    .custom-select {
-        border-left: none;
-        width: 100%;
-        margin-top: 10px;
-        min-width: unset;
-    }
-    .select-selected {
-        border-radius: 30px;
-        width: 100%;
-    }
-    #main-header-title-image {
-        max-height: 100px;
-    }
-}
-@media (max-width: 420px) {
-    .header-center h1,
-    .header-center #thesaurus-title,
-    .header-center .learning-page-title,
-    .header-center .ide-generator-title,
-    .app-header h1#poem-title-full {
-        font-size: 1.5em;
-    }
-    #main-header-title-image {
-        max-height: 70px; /* Mengecilkan gambar logo */
-        width: auto;
-    }
-}
-@media (max-width: 380px) {
     .header-center h1,
     .header-center #thesaurus-title,
     .header-center .learning-page-title,
@@ -1502,7 +1480,26 @@ html {
         font-size: 1.2em;
     }
     #main-header-title-image {
-        max-height: 50px; /* Mengecilkan gambar logo */
-        width: auto;
+        max-height: 35px;
+    }
+    .header-left .logo img {
+        height: 35px;
+    }
+    .icon-button {
+        font-size: 1.2em;
+        padding: 8px;
+    }
+    .search-container {
+        margin-top: 5px; /* Kurangi jarak antara judul dan search bar */
+    }
+    main.content,
+    main.my-poem-content,
+    main.thesaurus-content,
+    main.learning-content,
+    main.idea-generator-content,
+    main.hall-of-fame-content,
+    main.write-page-content,
+    main.full-preview-content {
+        padding-top: 90px;
     }
 }
