@@ -146,6 +146,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.animatePageTransition = animatePageTransition; // Jadikan global
 
+    // NEW: Fungsi untuk navigasi kembali yang andal
+    function goBack() {
+        if (window.history.length > 1) {
+            window.history.back();
+        } else {
+            // Fallback jika tidak ada riwayat
+            window.location.href = 'index.html'; 
+        }
+    }
+    window.goBack = goBack;
 
     // Event listener untuk semua tautan <a> di aplikasi (delegasi event)
     console.log("common.js: Attaching click listener for global A tags.");
@@ -155,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (targetLink && targetLink.href && targetLink.target !== '_blank') {
             const currentHostname = window.location.hostname;
             const targetHostname = new URL(targetLink.href).hostname;
+            const isBackLink = targetLink.getAttribute('href').endsWith('javascript:history.back()'); // Check for back link
 
             if (targetHostname === currentHostname && 
                 targetLink.getAttribute('href').indexOf('#') === -1 &&
@@ -163,7 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 !targetLink.classList.contains('empty-state-btn') &&
                 !targetLink.classList.contains('learning-editor-btn') && 
                 !targetLink.classList.contains('modal-btn') && 
-                !targetLink.classList.contains('close-button') 
+                !targetLink.classList.contains('close-button') &&
+                !isBackLink // Exclude back links from custom transition
             ) {
                 console.log("common.js: Internal link clicked, preventing default.", targetLink.href);
                 e.preventDefault(); 
