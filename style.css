@@ -1530,3 +1530,39 @@ html {
         padding-top: 20px; /* Pertahankan padding yang sama */
     }
 }
+
+/* --- Konsep Scrolldown Unik: Garis Emas Pena --- */
+
+/* Aturan untuk scrolldown pada Webkit browsers (Chrome, Safari, dll.) */
+.sidebar-menu::-webkit-scrollbar {
+    width: 6px; /* Lebar scrolldown */
+}
+
+/* Track/jalur scrolldown */
+.sidebar-menu::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+/* Bilah/thumb scrolldown */
+.sidebar-menu::-webkit-scrollbar-thumb {
+    background: var(--secondary-color); /* Warna bilah dari secondary-color */
+    border-radius: 10px;
+    border: 2px solid transparent; /* Border transparan untuk efek garis tipis */
+    background-clip: padding-box; /* Pastikan background tidak melewati border */
+}
+
+/* Efek hover pada bilah scrolldown */
+.sidebar-menu::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, var(--secondary-color), var(--primary-color)); /* Gradien dari secondary ke primary */
+}
+
+/* Aturan scrolldown untuk Firefox */
+.sidebar-menu {
+    scrollbar-width: thin; /* Buat scrolldown lebih tipis */
+    scrollbar-color: var(--secondary-color) transparent; /* Warna bilah dan jalur */
+}
+
+.sidebar-menu:hover {
+    scrollbar-color: var(--secondary-color) var(--background-light);
+}
