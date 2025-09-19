@@ -314,21 +314,71 @@ html {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
 }
+/* Menambahkan @keyframes yang lebih halus */
+@keyframes floaty {
+    0% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-5px) scale(1.01); /* Gerakan ke atas + efek "sedikit membesar" */
+    }
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Efek kartu puisi yang elegan dan berkelas */
 .poem-card {
     padding: 30px;
     border-radius: 20px;
     box-shadow: var(--box-shadow-light);
-    transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.4s ease, background 0.5s ease;
+    transition: box-shadow 0.5s ease-in-out;
     cursor: pointer;
     background-color: #ffffff;
     min-height: 200px;
     position: relative;
-    border: 1px solid #eee; 
+    border: 1px solid transparent;
+    overflow: hidden;
+    /* Mengaktifkan animasi mengambang yang jauh lebih halus */
+    animation: floaty 6s infinite alternate ease-in-out; 
+    will-change: transform;
 }
+
+/* Efek Hover: Tambahkan cahaya abstrak yang lembut dan tidak mengganggu float */
 .poem-card:hover {
-    transform: translateY(-5px); 
-    box-shadow: var(--box-shadow-medium);
+    box-shadow: 0 0 25px 5px rgba(var(--secondary-color-rgb-values), 0.8);
+    /* Tidak mengubah animasi, sehingga efek mengambang tetap berjalan */
+    animation: floaty 6s infinite alternate ease-in-out;
 }
+/* Efek hover khusus untuk kartu orange (yang sebelumnya menggunakan efek default) */
+.poem-card.yellow:hover {
+    box-shadow: 0 0 25px 5px rgba(229, 136, 104, 0.40);
+}
+/* Efek hover khusus untuk kartu biru */
+.poem-card.blue:hover {
+    box-shadow: 0 0 25px 5px rgba(150, 180, 255, 0.40);
+}
+
+/* Efek hover khusus untuk kartu pink */
+.poem-card.red:hover {
+    box-shadow: 0 0 25px 5px rgba(255, 195, 255, 0.40);
+}
+
+/* Menghapus gaya ::after yang tidak diinginkan */
+.poem-card::after {
+    display: none;
+}
+
+/* Menghilangkan gaya lama yang tidak terpakai */
+.poem-card:hover::after,
+.poem-card.yellow::after,
+.poem-card.blue::after,
+.poem-card.red::after {
+    box-shadow: none;
+    opacity: 0;
+}
+
+
 .poem-card.fade-out {
     opacity: 0;
     transform: translateY(-20px) scale(0.95);
@@ -353,8 +403,8 @@ html {
 .poem-content p {
     line-height: 1.8;
     margin-bottom: 1em;
-    font-size: 1.1em; 
-    color: #4a4a4a; 
+    font-size: 1.1em;
+    color: #4a4a4a;
     text-align: center;
 }
 
@@ -639,18 +689,6 @@ html {
     position: fixed;
     bottom: 30px;
     right: 5%;
-}
-#publish-btn {
-    background-color: var(--secondary-color); 
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    font-weight: bold;
-    border-radius: 30px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 #publish-btn.active {
     background-color: var(--primary-color); 
@@ -1534,35 +1572,37 @@ html {
 /* --- Konsep Scrolldown Unik: Garis Emas Pena --- */
 
 /* Aturan untuk scrolldown pada Webkit browsers (Chrome, Safari, dll.) */
-.sidebar-menu::-webkit-scrollbar {
-    width: 6px; /* Lebar scrolldown */
+::-webkit-scrollbar {
+    width: 10px; /* Sedikit lebih tebal */
 }
 
 /* Track/jalur scrolldown */
-.sidebar-menu::-webkit-scrollbar-track {
-    background-color: transparent;
-    border-radius: 10px;
+::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 /* Bilah/thumb scrolldown */
-.sidebar-menu::-webkit-scrollbar-thumb {
-    background: var(--secondary-color); /* Warna bilah dari secondary-color */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(210, 97, 0, 0.9); /* Warna cokelat yang lebih dalam dan transparan */
     border-radius: 10px;
     border: 2px solid transparent; /* Border transparan untuk efek garis tipis */
     background-clip: padding-box; /* Pastikan background tidak melewati border */
 }
 
 /* Efek hover pada bilah scrolldown */
-.sidebar-menu::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(to bottom, var(--secondary-color), var(--primary-color)); /* Gradien dari secondary ke primary */
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(210, 97, 0, 1.0); /* Warna lebih gelap dan tidak transparan saat hover */
 }
 
 /* Aturan scrolldown untuk Firefox */
-.sidebar-menu {
+* {
     scrollbar-width: thin; /* Buat scrolldown lebih tipis */
-    scrollbar-color: var(--secondary-color) transparent; /* Warna bilah dan jalur */
+    scrollbar-color: rgba(210, 97, 0, 0.9) transparent; /* Warna bilah dan jalur */
 }
 
+.sidebar-menu {
+    scrollbar-color: var(--secondary-color) transparent;
+}
 .sidebar-menu:hover {
     scrollbar-color: var(--secondary-color) var(--background-light);
 }
